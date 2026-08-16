@@ -1,0 +1,29 @@
+{
+  "ueberschrift": "Zertifikate & Partner",
+  "eintraege": [
+    {
+      "name": "Naturhof zertifiziert",
+      "untertitel": "Ökologischer Landbau, Kontrollstelle DE-ÖKO-999",
+      "logo": {
+        "pfad": "assets/logo/siegel-naturhof.svg",
+        "alt": "Siegel Naturhof zertifiziert"
+      }
+    },
+    {
+      "name": "Regional Garantiert",
+      "untertitel": "Erzeugung und Verarbeitung im Umkreis von 30 km",
+      "logo": {
+        "pfad": "assets/logo/siegel-regional.svg",
+        "alt": "Siegel Regional Garantiert"
+      }
+    },
+    {
+      "name": "Käserei Aigner",
+      "untertitel": "Reifekeller-Partnerschaft seit 2020",
+      "logo": {
+        "pfad": "assets/logo/partner-aigner.svg",
+        "alt": "Logo Käserei Aigner"
+      }
+    }
+  ]
+}

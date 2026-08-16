@@ -1,0 +1,14 @@
+{
+  "ueberschrift": "Drei Generationen, ein Hof",
+  "absaetze": [
+    "1962 hat Josef Berger den Hof von seinen Eltern übernommen — damals noch mit neun Kühen und einem Pferd. Heute bewirtschaften wir 40 Hektar, halten 28 Milchkühe und bauen auf zwölf Hektar Gemüse an.",
+    "Seit 2018 arbeiten wir vollständig ökologisch. Das war keine schnelle Entscheidung, aber im Rückblick die richtige: Der Boden dankt es uns, und unsere Kunden merken den Unterschied.",
+    "Was bei uns im Laden liegt, wächst zu großen Teilen 300 Meter weiter auf dem Feld. Was wir nicht selbst erzeugen — Mehl, Honig, Nudeln — kommt von Betrieben aus dem Umkreis von 30 Kilometern."
+  ],
+  "bild": {
+    "pfad": "assets/fotos/hof-luftbild.jpg",
+    "alt": "Luftbild des Hofes mit Stallgebäude, Laden und angrenzenden Feldern",
+    "breite": 1600,
+    "hoehe": 1067
+  }
+}

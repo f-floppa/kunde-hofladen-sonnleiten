@@ -1,0 +1,29 @@
+{
+  "ueberschrift": "Häufige Fragen",
+  "fragen": [
+    {
+      "frage": "Kann ich vorbestellen?",
+      "antwort": "Ja, telefonisch unter 08745 / 92 14 30 oder per E-Mail. Fleischpakete brauchen mindestens zwei Wochen Vorlauf."
+    },
+    {
+      "frage": "Kann ich mit Karte zahlen?",
+      "antwort": "Ja, EC und die gängigen Kreditkarten. Auf den Märkten nur bar."
+    },
+    {
+      "frage": "Liefert ihr auch?",
+      "antwort": "Nein. Wir haben es zweimal versucht, es passt nicht zum Betrieb. Dafür stehen wir auf drei Märkten in der Region."
+    },
+    {
+      "frage": "Darf ich meinen Hund mitbringen?",
+      "antwort": "Auf der Caféterrasse gerne, angeleint. Im Laden aus Hygienegründen nicht."
+    },
+    {
+      "frage": "Kann man den Hof besichtigen?",
+      "antwort": "Jeden ersten Samstag im Monat bei der Hofführung. Spontane Besichtigungen gehen leider nicht — im Stall ist meistens Betrieb."
+    },
+    {
+      "frage": "Ist alles bio?",
+      "antwort": "Alles, was wir selbst erzeugen, ja — seit 2018 zertifiziert. Bei zugekauften Produkten steht die Herkunft am Regal."
+    }
+  ]
+}

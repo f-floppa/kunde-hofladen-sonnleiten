@@ -1,0 +1,25 @@
+{
+  "ueberschrift": "Unsere Marktstände",
+  "einleitung": "Drei Märkte in der Region — wer es nicht auf den Hof schafft, findet uns dort.",
+  "staende": [
+    {
+      "ort": "Landshut, Wochenmarkt",
+      "tag": "Mittwoch",
+      "zeit": "7:00 – 13:00",
+      "platz": "Kirchplatz, Reihe B"
+    },
+    {
+      "ort": "Vilsbiburg, Bauernmarkt",
+      "tag": "Freitag",
+      "zeit": "8:00 – 12:00",
+      "platz": "Stadtplatz, vor der Apotheke"
+    },
+    {
+      "ort": "Passau, Grünmarkt",
+      "tag": "Samstag",
+      "zeit": "7:00 – 12:00",
+      "platz": "Domplatz, Nordseite"
+    }
+  ],
+  "hinweis": "An Feiertagen entfallen die Märkte. Kurzfristige Ausfälle stehen im Hinweisband ganz oben."
+}

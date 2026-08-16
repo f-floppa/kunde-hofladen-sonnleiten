@@ -1,0 +1,25 @@
+{
+  "ueberschrift": "Datenschutz",
+  "absaetze": [
+    {
+      "titel": "Verantwortliche Stelle",
+      "text": "Anna Berger, Hofladen & Hofcafé Sonnleiten, Aichberger Straße 14, 84371 Sonnleiten, hallo@hofladen-sonnleiten.example"
+    },
+    {
+      "titel": "Server-Protokolle",
+      "text": "Beim Aufruf dieser Seite werden vom Hosting-Anbieter technisch notwendige Daten verarbeitet: IP-Adresse, Zeitpunkt des Abrufs, aufgerufene Adresse, übertragene Datenmenge und Browserkennung. Rechtsgrundlage ist das berechtigte Interesse am sicheren Betrieb der Seite nach Art. 6 Abs. 1 lit. f DSGVO. Eine Zusammenführung mit anderen Daten findet nicht statt."
+    },
+    {
+      "titel": "Kontaktaufnahme",
+      "text": "Wenn Sie uns per E-Mail oder Telefon kontaktieren, verarbeiten wir Ihre Angaben ausschließlich zur Bearbeitung Ihrer Anfrage. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b bzw. lit. f DSGVO. Die Daten werden gelöscht, sobald die Anfrage erledigt ist und keine Aufbewahrungspflichten entgegenstehen."
+    },
+    {
+      "titel": "Keine Cookies, kein Tracking",
+      "text": "Diese Seite setzt keine Cookies, bindet keine Inhalte von fremden Servern ein und verwendet keine Analyse- oder Werbedienste. Es findet keine Profilbildung statt. Aus diesem Grund ist auch keine Einwilligung erforderlich."
+    },
+    {
+      "titel": "Ihre Rechte",
+      "text": "Sie haben das Recht auf Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch. Wenden Sie sich dazu an die oben genannte Adresse. Außerdem steht Ihnen ein Beschwerderecht bei einer Datenschutz-Aufsichtsbehörde zu."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 64" width="200" height="64" role="img" aria-label="K&#228;serei Aigner, Partnerbetrieb">
+  <title>Käserei Aigner (fiktiver Partnerbetrieb)</title>
+  <circle cx="30" cy="32" r="19" fill="#C08A2E"/>
+  <path d="M30 13 A 19 19 0 0 1 49 32 L 30 32 Z" fill="#22201C" opacity="0.18"/>
+  <circle cx="24" cy="27" r="3.2" fill="#F2EFE7"/>
+  <circle cx="34" cy="37" r="2.4" fill="#F2EFE7"/>
+  <circle cx="23" cy="39" r="1.8" fill="#F2EFE7"/>
+  <circle cx="36" cy="24" r="1.6" fill="#F2EFE7"/>
+  <text x="60" y="30" fill="#22201C" font-family="Constantia, Cambria, Georgia, serif" font-size="21" font-weight="700" letter-spacing="0.5">AIGNER</text>
+  <text x="61" y="44" fill="#2F4A32" font-family="Segoe UI, system-ui, Helvetica, Arial, sans-serif" font-size="8" font-weight="600" letter-spacing="2.2">K&#196;SEREI SEIT 1948</text>
+</svg>

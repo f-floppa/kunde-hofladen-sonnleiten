@@ -1,0 +1,33 @@
+{
+  "ueberschrift": "Impressum",
+  "felder": [
+    {
+      "bezeichnung": "Anbieter",
+      "wert": "Anna Berger, Hofladen & Hofcafé Sonnleiten"
+    },
+    {
+      "bezeichnung": "Anschrift",
+      "wert": "Aichberger Straße 14, 84371 Sonnleiten"
+    },
+    {
+      "bezeichnung": "Telefon",
+      "wert": "08745 / 92 14 30"
+    },
+    {
+      "bezeichnung": "E-Mail",
+      "wert": "hallo@hofladen-sonnleiten.example"
+    },
+    {
+      "bezeichnung": "Umsatzsteuer-Identifikationsnummer",
+      "wert": "DE 999 888 777"
+    },
+    {
+      "bezeichnung": "Verantwortlich für den Inhalt",
+      "wert": "Anna Berger, Anschrift wie oben"
+    },
+    {
+      "bezeichnung": "Öko-Kontrollstelle",
+      "wert": "DE-ÖKO-999"
+    }
+  ]
+}

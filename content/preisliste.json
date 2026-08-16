@@ -1,0 +1,107 @@
+{
+  "ueberschrift": "Tagespreise",
+  "stand": "6. August 2026",
+  "fussnote": "Preise können sich je nach Ernte kurzfristig ändern. Es gilt der Aushang im Laden.",
+  "gruppen": [
+    {
+      "titel": "Gemüse",
+      "zeilen": [
+        {
+          "artikel": "Spargel weiß, Klasse I",
+          "einheit": "kg",
+          "preis": "14,90 €"
+        },
+        {
+          "artikel": "Spargel Bruch",
+          "einheit": "kg",
+          "preis": "8,50 €"
+        },
+        {
+          "artikel": "Kartoffeln, festkochend",
+          "einheit": "kg",
+          "preis": "2,80 €"
+        },
+        {
+          "artikel": "Zwiebeln",
+          "einheit": "kg",
+          "preis": "1,90 €"
+        },
+        {
+          "artikel": "Tomaten, bunt gemischt",
+          "einheit": "kg",
+          "preis": "6,40 €"
+        },
+        {
+          "artikel": "Salat, Kopf",
+          "einheit": "Stück",
+          "preis": "1,60 €"
+        }
+      ]
+    },
+    {
+      "titel": "Obst",
+      "zeilen": [
+        {
+          "artikel": "Erdbeeren",
+          "einheit": "Schale 500 g",
+          "preis": "6,90 €"
+        },
+        {
+          "artikel": "Äpfel Boskoop",
+          "einheit": "kg",
+          "preis": "3,20 €"
+        },
+        {
+          "artikel": "Apfelsaft naturtrüb",
+          "einheit": "5-l-Box",
+          "preis": "12,50 €"
+        }
+      ]
+    },
+    {
+      "titel": "Hofkäserei",
+      "zeilen": [
+        {
+          "artikel": "Bergkäse jung",
+          "einheit": "100 g",
+          "preis": "2,90 €"
+        },
+        {
+          "artikel": "Bergkäse gereift, 8 Monate",
+          "einheit": "100 g",
+          "preis": "3,60 €"
+        },
+        {
+          "artikel": "Frischkäse mit Kräutern",
+          "einheit": "150-g-Glas",
+          "preis": "3,80 €"
+        },
+        {
+          "artikel": "Naturjoghurt",
+          "einheit": "500-g-Glas",
+          "preis": "2,40 €"
+        },
+        {
+          "artikel": "Eier aus Freilandhaltung",
+          "einheit": "10 Stück",
+          "preis": "4,50 €"
+        }
+      ]
+    },
+    {
+      "titel": "Fleisch — nur auf Vorbestellung",
+      "zeilen": [
+        {
+          "artikel": "Rindfleischpaket gemischt",
+          "einheit": "5 kg",
+          "preis": "89,00 €"
+        },
+        {
+          "artikel": "Rindfleischpaket gemischt",
+          "einheit": "10 kg",
+          "preis": "169,00 €"
+        }
+      ]
+    }
+  ]
+}

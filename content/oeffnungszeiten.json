@@ -1,0 +1,76 @@
+{
+  "ueberschrift": "Öffnungszeiten",
+  "sets": [
+    {
+      "titel": "Hofladen",
+      "zusatz": "ganzjährig",
+      "zeilen": [
+        {
+          "tag": "Montag",
+          "zeit": "geschlossen"
+        },
+        {
+          "tag": "Dienstag",
+          "zeit": "9:00 – 18:00"
+        },
+        {
+          "tag": "Mittwoch",
+          "zeit": "9:00 – 18:00"
+        },
+        {
+          "tag": "Donnerstag",
+          "zeit": "9:00 – 18:00"
+        },
+        {
+          "tag": "Freitag",
+          "zeit": "9:00 – 18:00"
+        },
+        {
+          "tag": "Samstag",
+          "zeit": "8:00 – 13:00"
+        },
+        {
+          "tag": "Sonntag",
+          "zeit": "geschlossen"
+        }
+      ]
+    },
+    {
+      "titel": "Hofcafé",
+      "zusatz": "Mai bis Oktober",
+      "zeilen": [
+        {
+          "tag": "Mittwoch – Freitag",
+          "zeit": "13:00 – 18:00"
+        },
+        {
+          "tag": "Samstag",
+          "zeit": "10:00 – 17:00"
+        },
+        {
+          "tag": "Sonntag",
+          "zeit": "11:00 – 17:00"
+        }
+      ]
+    }
+  ],
+  "ausnahmenTitel": "Abweichende Zeiten",
+  "ausnahmen": [
+    {
+      "datum": "20. – 31. Januar 2026",
+      "was": "Betriebsurlaub, Laden und Café geschlossen"
+    },
+    {
+      "datum": "3. April 2026",
+      "was": "Karfreitag, geschlossen"
+    },
+    {
+      "datum": "1. Mai 2026",
+      "was": "Laden 9:00 – 13:00, Café geschlossen"
+    },
+    {
+      "datum": "24. + 31. Dezember 2026",
+      "was": "Laden 8:00 – 12:00"
+    }
+  ]
+}

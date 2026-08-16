@@ -1,0 +1,43 @@
+{
+  "id": "hofladen-sonnleiten",
+  "name": "Hofladen & Hofcafé Sonnleiten",
+  "sprache": "de",
+  "domain": "hofladen-sonnleiten.example",
+  "beschreibung": "Bio-Hofladen und Hofcafé der Familie Berger in Sonnleiten. Gemüse, Obst und Käse aus eigener Erzeugung.",
+  "logo": "assets/logo/logo-sonnleiten.svg",
+  "ogBild": "assets/fotos/og-image.jpg",
+  "farben": {
+    "primaer": "#2F4A32",
+    "akzent": "#C08A2E",
+    "grund": "#F2EFE7",
+    "tinte": "#22201C"
+  },
+  "navigation": [
+    { "label": "Sortiment", "ziel": "#sortiment" },
+    { "label": "Preise", "ziel": "#preise" },
+    { "label": "Hofcafé", "ziel": "#hofcafe" },
+    { "label": "Öffnungszeiten", "ziel": "#oeffnungszeiten" },
+    { "label": "Märkte", "ziel": "#maerkte" },
+    { "label": "Termine", "ziel": "#termine" },
+    { "label": "Kontakt", "ziel": "#kontakt" }
+  ],
+  "module": [
+    "hero",
+    "hinweisband",
+    "ueberUns",
+    "sortiment",
+    "preisliste",
+    "hofcafe",
+    "oeffnungszeiten",
+    "maerkte",
+    "veranstaltungen",
+    "team",
+    "galerie",
+    "siegel",
+    "stimmen",
+    "faq",
+    "kontakt",
+    "impressum",
+    "datenschutz"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "ueberschrift": "Hofcafé",
+  "einleitung": "Von Mai bis Oktober, auf der Terrasse hinterm Laden. Kuchen backt Yusuf morgens, meist sind es vier Sorten. Was aus ist, ist aus.",
+  "bild": {
+    "pfad": "assets/fotos/cafe-terrasse.jpg",
+    "alt": "Terrasse des Hofcafés mit Holztischen und Blick ins Tal",
+    "breite": 1600,
+    "hoehe": 1067
+  },
+  "karte": [
+    {
+      "position": "Kuchen, Stück",
+      "preis": "4,20 €"
+    },
+    {
+      "position": "Kuchen mit Sahne",
+      "preis": "5,20 €"
+    },
+    {
+      "position": "Brotzeitbrett für zwei",
+      "preis": "16,50 €"
+    },
+    {
+      "position": "Kaffee",
+      "preis": "3,10 €"
+    },
+    {
+      "position": "Milchkaffee",
+      "preis": "3,80 €"
+    },
+    {
+      "position": "Apfelsaftschorle, 0,3 l",
+      "preis": "3,40 €"
+    },
+    {
+      "position": "Hausgemachte Limonade, 0,3 l",
+      "preis": "3,60 €"
+    }
+  ],
+  "hinweis": "Wir nehmen keine Reservierungen an. Bei Regen bleibt die Terrasse zu."
+}

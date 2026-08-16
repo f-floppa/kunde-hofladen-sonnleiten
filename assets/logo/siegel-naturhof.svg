@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="Siegel Naturhof zertifiziert">
+  <title>Naturhof zertifiziert (fiktives Siegel)</title>
+  <circle cx="48" cy="48" r="45" fill="#F2EFE7" stroke="#2F4A32" stroke-width="2.5"/>
+  <circle cx="48" cy="48" r="39" fill="none" stroke="#2F4A32" stroke-width="1" opacity="0.45"/>
+  <path d="M48 24 C 62 30, 64 44, 48 54 C 32 44, 34 30, 48 24 Z" fill="#2F4A32"/>
+  <path d="M48 26 L 48 56" stroke="#F2EFE7" stroke-width="1.6" stroke-linecap="round"/>
+  <text x="48" y="70" text-anchor="middle" fill="#2F4A32" font-family="Segoe UI, system-ui, Helvetica, Arial, sans-serif" font-size="10.5" font-weight="700" letter-spacing="1.6">NATURHOF</text>
+  <text x="48" y="81" text-anchor="middle" fill="#2F4A32" font-family="Segoe UI, system-ui, Helvetica, Arial, sans-serif" font-size="6.5" letter-spacing="0.8" opacity="0.8">DE-&#214;KO-999</text>
+</svg>

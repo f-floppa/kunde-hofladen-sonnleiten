@@ -1,0 +1,28 @@
+{
+  "ueberschrift": "Kontakt & Anfahrt",
+  "betrieb": "Hofladen & Hofcafé Sonnleiten, Familie Berger",
+  "strasse": "Aichberger Straße 14",
+  "ort": "84371 Sonnleiten",
+  "telefon": "08745 / 92 14 30",
+  "email": "hallo@hofladen-sonnleiten.example",
+  "hinweise": [
+    {
+      "titel": "Mit dem Auto",
+      "text": "Von der B388 Abfahrt Sonnleiten, dann 2 km Richtung Aichberg. Der Hof liegt rechts, blaues Hinweisschild."
+    },
+    {
+      "titel": "Parken",
+      "text": "15 kostenlose Plätze direkt am Hof, zusätzlich Wiesenparkplatz bei Veranstaltungen."
+    },
+    {
+      "titel": "Mit dem Bus",
+      "text": "Linie 6142 ab Vilsbiburg, Haltestelle „Sonnleiten Kirche\", von dort 800 m zu Fuß."
+    }
+  ],
+  "karte": {
+    "pfad": "assets/fotos/karte-anfahrt.jpg",
+    "alt": "Kartenausschnitt mit der Lage des Hofes an der Aichberger Straße",
+    "breite": 1200,
+    "hoehe": 800
+  }
+}

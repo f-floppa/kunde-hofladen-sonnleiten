@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="Siegel Regional Garantiert, 30 Kilometer Umkreis">
+  <title>Regional Garantiert (fiktives Siegel)</title>
+  <circle cx="48" cy="48" r="45" fill="#F2EFE7" stroke="#C08A2E" stroke-width="2.5"/>
+  <circle cx="48" cy="42" r="21" fill="none" stroke="#C08A2E" stroke-width="1.2" stroke-dasharray="3 3" opacity="0.75"/>
+  <circle cx="48" cy="42" r="11" fill="none" stroke="#C08A2E" stroke-width="1.2" opacity="0.5"/>
+  <line x1="48" y1="42" x2="66" y2="31" stroke="#C08A2E" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="48" cy="42" r="4" fill="#2F4A32"/>
+  <text x="48" y="72" text-anchor="middle" fill="#2F4A32" font-family="Segoe UI, system-ui, Helvetica, Arial, sans-serif" font-size="9.5" font-weight="700" letter-spacing="1.4">REGIONAL</text>
+  <text x="48" y="83" text-anchor="middle" fill="#C08A2E" font-family="Segoe UI, system-ui, Helvetica, Arial, sans-serif" font-size="7.5" font-weight="600" letter-spacing="1">30 KM UMKREIS</text>
+</svg>

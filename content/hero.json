@@ -1,0 +1,21 @@
+{
+  "dachzeile": "Familienbetrieb seit 1962",
+  "ueberschrift": "Vom Feld in den Korb — ohne Umweg",
+  "text": "Gemüse, Obst und Käse aus eigener Erzeugung. Dienstag bis Samstag geöffnet, das Hofcafé von Mai bis Oktober.",
+  "bild": {
+    "pfad": "assets/fotos/hero-hof-sommer.jpg",
+    "alt": "Der Hof Sonnleiten im Sommer, Blick über die Gemüsefelder",
+    "breite": 2400,
+    "hoehe": 1350
+  },
+  "aktionen": [
+    {
+      "label": "Öffnungszeiten ansehen",
+      "ziel": "#oeffnungszeiten"
+    },
+    {
+      "label": "Anfahrt",
+      "ziel": "#kontakt"
+    }
+  ]
+}

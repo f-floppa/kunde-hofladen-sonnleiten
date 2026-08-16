@@ -1,0 +1,56 @@
+{
+  "ueberschrift": "Unser Sortiment",
+  "einleitung": "Fünf Bereiche, die sich über das Jahr verschieben. Was gerade reif ist, steht vorne im Laden.",
+  "kategorien": [
+    {
+      "titel": "Gemüse",
+      "text": "Saisonal vom eigenen Feld. Im Frühjahr Spargel und Salate, im Sommer Tomaten, Zucchini und Beeren, im Herbst Kürbis, Kraut und Wurzelgemüse.",
+      "bild": {
+        "pfad": "assets/fotos/sortiment-gemuese.jpg",
+        "alt": "Kisten mit frisch geerntetem Gemüse im Hofladen",
+        "breite": 1200,
+        "hoehe": 900
+      }
+    },
+    {
+      "titel": "Obst & Streuobst",
+      "text": "Äpfel, Birnen und Zwetschgen von unseren alten Streuobstwiesen. Dazu Saft aus eigener Pressung, ohne Zusätze.",
+      "bild": {
+        "pfad": "assets/fotos/sortiment-obst.jpg",
+        "alt": "Äpfel und Birnen in Holzsteigen",
+        "breite": 1200,
+        "hoehe": 900
+      }
+    },
+    {
+      "titel": "Hofkäserei",
+      "text": "Bergkäse, Frischkäse und Joghurt aus der Milch unserer eigenen Herde. Lisa käst zweimal die Woche.",
+      "bild": {
+        "pfad": "assets/fotos/sortiment-kaeserei.jpg",
+        "alt": "Käselaibe im Reifekeller der Hofkäserei",
+        "breite": 1200,
+        "hoehe": 900
+      }
+    },
+    {
+      "titel": "Fleisch & Wurst",
+      "text": "Rind aus eigener Haltung, geschlachtet beim Metzger im Nachbarort. Nur nach Vorbestellung, immer als Paket.",
+      "bild": {
+        "pfad": "assets/fotos/sortiment-fleisch.jpg",
+        "alt": "Verpackte Fleischpakete auf der Ladentheke",
+        "breite": 1200,
+        "hoehe": 900
+      }
+    },
+    {
+      "titel": "Vorrat & Regionales",
+      "text": "Mehl, Nudeln, Honig, Marmelade, Öl. Von Betrieben, die wir kennen und selbst besuchen.",
+      "bild": {
+        "pfad": "assets/fotos/sortiment-vorrat.jpg",
+        "alt": "Regal mit Gläsern, Mehltüten und Honig",
+        "breite": 1200,
+        "hoehe": 900
+      }
+    }
+  ]
+}

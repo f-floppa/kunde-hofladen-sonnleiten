@@ -1,0 +1,71 @@
+{
+  "ueberschrift": "Wir sechs",
+  "personen": [
+    {
+      "name": "Anna Berger",
+      "rolle": "Hofladen & Café",
+      "satz": "Steht seit 2011 hinter der Ladentheke und weiß, welcher Käse zu welchem Wein passt.",
+      "bild": {
+        "pfad": "assets/fotos/team-anna.jpg",
+        "alt": "Anna Berger",
+        "breite": 800,
+        "hoehe": 800
+      }
+    },
+    {
+      "name": "Thomas Berger",
+      "rolle": "Landwirtschaft & Gemüsebau",
+      "satz": "Kümmert sich um Felder und Herde. Steht im Frühjahr um vier auf, wenn der Spargel läuft.",
+      "bild": {
+        "pfad": "assets/fotos/team-thomas.jpg",
+        "alt": "Thomas Berger",
+        "breite": 800,
+        "hoehe": 800
+      }
+    },
+    {
+      "name": "Josef „Sepp\" Berger",
+      "rolle": "Senior, Streuobst",
+      "satz": "Hat den Hof 1962 übernommen und pflegt heute die alten Obstbäume. Kennt jede Sorte beim Namen.",
+      "bild": {
+        "pfad": "assets/fotos/team-sepp.jpg",
+        "alt": "Josef Berger",
+        "breite": 800,
+        "hoehe": 800
+      }
+    },
+    {
+      "name": "Lisa Berger-Aigner",
+      "rolle": "Hofkäserei",
+      "satz": "Käst zweimal die Woche. Ihr gereifter Bergkäse hat 2024 einen Landespreis geholt.",
+      "bild": {
+        "pfad": "assets/fotos/team-lisa.jpg",
+        "alt": "Lisa Berger-Aigner",
+        "breite": 800,
+        "hoehe": 800
+      }
+    },
+    {
+      "name": "Marlene Huber",
+      "rolle": "Verkauf",
+      "satz": "Seit 2019 im Laden und auf allen drei Märkten unterwegs.",
+      "bild": {
+        "pfad": "assets/fotos/team-marlene.jpg",
+        "alt": "Marlene Huber",
+        "breite": 800,
+        "hoehe": 800
+      }
+    },
+    {
+      "name": "Yusuf Demir",
+      "rolle": "Café & Backstube",
+      "satz": "Backt jeden Morgen vier Sorten Kuchen. Der Mohnkuchen ist meistens zuerst weg.",
+      "bild": {
+        "pfad": "assets/fotos/team-yusuf.jpg",
+        "alt": "Yusuf Demir",
+        "breite": 800,
+        "hoehe": 800
+      }
+    }
+  ]
+}

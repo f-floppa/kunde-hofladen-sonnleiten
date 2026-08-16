@@ -1,0 +1,53 @@
+{
+  "ueberschrift": "Vom Hof",
+  "bilder": [
+    {
+      "pfad": "assets/fotos/galerie-01.jpg",
+      "alt": "Blick über das Gemüsefeld im Morgennebel",
+      "breite": 1400,
+      "hoehe": 1050
+    },
+    {
+      "pfad": "assets/fotos/galerie-02.jpg",
+      "alt": "Spargelstechen bei Sonnenaufgang",
+      "breite": 1400,
+      "hoehe": 1050
+    },
+    {
+      "pfad": "assets/fotos/galerie-03.jpg",
+      "alt": "Die Ladentheke mit Gemüsekisten",
+      "breite": 1400,
+      "hoehe": 1050
+    },
+    {
+      "pfad": "assets/fotos/galerie-04.jpg",
+      "alt": "Lisa beim Käsen in der Hofkäserei",
+      "breite": 1400,
+      "hoehe": 1050
+    },
+    {
+      "pfad": "assets/fotos/galerie-05.jpg",
+      "alt": "Reifende Bergkäselaibe im Keller",
+      "breite": 1400,
+      "hoehe": 1050
+    },
+    {
+      "pfad": "assets/fotos/galerie-06.jpg",
+      "alt": "Terrasse des Hofcafés mit Blick ins Tal",
+      "breite": 1400,
+      "hoehe": 1050
+    },
+    {
+      "pfad": "assets/fotos/galerie-07.jpg",
+      "alt": "Streuobstwiese im Herbst",
+      "breite": 1400,
+      "hoehe": 1050
+    },
+    {
+      "pfad": "assets/fotos/galerie-08.jpg",
+      "alt": "Der Marktstand in Landshut",
+      "breite": 1400,
+      "hoehe": 1050
+    }
+  ]
+}

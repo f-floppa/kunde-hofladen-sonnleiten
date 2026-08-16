@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 64" width="320" height="64" role="img" aria-label="Hofladen und Hofcafé Sonnleiten">
+  <title>Hofladen &amp; Hofcafé Sonnleiten</title>
+  <g>
+    <circle cx="32" cy="27" r="13.5" fill="#C08A2E"/>
+    <path d="M0 45 C 16 33, 34 51, 64 36 L 64 64 L 0 64 Z" fill="#2F4A32"/>
+    <path d="M6 52.5 C 21 44.5, 37 58, 58 47.5" fill="none" stroke="#F2EFE7" stroke-width="1.7" stroke-linecap="round" opacity="0.5"/>
+    <path d="M4 59 C 21 51.5, 38 63.5, 60 53.5" fill="none" stroke="#F2EFE7" stroke-width="1.7" stroke-linecap="round" opacity="0.3"/>
+  </g>
+  <text x="82" y="25" fill="#C08A2E" font-family="Segoe UI, system-ui, Helvetica, Arial, sans-serif" font-size="9.5" font-weight="600" letter-spacing="2.6">HOFLADEN &amp; HOFCAF&#201;</text>
+  <text x="80" y="51" fill="#2F4A32" font-family="Constantia, Cambria, Palatino Linotype, Georgia, serif" font-size="27" font-weight="700" letter-spacing="-0.4">Sonnleiten</text>
+</svg>
