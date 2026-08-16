@@ -1,0 +1,11 @@
+{
+  // Muss dem Worker-Namen im Cloudflare-Dashboard entsprechen.
+  "name": "kunde-hofladen-sonnleiten",
+  "compatibility_date": "2026-08-16",
+
+  // Reine Asset-Auslieferung: kein Worker-Skript, nur das Build-Ergebnis.
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
