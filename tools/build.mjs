@@ -537,7 +537,6 @@ function u3(e2, t2, n2, o3, i3, u4) {
 // src/render/modules/bausteine.tsx
 function Bildchen({
   bild,
-  klasse,
   sofort = false
 }) {
   return /* @__PURE__ */ u3(
@@ -547,7 +546,6 @@ function Bildchen({
       alt: bild.alt,
       width: bild.breite,
       height: bild.hoehe,
-      class: klasse,
       loading: sofort ? void 0 : "lazy",
       decoding: "async"
     }
@@ -561,18 +559,54 @@ function Abschnitt({
   return /* @__PURE__ */ u3("section", { id, class: klasse ? `abschnitt ${klasse}` : "abschnitt", children: /* @__PURE__ */ u3("div", { class: "huelle", children: kinder }) });
 }
 function AbschnittKopf({
-  marke,
+  marke: marke2,
   titel,
   einleitung,
   zusatz
 }) {
   return /* @__PURE__ */ u3("div", { class: "abschnitt-kopf", children: [
-    marke ? /* @__PURE__ */ u3("span", { class: "marke", children: marke }) : null,
+    marke2 ? /* @__PURE__ */ u3("span", { class: "marke", children: marke2 }) : null,
     /* @__PURE__ */ u3("h2", { children: titel }),
     einleitung ? /* @__PURE__ */ u3("p", { children: einleitung }) : null,
     zusatz
   ] });
 }
+
+// src/render/texte.ts
+var MARKE = {
+  ueberUns: "\xDCber uns",
+  sortiment: "Angebot",
+  preisliste: "Preise",
+  hofcafe: "Hofcaf\xE9",
+  kursplan: "Kursplan",
+  oeffnungszeiten: "\xD6ffnungszeiten",
+  maerkte: "Unterwegs",
+  veranstaltungen: "Termine",
+  team: "Team",
+  galerie: "Bilder",
+  siegel: "Gepr\xFCft",
+  stimmen: "Stimmen",
+  faq: "H\xE4ufig gefragt",
+  kontakt: "Kontakt"
+};
+var LABEL = {
+  abweichendeZeiten: "Abweichende Zeiten",
+  anmeldungNoetig: "Anmeldung n\xF6tig",
+  stand: "Stand:",
+  /** Kurzform fuer Minuten im Kursplan: "60 Min". */
+  minuten: "Min",
+  /** Steht an einem Wochentag ohne Eintrag. */
+  keinKurs: "\u2014"
+};
+var WOCHENTAGE = [
+  "Montag",
+  "Dienstag",
+  "Mittwoch",
+  "Donnerstag",
+  "Freitag",
+  "Samstag",
+  "Sonntag"
+];
 
 // src/render/modules/basis.tsx
 function HeroModul({ daten }) {
@@ -597,10 +631,10 @@ function UeberUnsModul({ daten }) {
     {
       id: "ueber-uns",
       kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: "Der Hof", titel: daten.ueberschrift }),
-        /* @__PURE__ */ u3("div", { class: "zweispalt", children: [
+        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.ueberUns, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u3("div", { class: daten.bild ? "zweispalt" : void 0, children: [
           /* @__PURE__ */ u3("div", { class: "fliess", children: daten.absaetze.map((absatz, i3) => /* @__PURE__ */ u3("p", { style: i3 > 0 ? "margin-top:1.1rem" : void 0, children: absatz }, i3)) }),
-          /* @__PURE__ */ u3(Bildchen, { bild: daten.bild })
+          daten.bild ? /* @__PURE__ */ u3(Bildchen, { bild: daten.bild }) : null
         ] })
       ] })
     }
@@ -614,7 +648,7 @@ function SortimentModul({ daten }) {
     {
       id: "sortiment",
       kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: "Was es gibt", titel: daten.ueberschrift, einleitung: daten.einleitung }),
+        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.sortiment, titel: daten.ueberschrift, einleitung: daten.einleitung }),
         /* @__PURE__ */ u3("div", { class: "karten", children: daten.kategorien.map((k3) => /* @__PURE__ */ u3("article", { class: "karte", children: [
           /* @__PURE__ */ u3(Bildchen, { bild: k3.bild }),
           /* @__PURE__ */ u3("div", { class: "karte-text", children: [
@@ -635,10 +669,11 @@ function PreislisteModul({ daten }) {
         /* @__PURE__ */ u3(
           AbschnittKopf,
           {
-            marke: "Aktuell",
+            marke: daten.marke ?? MARKE.preisliste,
             titel: daten.ueberschrift,
             zusatz: daten.stand ? /* @__PURE__ */ u3("p", { class: "stand", children: [
-              "Stand: ",
+              LABEL.stand,
+              " ",
               daten.stand
             ] }) : void 0
           }
@@ -670,7 +705,7 @@ function HofcafeModul({ daten }) {
     {
       id: "hofcafe",
       kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: "Mai bis Oktober", titel: daten.ueberschrift, einleitung: daten.einleitung }),
+        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.hofcafe, titel: daten.ueberschrift, einleitung: daten.einleitung }),
         /* @__PURE__ */ u3("div", { class: "zweispalt", children: [
           /* @__PURE__ */ u3(Bildchen, { bild: daten.bild }),
           /* @__PURE__ */ u3("div", { class: "karte-liste", children: [
@@ -696,7 +731,7 @@ function OeffnungszeitenModul({ daten }) {
     {
       id: "oeffnungszeiten",
       kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: "Wann offen ist", titel: daten.ueberschrift }),
+        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.oeffnungszeiten, titel: daten.ueberschrift }),
         /* @__PURE__ */ u3("div", { class: "zeit-sets", children: daten.sets.map((s3) => /* @__PURE__ */ u3("div", { class: "zeit-set", children: [
           /* @__PURE__ */ u3("h3", { children: s3.titel }),
           s3.zusatz ? /* @__PURE__ */ u3("p", { class: "zusatz", children: s3.zusatz }) : null,
@@ -706,7 +741,7 @@ function OeffnungszeitenModul({ daten }) {
           ]) })
         ] }, s3.titel)) }),
         daten.ausnahmen.length > 0 ? /* @__PURE__ */ u3("div", { class: "ausnahmen", children: [
-          /* @__PURE__ */ u3("h3", { children: daten.ausnahmenTitel ?? "Abweichende Zeiten" }),
+          /* @__PURE__ */ u3("h3", { children: daten.ausnahmenTitel ?? LABEL.abweichendeZeiten }),
           /* @__PURE__ */ u3("dl", { children: daten.ausnahmen.map((a3) => [
             /* @__PURE__ */ u3("dt", { children: a3.datum }, a3.datum + "-t"),
             /* @__PURE__ */ u3("dd", { children: a3.was }, a3.datum + "-d")
@@ -722,7 +757,7 @@ function MaerkteModul({ daten }) {
     {
       id: "maerkte",
       kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: "Unterwegs", titel: daten.ueberschrift, einleitung: daten.einleitung }),
+        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.maerkte, titel: daten.ueberschrift, einleitung: daten.einleitung }),
         /* @__PURE__ */ u3("div", { class: "liste", children: daten.staende.map((s3) => /* @__PURE__ */ u3("article", { class: "eintrag", children: [
           /* @__PURE__ */ u3("h3", { children: s3.ort }),
           /* @__PURE__ */ u3("p", { class: "wann", children: [
@@ -743,11 +778,11 @@ function VeranstaltungenModul({ daten }) {
     {
       id: "termine",
       kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: "Termine", titel: daten.ueberschrift }),
+        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.veranstaltungen, titel: daten.ueberschrift }),
         /* @__PURE__ */ u3("div", { class: "liste", children: daten.termine.map((t2) => /* @__PURE__ */ u3("article", { class: "eintrag", children: [
           /* @__PURE__ */ u3("h3", { children: [
             t2.titel,
-            t2.anmeldung ? /* @__PURE__ */ u3("span", { class: "plakette", children: "Anmeldung noetig" }) : null
+            t2.anmeldung ? /* @__PURE__ */ u3("span", { class: "plakette", children: LABEL.anmeldungNoetig }) : null
           ] }),
           /* @__PURE__ */ u3("p", { class: "wann", children: [
             t2.datum,
@@ -761,6 +796,43 @@ function VeranstaltungenModul({ daten }) {
   );
 }
 
+// src/render/modules/kurse.tsx
+function KursplanModul({ daten }) {
+  const nachTag = WOCHENTAGE.map((tag) => ({
+    tag,
+    kurse: daten.kurse.filter((k3) => k3.tag === tag)
+  }));
+  return /* @__PURE__ */ u3(
+    Abschnitt,
+    {
+      id: "kursplan",
+      kinder: /* @__PURE__ */ u3(S, { children: [
+        /* @__PURE__ */ u3(
+          AbschnittKopf,
+          {
+            marke: daten.marke ?? MARKE.kursplan,
+            titel: daten.ueberschrift,
+            einleitung: daten.einleitung
+          }
+        ),
+        /* @__PURE__ */ u3("div", { class: "woche", children: nachTag.map(({ tag, kurse }) => /* @__PURE__ */ u3("div", { class: kurse.length ? "wochentag" : "wochentag leer", children: [
+          /* @__PURE__ */ u3("h3", { children: tag }),
+          kurse.length ? kurse.map((k3, i3) => /* @__PURE__ */ u3("div", { class: "kurs", children: [
+            /* @__PURE__ */ u3("span", { class: "kurs-zeit", children: [
+              k3.zeit,
+              k3.dauer ? ` \xB7 ${k3.dauer} ${LABEL.minuten}` : ""
+            ] }),
+            /* @__PURE__ */ u3("span", { class: "kurs-titel", children: k3.titel }),
+            k3.ort ? /* @__PURE__ */ u3("span", { class: "kurs-ort", children: k3.ort }) : null,
+            k3.hinweis ? /* @__PURE__ */ u3("span", { class: "kurs-hinweis", children: k3.hinweis }) : null
+          ] }, `${k3.titel}-${k3.zeit}-${i3}`)) : /* @__PURE__ */ u3("p", { class: "kurs-keiner", "aria-label": "kein Kurs", children: LABEL.keinKurs })
+        ] }, tag)) }),
+        daten.hinweis ? /* @__PURE__ */ u3("p", { class: "fussnote", children: daten.hinweis }) : null
+      ] })
+    }
+  );
+}
+
 // src/render/modules/leute.tsx
 function TeamModul({ daten }) {
   return /* @__PURE__ */ u3(
@@ -768,7 +840,7 @@ function TeamModul({ daten }) {
     {
       id: "team",
       kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: "Wer dahintersteckt", titel: daten.ueberschrift }),
+        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.team, titel: daten.ueberschrift }),
         /* @__PURE__ */ u3("div", { class: "personen", children: daten.personen.map((p3) => /* @__PURE__ */ u3("article", { class: "person", children: [
           /* @__PURE__ */ u3(Bildchen, { bild: p3.bild }),
           /* @__PURE__ */ u3("h3", { children: p3.name }),
@@ -785,7 +857,7 @@ function StimmenModul({ daten }) {
     {
       id: "stimmen",
       kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: "Kundenstimmen", titel: daten.ueberschrift }),
+        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.stimmen, titel: daten.ueberschrift }),
         /* @__PURE__ */ u3("div", { class: "stimmen", children: daten.zitate.map((z4, i3) => /* @__PURE__ */ u3("figure", { class: "stimme", children: [
           /* @__PURE__ */ u3("blockquote", { children: z4.text }),
           z4.quelle ? /* @__PURE__ */ u3("figcaption", { children: z4.quelle }) : null
@@ -800,7 +872,7 @@ function FaqModul({ daten }) {
     {
       id: "faq",
       kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: "Haeufig gefragt", titel: daten.ueberschrift }),
+        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.faq, titel: daten.ueberschrift }),
         /* @__PURE__ */ u3("div", { class: "faq", children: daten.fragen.map((f4) => /* @__PURE__ */ u3("details", { children: [
           /* @__PURE__ */ u3("summary", { children: f4.frage }),
           /* @__PURE__ */ u3("p", { children: f4.antwort })
@@ -817,7 +889,7 @@ function GalerieModul({ daten }) {
     {
       id: "galerie",
       kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: "Bilder", titel: daten.ueberschrift }),
+        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.galerie, titel: daten.ueberschrift }),
         /* @__PURE__ */ u3("div", { class: "galerie", children: daten.bilder.map((b3) => /* @__PURE__ */ u3(Bildchen, { bild: b3 }, b3.pfad)) })
       ] })
     }
@@ -829,7 +901,7 @@ function SiegelModul({ daten }) {
     {
       id: "siegel",
       kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: "Geprueft", titel: daten.ueberschrift }),
+        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.siegel, titel: daten.ueberschrift }),
         /* @__PURE__ */ u3("div", { class: "siegel", children: daten.eintraege.map((e2) => /* @__PURE__ */ u3("div", { class: "siegel-eintrag", children: [
           /* @__PURE__ */ u3(Bildchen, { bild: e2.logo }),
           /* @__PURE__ */ u3("div", { children: [
@@ -849,7 +921,7 @@ function KontaktModul({ daten }) {
     {
       id: "kontakt",
       kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: "So findet ihr uns", titel: daten.ueberschrift }),
+        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.kontakt, titel: daten.ueberschrift }),
         /* @__PURE__ */ u3("div", { class: "kontakt", children: [
           /* @__PURE__ */ u3("div", { children: /* @__PURE__ */ u3("address", { children: [
             /* @__PURE__ */ u3("strong", { children: daten.betrieb }),
@@ -916,6 +988,7 @@ var REGISTRY = {
   hofcafe: HofcafeModul,
   oeffnungszeiten: OeffnungszeitenModul,
   maerkte: MaerkteModul,
+  kursplan: KursplanModul,
   veranstaltungen: VeranstaltungenModul,
   team: TeamModul,
   galerie: GalerieModul,
@@ -968,18 +1041,27 @@ function Fuss({ site }) {
 }
 function Koerper({ site }) {
   const { meta: meta3, inhalte } = site;
-  const bandIndex = meta3.module.indexOf("hinweisband");
+  const zeigtHinweisband = meta3.module.includes("hinweisband");
   const imMain = meta3.module.filter((t2) => t2 !== "hinweisband");
   return /* @__PURE__ */ u3(S, { children: [
     /* @__PURE__ */ u3("a", { class: "sprung", href: "#inhalt", children: "Zum Inhalt springen" }),
     /* @__PURE__ */ u3(Kopf, { site }),
-    bandIndex >= 0 ? /* @__PURE__ */ u3(Modul, { typ: "hinweisband", daten: inhalte.hinweisband }) : null,
-    /* @__PURE__ */ u3("main", { id: "inhalt", children: imMain.map((typ) => /* @__PURE__ */ u3(S, { children: /* @__PURE__ */ u3(Modul, { typ, daten: inhalte[typ] }) }, typ)) }),
+    zeigtHinweisband ? /* @__PURE__ */ u3(Modul, { typ: "hinweisband", daten: inhalte.hinweisband }) : null,
+    /* @__PURE__ */ u3("main", { id: "inhalt", children: imMain.map((typ) => /* @__PURE__ */ u3(Modul, { typ, daten: inhalte[typ] }, typ)) }),
     /* @__PURE__ */ u3(Fuss, { site })
   ] });
 }
 
 // src/render/styles.ts
+var MISCHUNG = {
+  /** Text-Akzent: zur Tinte auf hellem Grund, zum Grund auf dunklem. */
+  akzentText: 0.45,
+  /** Deckung des gedaempften Tons. */
+  gedaempft: 0.7,
+  /** Deckung der Trennlinien. Rein dekorativ, traegt keinen Text. */
+  linie: 0.14
+};
+var prozent = (anteil) => `${Math.round(anteil * 100)}%`;
 function stylesheet(f4) {
   return `
 :root {
@@ -988,16 +1070,46 @@ function stylesheet(f4) {
   --grund: ${f4.grund};
   --tinte: ${f4.tinte};
   --flaeche: #ffffff;
-  --linie: color-mix(in srgb, var(--tinte) 14%, transparent);
-  --gedaempft: color-mix(in srgb, var(--tinte) 62%, transparent);
+  --linie: color-mix(in srgb, var(--tinte) ${prozent(MISCHUNG.linie)}, transparent);
+  /* 70 %, nicht weniger: Darunter faellt der gedaempfte Ton unter 4,5:1 \u2014
+     beim Pilotkunden lag er mit 62 % bei 4,37:1. Er traegt keine Beiwerke,
+     sondern Abschnittseinleitungen, FAQ-Antworten und Kartentexte, also
+     echten Lesetext. 70 % laesst ihn sichtbar zuruecktreten und bleibt bei
+     beiden Kunden ueber der Schwelle. */
+  --gedaempft: color-mix(in srgb, var(--tinte) ${prozent(MISCHUNG.gedaempft)}, transparent);
+  /* Der Akzent traegt zweierlei: Flaechen (Knopf, Hinweisband, Plakette), auf
+     denen Tinte steht, und kleinen Text, der SELBST der Akzent ist. Fuer
+     Flaechen muss er hell sein, fuer Text auf hellem Grund dunkel \u2014 das
+     schliesst einander aus. Rechnerisch: kein Farbwert im gesamten Farbraum
+     schafft beides ueber 2,9:1, WCAG AA verlangt 4,5:1 fuer Kleintext.
+     Deshalb wird der Text-Akzent dorthin gemischt, wo er steht: zur Tinte auf
+     hellem Grund, zum Grund auf dunklem. Die 45 % sind das Verhaeltnis, bei
+     dem beide Richtungen ueber 4,5:1 liegen \u2014 geprueft in tests/
+     kontrast.test.ts, das jede Kundenseite durchrechnet. */
+  --akzent-auf-hell: color-mix(in srgb, var(--akzent) ${prozent(MISCHUNG.akzentText)}, var(--tinte));
+  --akzent-auf-dunkel: color-mix(in srgb, var(--akzent) ${prozent(MISCHUNG.akzentText)}, var(--grund));
   --serif: "Iowan Old Style", Constantia, Cambria, "Palatino Linotype", Palatino, Georgia, ui-serif, serif;
   --sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
   --rand: clamp(1rem, 5vw, 3rem);
   --spalte: 74rem;
+  /* Hoehe des klebenden Kopfes: Logo 44px plus 2 x 0.85rem Innenabstand plus
+     die Trennlinie. Steht hier, weil zwei Stellen sie brauchen \u2014 der Kopf
+     selbst und der Abzug beim Ankersprung darunter. */
+  --kopf-hoehe: calc(44px + 1.7rem + 1px);
 }
 
 *, *::before, *::after { box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+/* scroll-padding-top statt scroll-margin an jedem Abschnitt: Der Kopf klebt
+   oben, und ohne diesen Abzug landet jeder Ankersprung UNTER ihm \u2014 die
+   Ueberschrift des angesprungenen Abschnitts verschwindet hinter der Leiste.
+   Am Rollbereich gesetzt gilt es fuer alles: die Navigation der Kundenseite,
+   die Sprungmarken im Text und den Sprung, mit dem das Portal die Vorschau
+   beim geoeffneten Modul aufmacht. */
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--kopf-hoehe);
+}
 body {
   margin: 0;
   background: var(--grund);
@@ -1010,9 +1122,11 @@ body {
 img { max-width: 100%; height: auto; display: block; }
 a { color: var(--primaer); }
 a:focus-visible, button:focus-visible, summary:focus-visible {
-  outline: 3px solid var(--akzent);
+  outline: 3px solid var(--akzent-auf-hell);
   outline-offset: 3px;
 }
+/* Hero und Fusszeile stehen auf --primaer; dort traegt die helle Mischung. */
+.hero :focus-visible, .fuss :focus-visible { outline-color: var(--akzent-auf-dunkel); }
 
 h1, h2, h3 {
   font-family: var(--serif);
@@ -1057,7 +1171,7 @@ p { margin: 0; }
   padding-block: 0.25rem;
   border-bottom: 2px solid transparent;
 }
-.kopf-nav a:hover { border-bottom-color: var(--akzent); }
+.kopf-nav a:hover { border-bottom-color: var(--akzent-auf-hell); }
 @media (max-width: 52rem) {
   .kopf { position: static; }
   .kopf-innen { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
@@ -1072,7 +1186,7 @@ p { margin: 0; }
 .abschnitt-kopf p { color: var(--gedaempft); max-width: 62ch; }
 .marke {
   font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--akzent);
+  text-transform: uppercase; color: var(--akzent-auf-hell);
 }
 
 /* ---------- Hero ---------- */
@@ -1086,7 +1200,7 @@ p { margin: 0; }
   max-width: 46rem;
 }
 .hero h1 { color: var(--grund); font-size: clamp(2.1rem, 7vw, 3.8rem); }
-.hero-dach { color: var(--akzent); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+.hero-dach { color: var(--akzent-auf-dunkel); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
 .hero p { font-size: clamp(1.02rem, 2.2vw, 1.2rem); max-width: 46ch; color: color-mix(in srgb, var(--grund) 88%, transparent); }
 .hero-aktionen { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.5rem; }
 .knopf {
@@ -1161,7 +1275,7 @@ td.zahl, th.zahl { text-align: right; white-space: nowrap; }
   grid-template-columns: minmax(9rem, 14rem) 1fr;
 }
 .eintrag h3 { font-size: 1.08rem; grid-column: 1; }
-.eintrag .wann { grid-column: 1; font-size: 0.9rem; color: var(--akzent); font-weight: 700; }
+.eintrag .wann { grid-column: 1; font-size: 0.9rem; color: var(--akzent-auf-hell); font-weight: 700; }
 .eintrag .wo, .eintrag .was { grid-column: 2; grid-row: 1 / span 2; color: var(--gedaempft); font-size: 0.95rem; }
 @media (max-width: 40rem) {
   .eintrag { grid-template-columns: 1fr; }
@@ -1174,11 +1288,41 @@ td.zahl, th.zahl { text-align: right; white-space: nowrap; }
   padding: 0.2rem 0.55rem; margin-left: 0.5rem; vertical-align: 0.12em;
 }
 
+/* ---------- Kursplan ----------
+   Sieben Spalten, die bei Enge auf zwei und dann auf eine umbrechen. Die
+   kursfreien Tage bleiben dabei stehen: Aus einem Raster ohne Luecken laesst
+   sich nicht ablesen, ob ein Tag frei ist oder nur fehlt. */
+.woche {
+  display: grid; gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+}
+.wochentag {
+  background: var(--flaeche); border: 1px solid var(--linie);
+  padding: 0.9rem 0.85rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.wochentag h3 {
+  font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--gedaempft);
+  margin: 0; padding-bottom: 0.55rem; border-bottom: 1px solid var(--linie);
+}
+/* Leere Tage treten zurueck, verschwinden aber nicht \u2014 sie sind die Auskunft
+   "an diesem Tag ist nichts". */
+.wochentag.leer { background: transparent; }
+.kurs { display: flex; flex-direction: column; gap: 0.15rem; }
+.kurs-zeit {
+  font-size: 0.95rem; font-weight: 700; color: var(--akzent-auf-hell);
+  font-variant-numeric: tabular-nums;
+}
+.kurs-titel { font-size: 0.95rem; }
+.kurs-ort, .kurs-hinweis { font-size: 0.82rem; color: var(--gedaempft); }
+.kurs-keiner { margin: 0; color: var(--gedaempft); font-size: 0.95rem; }
+
 /* ---------- Team ---------- */
 .personen { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); }
 .person img { aspect-ratio: 1; object-fit: cover; width: 100%; }
 .person h3 { font-size: 1.05rem; margin-top: 0.9rem; }
-.person .rolle { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--akzent); }
+.person .rolle { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--akzent-auf-hell); }
 .person p { font-size: 0.9rem; color: var(--gedaempft); margin-top: 0.5rem; }
 
 /* ---------- Galerie ---------- */
@@ -1208,7 +1352,7 @@ td.zahl, th.zahl { text-align: right; white-space: nowrap; }
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary::after {
   content: "+"; position: absolute; right: 0.4rem; top: 0.95rem;
-  font-size: 1.4rem; line-height: 1; color: var(--akzent); font-weight: 400;
+  font-size: 1.4rem; line-height: 1; color: var(--akzent-auf-hell); font-weight: 400;
 }
 .faq details[open] summary::after { content: "\\2013"; }
 .faq p { padding-bottom: 1.2rem; color: var(--gedaempft); max-width: 62ch; }
@@ -15803,6 +15947,7 @@ var BildSchema = external_exports.object({
 });
 var kurz = (max = 120) => external_exports.string().trim().max(max);
 var text = (max = 1200) => external_exports.string().trim().max(max);
+var marke = () => kurz(40).optional();
 var HeroSchema = external_exports.object({
   dachzeile: kurz(60).optional(),
   ueberschrift: kurz(90).min(1),
@@ -15816,11 +15961,19 @@ var HinweisbandSchema = external_exports.object({
   aktiv: external_exports.boolean().default(true)
 });
 var UeberUnsSchema = external_exports.object({
+  marke: marke(),
   ueberschrift: kurz(90).min(1),
   absaetze: external_exports.array(text(800)).min(1),
-  bild: BildSchema
+  /**
+   * Optional, seit dem zweiten Kunden. Eine Einzelunternehmerin hat oft genau
+   * ein brauchbares Foto, und das traegt bereits den Startbereich. Ein
+   * Pflichtbild zwaenge sie, dasselbe Bild zweimal zu zeigen — das sieht nach
+   * Verlegenheit aus, und genau das soll die Seite nicht.
+   */
+  bild: BildSchema.optional()
 });
 var SortimentSchema = external_exports.object({
+  marke: marke(),
   ueberschrift: kurz(90).min(1),
   einleitung: text(400).optional(),
   kategorien: external_exports.array(
@@ -15832,6 +15985,7 @@ var SortimentSchema = external_exports.object({
   ).min(1)
 });
 var PreislisteSchema = external_exports.object({
+  marke: marke(),
   ueberschrift: kurz(90).min(1),
   stand: kurz(40).optional(),
   fussnote: text(300).optional(),
@@ -15849,6 +16003,7 @@ var PreislisteSchema = external_exports.object({
   ).min(1)
 });
 var HofcafeSchema = external_exports.object({
+  marke: marke(),
   ueberschrift: kurz(90).min(1),
   einleitung: text(600),
   bild: BildSchema,
@@ -15856,6 +16011,7 @@ var HofcafeSchema = external_exports.object({
   hinweis: text(300).optional()
 });
 var OeffnungszeitenSchema = external_exports.object({
+  marke: marke(),
   ueberschrift: kurz(90).min(1),
   sets: external_exports.array(
     external_exports.object({
@@ -15868,6 +16024,7 @@ var OeffnungszeitenSchema = external_exports.object({
   ausnahmen: external_exports.array(external_exports.object({ datum: kurz(60).min(1), was: kurz(140).min(1) })).default([])
 });
 var MaerkteSchema = external_exports.object({
+  marke: marke(),
   ueberschrift: kurz(90).min(1),
   einleitung: text(400).optional(),
   staende: external_exports.array(
@@ -15880,7 +16037,25 @@ var MaerkteSchema = external_exports.object({
   ).min(1),
   hinweis: text(300).optional()
 });
+var KursplanSchema = external_exports.object({
+  marke: marke(),
+  ueberschrift: kurz(90).min(1),
+  einleitung: text(400).optional(),
+  kurse: external_exports.array(
+    external_exports.object({
+      titel: kurz(90).min(1),
+      tag: external_exports.enum(WOCHENTAGE),
+      zeit: kurz(20).min(1),
+      dauer: kurz(20).optional(),
+      ort: kurz(80).optional(),
+      hinweis: kurz(140).optional()
+    })
+  ).min(1),
+  /** Steht unter dem Raster, z. B. wie man sich anmeldet. */
+  hinweis: text(300).optional()
+});
 var VeranstaltungenSchema = external_exports.object({
+  marke: marke(),
   ueberschrift: kurz(90).min(1),
   termine: external_exports.array(
     external_exports.object({
@@ -15894,6 +16069,7 @@ var VeranstaltungenSchema = external_exports.object({
   ).min(1)
 });
 var TeamSchema = external_exports.object({
+  marke: marke(),
   ueberschrift: kurz(90).min(1),
   personen: external_exports.array(
     external_exports.object({
@@ -15905,10 +16081,12 @@ var TeamSchema = external_exports.object({
   ).min(1)
 });
 var GalerieSchema = external_exports.object({
+  marke: marke(),
   ueberschrift: kurz(90).min(1),
   bilder: external_exports.array(BildSchema).min(1)
 });
 var SiegelSchema = external_exports.object({
+  marke: marke(),
   ueberschrift: kurz(90).min(1),
   eintraege: external_exports.array(
     external_exports.object({
@@ -15919,14 +16097,17 @@ var SiegelSchema = external_exports.object({
   ).min(1)
 });
 var StimmenSchema = external_exports.object({
+  marke: marke(),
   ueberschrift: kurz(90).min(1),
   zitate: external_exports.array(external_exports.object({ text: text(500).min(1), quelle: kurz(80) })).min(1)
 });
 var FaqSchema = external_exports.object({
+  marke: marke(),
   ueberschrift: kurz(90).min(1),
   fragen: external_exports.array(external_exports.object({ frage: kurz(160).min(1), antwort: text(700).min(1) })).min(1)
 });
 var KontaktSchema = external_exports.object({
+  marke: marke(),
   ueberschrift: kurz(90).min(1),
   betrieb: kurz(120).min(1),
   strasse: kurz(120).min(1),
@@ -15938,7 +16119,14 @@ var KontaktSchema = external_exports.object({
 });
 var ImpressumSchema = external_exports.object({
   ueberschrift: kurz(90).min(1),
-  felder: external_exports.array(external_exports.object({ bezeichnung: kurz(80).min(1), wert: text(300).min(1) })).min(1)
+  /**
+   * 1500 statt 300 Zeichen je Feld: Die Pilotseite kam mit kurzen Angaben aus,
+   * aber die ueblichen Abschnitte zu Haftung fuer Inhalte, Haftung fuer Links
+   * und Urheberrecht sind Standardtexte von je rund 600 Zeichen. Bei 300
+   * muesste der Kunde sie kuerzen — an genau der Stelle, an der er es nicht
+   * tun sollte.
+   */
+  felder: external_exports.array(external_exports.object({ bezeichnung: kurz(80).min(1), wert: text(1500).min(1) })).min(1)
 });
 var DatenschutzSchema = external_exports.object({
   ueberschrift: kurz(90).min(1),
@@ -15953,6 +16141,7 @@ var modulSchemas = {
   hofcafe: HofcafeSchema,
   oeffnungszeiten: OeffnungszeitenSchema,
   maerkte: MaerkteSchema,
+  kursplan: KursplanSchema,
   veranstaltungen: VeranstaltungenSchema,
   team: TeamSchema,
   galerie: GalerieSchema,
@@ -16080,10 +16269,39 @@ ${fehlerFormatieren(ergebnis.fehler)}`
   rmSync(zielVerzeichnis2, { recursive: true, force: true });
   mkdirSync(zielVerzeichnis2, { recursive: true });
   writeFileSync(join(zielVerzeichnis2, "index.html"), html, "utf8");
+  writeFileSync(join(zielVerzeichnis2, "404.html"), html, "utf8");
   const assets = join(siteVerzeichnis2, "assets");
   if (existsSync(assets)) {
     cpSync(assets, join(zielVerzeichnis2, "assets"), { recursive: true });
   }
+  const umleitungen = join(siteVerzeichnis2, "_redirects");
+  if (existsSync(umleitungen)) {
+    cpSync(umleitungen, join(zielVerzeichnis2, "_redirects"));
+  }
+  const header = [
+    "default-src 'self'",
+    "script-src 'none'",
+    "style-src 'self' 'unsafe-inline'",
+    "img-src 'self'",
+    "font-src 'self'",
+    "connect-src 'self'",
+    "form-action 'self'",
+    "frame-ancestors 'none'",
+    "base-uri 'none'",
+    "object-src 'none'",
+    "upgrade-insecure-requests"
+  ].join("; ");
+  const headerZeilen = [
+    "/*",
+    `  Content-Security-Policy: ${header}`,
+    "  X-Frame-Options: DENY",
+    "  X-Content-Type-Options: nosniff",
+    "  Referrer-Policy: strict-origin-when-cross-origin",
+    "  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=(), interest-cohort=()",
+    "  Cross-Origin-Opener-Policy: same-origin",
+    ""
+  ].join("\n");
+  writeFileSync(join(zielVerzeichnis2, "_headers"), headerZeilen, "utf8");
   return html;
 }
 var siteVerzeichnis = resolve(process.argv[2] ?? "sites/hofladen-sonnleiten");
