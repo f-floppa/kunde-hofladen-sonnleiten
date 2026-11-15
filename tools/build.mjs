@@ -6,6 +6,7 @@ var __export = (target, all) => {
 
 // src/entries/build.ts
 import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync, rmSync, cpSync } from "node:fs";
+import { execFileSync } from "node:child_process";
 import { join, basename, extname, resolve } from "node:path";
 
 // node_modules/preact/dist/preact.mjs
@@ -29,43 +30,43 @@ var d = {};
 var w = [];
 var _ = /acit|ex(?:s|g|n|p|$)|rph|grid|ows|mnc|ntw|ine[ch]|zoo|^ord|itera/i;
 var g = Array.isArray;
-function m(n2, l3) {
-  for (var u4 in l3) n2[u4] = l3[u4];
+function m(n2, l4) {
+  for (var u5 in l4) n2[u5] = l4[u5];
   return n2;
 }
 function b(n2) {
   n2 && n2.parentNode && n2.parentNode.removeChild(n2);
 }
-function k(l3, u4, t2) {
-  var i3, r3, o3, e2 = {};
-  for (o3 in u4) "key" == o3 ? i3 = u4[o3] : "ref" == o3 ? r3 = u4[o3] : e2[o3] = u4[o3];
-  if (arguments.length > 2 && (e2.children = arguments.length > 3 ? n.call(arguments, 2) : t2), "function" == typeof l3 && null != l3.defaultProps) for (o3 in l3.defaultProps) void 0 === e2[o3] && (e2[o3] = l3.defaultProps[o3]);
-  return x(l3, e2, i3, r3, null);
+function k(l4, u5, t3) {
+  var i4, r4, o4, e3 = {};
+  for (o4 in u5) "key" == o4 ? i4 = u5[o4] : "ref" == o4 ? r4 = u5[o4] : e3[o4] = u5[o4];
+  if (arguments.length > 2 && (e3.children = arguments.length > 3 ? n.call(arguments, 2) : t3), "function" == typeof l4 && null != l4.defaultProps) for (o4 in l4.defaultProps) void 0 === e3[o4] && (e3[o4] = l4.defaultProps[o4]);
+  return x(l4, e3, i4, r4, null);
 }
-function x(n2, t2, i3, r3, o3) {
-  var e2 = { type: n2, props: t2, key: i3, ref: r3, __k: null, __: null, __b: 0, __e: null, __c: null, constructor: void 0, __v: null == o3 ? ++u : o3, __i: -1, __u: 0 };
-  return null == o3 && null != l.vnode && l.vnode(e2), e2;
+function x(n2, t3, i4, r4, o4) {
+  var e3 = { type: n2, props: t3, key: i4, ref: r4, __k: null, __: null, __b: 0, __e: null, __c: null, constructor: void 0, __v: null == o4 ? ++u : o4, __i: -1, __u: 0 };
+  return null == o4 && null != l.vnode && l.vnode(e3), e3;
 }
 function S(n2) {
   return n2.children;
 }
-function C(n2, l3) {
-  this.props = n2, this.context = l3;
+function C(n2, l4) {
+  this.props = n2, this.context = l4;
 }
-function $(n2, l3) {
-  if (null == l3) return n2.__ ? $(n2.__, n2.__i + 1) : null;
-  for (var u4; l3 < n2.__k.length; l3++) if (null != (u4 = n2.__k[l3]) && null != u4.__e) return u4.__e;
+function $(n2, l4) {
+  if (null == l4) return n2.__ ? $(n2.__, n2.__i + 1) : null;
+  for (var u5; l4 < n2.__k.length; l4++) if (null != (u5 = n2.__k[l4]) && null != u5.__e) return u5.__e;
   return "function" == typeof n2.type ? $(n2) : null;
 }
 function I(n2) {
   if (n2.__P && n2.__d) {
-    var u4 = n2.__v, t2 = u4.__e, i3 = [], r3 = [], o3 = m({}, u4);
-    o3.__v = u4.__v + 1, l.vnode && l.vnode(o3), q(n2.__P, o3, u4, n2.__n, n2.__P.namespaceURI, 32 & u4.__u ? [t2] : null, i3, null == t2 ? $(u4) : t2, !!(32 & u4.__u), r3), o3.__v = u4.__v, o3.__.__k[o3.__i] = o3, D(i3, o3, r3), u4.__e = u4.__ = null, o3.__e != t2 && P(o3);
+    var u5 = n2.__v, t3 = u5.__e, i4 = [], r4 = [], o4 = m({}, u5);
+    o4.__v = u5.__v + 1, l.vnode && l.vnode(o4), q(n2.__P, o4, u5, n2.__n, n2.__P.namespaceURI, 32 & u5.__u ? [t3] : null, i4, null == t3 ? $(u5) : t3, !!(32 & u5.__u), r4), o4.__v = u5.__v, o4.__.__k[o4.__i] = o4, D(i4, o4, r4), u5.__e = u5.__ = null, o4.__e != t3 && P(o4);
   }
 }
 function P(n2) {
-  if (null != (n2 = n2.__) && null != n2.__c) return n2.__e = n2.__c.base = null, n2.__k.some(function(l3) {
-    if (null != l3 && null != l3.__e) return n2.__e = n2.__c.base = l3.__e;
+  if (null != (n2 = n2.__) && null != n2.__c) return n2.__e = n2.__c.base = null, n2.__k.some(function(l4) {
+    if (null != l4 && null != l4.__e) return n2.__e = n2.__c.base = l4.__e;
   }), P(n2);
 }
 function A(n2) {
@@ -73,192 +74,215 @@ function A(n2) {
 }
 function H() {
   try {
-    for (var n2, l3 = 1; i.length; ) i.length > l3 && i.sort(e), n2 = i.shift(), l3 = i.length, I(n2);
+    for (var n2, l4 = 1; i.length; ) i.length > l4 && i.sort(e), n2 = i.shift(), l4 = i.length, I(n2);
   } finally {
     i.length = H.__r = 0;
   }
 }
-function L(n2, l3, u4, t2, i3, r3, o3, e2, f4, c3, a3) {
-  var s3, h3, p3, v3, y3, _3, g3 = t2 && t2.__k || w, m3 = l3.length;
-  for (f4 = T(u4, l3, g3, f4, m3), s3 = 0; s3 < m3; s3++) null != (p3 = u4.__k[s3]) && (h3 = -1 != p3.__i && g3[p3.__i] || d, p3.__i = s3, _3 = q(n2, p3, h3, i3, r3, o3, e2, f4, c3, a3), v3 = p3.__e, p3.ref && h3.ref != p3.ref && (h3.ref && J(h3.ref, null, p3), a3.push(p3.ref, p3.__c || v3, p3)), null == y3 && null != v3 && (y3 = v3), 4 & p3.__u ? (f4 = j(p3, f4, n2), h3.__e && (h3.__e = null)) : "function" == typeof p3.type && void 0 !== _3 ? f4 = _3 : v3 && (f4 = v3.nextSibling), p3.__u &= -7);
-  return u4.__e = y3, f4;
+function L(n2, l4, u5, t3, i4, r4, o4, e3, f5, c4, a4) {
+  var s4, h3, p4, v4, y3, _3, g3 = t3 && t3.__k || w, m4 = l4.length;
+  for (f5 = T(u5, l4, g3, f5, m4), s4 = 0; s4 < m4; s4++) null != (p4 = u5.__k[s4]) && (h3 = -1 != p4.__i && g3[p4.__i] || d, p4.__i = s4, _3 = q(n2, p4, h3, i4, r4, o4, e3, f5, c4, a4), v4 = p4.__e, p4.ref && h3.ref != p4.ref && (h3.ref && J(h3.ref, null, p4), a4.push(p4.ref, p4.__c || v4, p4)), null == y3 && null != v4 && (y3 = v4), 4 & p4.__u ? (f5 = j(p4, f5, n2), h3.__e && (h3.__e = null)) : "function" == typeof p4.type && void 0 !== _3 ? f5 = _3 : v4 && (f5 = v4.nextSibling), p4.__u &= -7);
+  return u5.__e = y3, f5;
 }
-function T(n2, l3, u4, t2, i3) {
-  var r3, o3, e2, f4, c3, a3 = u4.length, s3 = a3, h3 = 0;
-  for (n2.__k = new Array(i3), r3 = 0; r3 < i3; r3++) null != (o3 = l3[r3]) && "boolean" != typeof o3 && "function" != typeof o3 ? ("string" == typeof o3 || "number" == typeof o3 || "bigint" == typeof o3 || o3.constructor == String ? o3 = n2.__k[r3] = x(null, o3, null, null, null) : g(o3) ? o3 = n2.__k[r3] = x(S, { children: o3 }, null, null, null) : void 0 === o3.constructor && o3.__b > 0 ? o3 = n2.__k[r3] = x(o3.type, o3.props, o3.key, o3.ref ? o3.ref : null, o3.__v) : n2.__k[r3] = o3, f4 = r3 + h3, o3.__ = n2, o3.__b = n2.__b + 1, e2 = null, -1 != (c3 = o3.__i = O(o3, u4, f4, s3)) && (s3--, (e2 = u4[c3]) && (e2.__u |= 2)), null == e2 || null == e2.__v ? (-1 == c3 && (i3 > a3 ? h3-- : i3 < a3 && h3++), "function" != typeof o3.type && (o3.__u |= 4)) : c3 != f4 && (c3 == f4 - 1 ? h3-- : c3 == f4 + 1 ? h3++ : (c3 > f4 ? h3-- : h3++, o3.__u |= 4))) : n2.__k[r3] = null;
-  if (s3) for (r3 = 0; r3 < a3; r3++) null != (e2 = u4[r3]) && 0 == (2 & e2.__u) && (e2.__e == t2 && (t2 = $(e2)), K(e2, e2));
-  return t2;
+function T(n2, l4, u5, t3, i4) {
+  var r4, o4, e3, f5, c4, a4 = u5.length, s4 = a4, h3 = 0;
+  for (n2.__k = new Array(i4), r4 = 0; r4 < i4; r4++) null != (o4 = l4[r4]) && "boolean" != typeof o4 && "function" != typeof o4 ? ("string" == typeof o4 || "number" == typeof o4 || "bigint" == typeof o4 || o4.constructor == String ? o4 = n2.__k[r4] = x(null, o4, null, null, null) : g(o4) ? o4 = n2.__k[r4] = x(S, { children: o4 }, null, null, null) : void 0 === o4.constructor && o4.__b > 0 ? o4 = n2.__k[r4] = x(o4.type, o4.props, o4.key, o4.ref ? o4.ref : null, o4.__v) : n2.__k[r4] = o4, f5 = r4 + h3, o4.__ = n2, o4.__b = n2.__b + 1, e3 = null, -1 != (c4 = o4.__i = O(o4, u5, f5, s4)) && (s4--, (e3 = u5[c4]) && (e3.__u |= 2)), null == e3 || null == e3.__v ? (-1 == c4 && (i4 > a4 ? h3-- : i4 < a4 && h3++), "function" != typeof o4.type && (o4.__u |= 4)) : c4 != f5 && (c4 == f5 - 1 ? h3-- : c4 == f5 + 1 ? h3++ : (c4 > f5 ? h3-- : h3++, o4.__u |= 4))) : n2.__k[r4] = null;
+  if (s4) for (r4 = 0; r4 < a4; r4++) null != (e3 = u5[r4]) && 0 == (2 & e3.__u) && (e3.__e == t3 && (t3 = $(e3)), K(e3, e3));
+  return t3;
 }
-function j(n2, l3, u4) {
-  var t2, i3;
+function j(n2, l4, u5) {
+  var t3, i4;
   if ("function" == typeof n2.type) {
-    for (t2 = n2.__k, i3 = 0; t2 && i3 < t2.length; i3++) t2[i3] && (t2[i3].__ = n2, l3 = j(t2[i3], l3, u4));
-    return l3;
+    for (t3 = n2.__k, i4 = 0; t3 && i4 < t3.length; i4++) t3[i4] && (t3[i4].__ = n2, l4 = j(t3[i4], l4, u5));
+    return l4;
   }
-  n2.__e != l3 && (l3 && n2.type && !l3.parentNode && (l3 = $(n2)), l3 = u4.insertBefore(n2.__e, l3 || null));
+  n2.__e != l4 && (l4 && n2.type && !l4.parentNode && (l4 = $(n2)), l4 = u5.insertBefore(n2.__e, l4 || null));
   do {
-    l3 = l3 && l3.nextSibling;
-  } while (null != l3 && 8 == l3.nodeType);
-  return l3;
+    l4 = l4 && l4.nextSibling;
+  } while (null != l4 && 8 == l4.nodeType);
+  return l4;
 }
-function O(n2, l3, u4, t2) {
-  var i3, r3, o3, e2 = n2.key, f4 = n2.type, c3 = l3[u4], a3 = null != c3 && 0 == (2 & c3.__u);
-  if (null === c3 && null == e2 || a3 && e2 == c3.key && f4 == c3.type) return u4;
-  if (t2 > (a3 ? 1 : 0)) {
-    for (i3 = u4 - 1, r3 = u4 + 1; i3 >= 0 || r3 < l3.length; ) if (null != (c3 = l3[o3 = i3 >= 0 ? i3-- : r3++]) && 0 == (2 & c3.__u) && e2 == c3.key && f4 == c3.type) return o3;
+function O(n2, l4, u5, t3) {
+  var i4, r4, o4, e3 = n2.key, f5 = n2.type, c4 = l4[u5], a4 = null != c4 && 0 == (2 & c4.__u);
+  if (null === c4 && null == e3 || a4 && e3 == c4.key && f5 == c4.type) return u5;
+  if (t3 > (a4 ? 1 : 0)) {
+    for (i4 = u5 - 1, r4 = u5 + 1; i4 >= 0 || r4 < l4.length; ) if (null != (c4 = l4[o4 = i4 >= 0 ? i4-- : r4++]) && 0 == (2 & c4.__u) && e3 == c4.key && f5 == c4.type) return o4;
   }
   return -1;
 }
-function z(n2, l3, u4) {
-  "-" == l3[0] ? n2.setProperty(l3, null == u4 ? "" : u4) : n2[l3] = null == u4 ? "" : "number" != typeof u4 || _.test(l3) ? u4 : u4 + "px";
+function z(n2, l4, u5) {
+  "-" == l4[0] ? n2.setProperty(l4, null == u5 ? "" : u5) : n2[l4] = null == u5 ? "" : "number" != typeof u5 || _.test(l4) ? u5 : u5 + "px";
 }
-function N(n2, l3, u4, t2, i3) {
-  var r3, o3;
-  n: if ("style" == l3) if ("string" == typeof u4) n2.style.cssText = u4;
+function N(n2, l4, u5, t3, i4) {
+  var r4, o4;
+  n: if ("style" == l4) if ("string" == typeof u5) n2.style.cssText = u5;
   else {
-    if ("string" == typeof t2 && (n2.style.cssText = t2 = ""), t2) for (l3 in t2) u4 && l3 in u4 || z(n2.style, l3, "");
-    if (u4) for (l3 in u4) t2 && u4[l3] == t2[l3] || z(n2.style, l3, u4[l3]);
+    if ("string" == typeof t3 && (n2.style.cssText = t3 = ""), t3) for (l4 in t3) u5 && l4 in u5 || z(n2.style, l4, "");
+    if (u5) for (l4 in u5) t3 && u5[l4] == t3[l4] || z(n2.style, l4, u5[l4]);
   }
-  else if ("o" == l3[0] && "n" == l3[1]) r3 = l3 != (l3 = l3.replace(s, "$1")), o3 = l3.toLowerCase(), l3 = o3 in n2 || "onFocusOut" == l3 || "onFocusIn" == l3 ? o3.slice(2) : l3.slice(2), n2.l || (n2.l = {}), n2.l[l3 + r3] = u4, u4 ? t2 ? u4[a] = t2[a] : (u4[a] = h, n2.addEventListener(l3, r3 ? v : p, r3)) : n2.removeEventListener(l3, r3 ? v : p, r3);
+  else if ("o" == l4[0] && "n" == l4[1]) r4 = l4 != (l4 = l4.replace(s, "$1")), o4 = l4.toLowerCase(), l4 = o4 in n2 || "onFocusOut" == l4 || "onFocusIn" == l4 ? o4.slice(2) : l4.slice(2), n2.l || (n2.l = {}), n2.l[l4 + r4] = u5, u5 ? t3 ? u5[a] = t3[a] : (u5[a] = h, n2.addEventListener(l4, r4 ? v : p, r4)) : n2.removeEventListener(l4, r4 ? v : p, r4);
   else {
-    if ("http://www.w3.org/2000/svg" == i3) l3 = l3.replace(/xlink(H|:h)/, "h").replace(/sName$/, "s");
-    else if ("width" != l3 && "height" != l3 && "href" != l3 && "list" != l3 && "form" != l3 && "tabIndex" != l3 && "download" != l3 && "rowSpan" != l3 && "colSpan" != l3 && "role" != l3 && "popover" != l3 && l3 in n2) try {
-      n2[l3] = null == u4 ? "" : u4;
+    if ("http://www.w3.org/2000/svg" == i4) l4 = l4.replace(/xlink(H|:h)/, "h").replace(/sName$/, "s");
+    else if ("width" != l4 && "height" != l4 && "href" != l4 && "list" != l4 && "form" != l4 && "tabIndex" != l4 && "download" != l4 && "rowSpan" != l4 && "colSpan" != l4 && "role" != l4 && "popover" != l4 && l4 in n2) try {
+      n2[l4] = null == u5 ? "" : u5;
       break n;
     } catch (n3) {
     }
-    "function" == typeof u4 || (null == u4 || false === u4 && "-" != l3[4] ? n2.removeAttribute(l3) : n2.setAttribute(l3, "popover" == l3 && 1 == u4 ? "" : u4));
+    "function" == typeof u5 || (null == u5 || false === u5 && "-" != l4[4] ? n2.removeAttribute(l4) : n2.setAttribute(l4, "popover" == l4 && 1 == u5 ? "" : u5));
   }
 }
 function V(n2) {
-  return function(u4) {
+  return function(u5) {
     if (this.l) {
-      var t2 = this.l[u4.type + n2];
-      if (null == u4[c]) u4[c] = h++;
-      else if (u4[c] < t2[a]) return;
-      return t2(l.event ? l.event(u4) : u4);
+      var t3 = this.l[u5.type + n2];
+      if (null == u5[c]) u5[c] = h++;
+      else if (u5[c] < t3[a]) return;
+      return t3(l.event ? l.event(u5) : u5);
     }
   };
 }
-function q(n2, u4, t2, i3, r3, o3, e2, f4, c3, a3) {
-  var s3, h3, p3, v3, y3, d3, _3, k3, x3, M2, I3, P3, A3, H3, T2, j2, F2 = u4.type;
-  if (void 0 !== u4.constructor) return null;
-  128 & t2.__u && (c3 = !!(32 & t2.__u), o3 = [f4 = u4.__e = t2.__e]), (s3 = l.__b) && s3(u4);
+function q(n2, u5, t3, i4, r4, o4, e3, f5, c4, a4) {
+  var s4, h3, p4, v4, y3, d3, _3, k4, x4, M2, I3, P3, A3, H3, T2, j3, F2 = u5.type;
+  if (void 0 !== u5.constructor) return null;
+  128 & t3.__u && (c4 = !!(32 & t3.__u), o4 = [f5 = u5.__e = t3.__e]), (s4 = l.__b) && s4(u5);
   n: if ("function" == typeof F2) {
-    h3 = e2.length;
+    h3 = e3.length;
     try {
-      if (x3 = u4.props, M2 = F2.prototype && F2.prototype.render, I3 = (s3 = F2.contextType) && i3[s3.__c], P3 = s3 ? I3 ? I3.props.value : s3.__ : i3, t2.__c ? k3 = (p3 = u4.__c = t2.__c).__ = p3.__E : (M2 ? u4.__c = p3 = new F2(x3, P3) : (u4.__c = p3 = new C(x3, P3), p3.constructor = F2, p3.render = Q), I3 && I3.sub(p3), p3.state || (p3.state = {}), p3.__n = i3, v3 = p3.__d = true, p3.__h = [], p3._sb = []), M2 && null == p3.__s && (p3.__s = p3.state), M2 && null != F2.getDerivedStateFromProps && (p3.__s == p3.state && (p3.__s = m({}, p3.__s)), m(p3.__s, F2.getDerivedStateFromProps(x3, p3.__s))), y3 = p3.props, d3 = p3.state, p3.__v = u4, v3) M2 && null == F2.getDerivedStateFromProps && null != p3.componentWillMount && p3.componentWillMount(), M2 && null != p3.componentDidMount && p3.__h.push(p3.componentDidMount);
+      if (x4 = u5.props, M2 = F2.prototype && F2.prototype.render, I3 = (s4 = F2.contextType) && i4[s4.__c], P3 = s4 ? I3 ? I3.props.value : s4.__ : i4, t3.__c ? k4 = (p4 = u5.__c = t3.__c).__ = p4.__E : (M2 ? u5.__c = p4 = new F2(x4, P3) : (u5.__c = p4 = new C(x4, P3), p4.constructor = F2, p4.render = Q), I3 && I3.sub(p4), p4.state || (p4.state = {}), p4.__n = i4, v4 = p4.__d = true, p4.__h = [], p4._sb = []), M2 && null == p4.__s && (p4.__s = p4.state), M2 && null != F2.getDerivedStateFromProps && (p4.__s == p4.state && (p4.__s = m({}, p4.__s)), m(p4.__s, F2.getDerivedStateFromProps(x4, p4.__s))), y3 = p4.props, d3 = p4.state, p4.__v = u5, v4) M2 && null == F2.getDerivedStateFromProps && null != p4.componentWillMount && p4.componentWillMount(), M2 && null != p4.componentDidMount && p4.__h.push(p4.componentDidMount);
       else {
-        if (M2 && null == F2.getDerivedStateFromProps && x3 !== y3 && null != p3.componentWillReceiveProps && p3.componentWillReceiveProps(x3, P3), u4.__v == t2.__v || !p3.__e && null != p3.shouldComponentUpdate && false === p3.shouldComponentUpdate(x3, p3.__s, P3)) {
-          u4.__v != t2.__v && (p3.props = x3, p3.state = p3.__s, p3.__d = false), u4.__e = t2.__e, u4.__k = t2.__k, u4.__k.some(function(n3) {
-            n3 && (n3.__ = u4);
-          }), w.push.apply(p3.__h, p3._sb), p3._sb = [], p3.__h.length && e2.push(p3), f4 = $(t2);
+        if (M2 && null == F2.getDerivedStateFromProps && x4 !== y3 && null != p4.componentWillReceiveProps && p4.componentWillReceiveProps(x4, P3), u5.__v == t3.__v || !p4.__e && null != p4.shouldComponentUpdate && false === p4.shouldComponentUpdate(x4, p4.__s, P3)) {
+          u5.__v != t3.__v && (p4.props = x4, p4.state = p4.__s, p4.__d = false), u5.__e = t3.__e, u5.__k = t3.__k, u5.__k.some(function(n3) {
+            n3 && (n3.__ = u5);
+          }), w.push.apply(p4.__h, p4._sb), p4._sb = [], p4.__h.length && e3.push(p4), f5 = $(t3);
           break n;
         }
-        null != p3.componentWillUpdate && p3.componentWillUpdate(x3, p3.__s, P3), M2 && null != p3.componentDidUpdate && p3.__h.push(function() {
-          p3.componentDidUpdate(y3, d3, _3);
+        null != p4.componentWillUpdate && p4.componentWillUpdate(x4, p4.__s, P3), M2 && null != p4.componentDidUpdate && p4.__h.push(function() {
+          p4.componentDidUpdate(y3, d3, _3);
         });
       }
-      if (p3.context = P3, p3.props = x3, p3.__P = n2, p3.__e = false, A3 = l.__r, H3 = 0, M2) p3.state = p3.__s, p3.__d = false, A3 && A3(u4), s3 = p3.render(p3.props, p3.state, p3.context), w.push.apply(p3.__h, p3._sb), p3._sb = [];
+      if (p4.context = P3, p4.props = x4, p4.__P = n2, p4.__e = false, A3 = l.__r, H3 = 0, M2) p4.state = p4.__s, p4.__d = false, A3 && A3(u5), s4 = p4.render(p4.props, p4.state, p4.context), w.push.apply(p4.__h, p4._sb), p4._sb = [];
       else do {
-        p3.__d = false, A3 && A3(u4), s3 = p3.render(p3.props, p3.state, p3.context), p3.state = p3.__s;
-      } while (p3.__d && ++H3 < 25);
-      p3.state = p3.__s, null != p3.getChildContext && (i3 = m(m({}, i3), p3.getChildContext())), M2 && !v3 && null != p3.getSnapshotBeforeUpdate && (_3 = p3.getSnapshotBeforeUpdate(y3, d3)), T2 = null != s3 && s3.type === S && null == s3.key ? E(s3.props.children) : s3, f4 = L(n2, g(T2) ? T2 : [T2], u4, t2, i3, r3, o3, e2, f4, c3, a3), p3.base = u4.__e, u4.__u &= -161, p3.__h.length && e2.push(p3), k3 && (p3.__E = p3.__ = null);
+        p4.__d = false, A3 && A3(u5), s4 = p4.render(p4.props, p4.state, p4.context), p4.state = p4.__s;
+      } while (p4.__d && ++H3 < 25);
+      p4.state = p4.__s, null != p4.getChildContext && (i4 = m(m({}, i4), p4.getChildContext())), M2 && !v4 && null != p4.getSnapshotBeforeUpdate && (_3 = p4.getSnapshotBeforeUpdate(y3, d3)), T2 = null != s4 && s4.type === S && null == s4.key ? E(s4.props.children) : s4, f5 = L(n2, g(T2) ? T2 : [T2], u5, t3, i4, r4, o4, e3, f5, c4, a4), p4.base = u5.__e, u5.__u &= -161, p4.__h.length && e3.push(p4), k4 && (p4.__E = p4.__ = null);
     } catch (n3) {
-      if (e2.length = h3, u4.__v = null, c3 || null != o3) {
+      if (e3.length = h3, u5.__v = null, c4 || null != o4) {
         if (n3.then) {
-          for (u4.__u |= c3 ? 160 : 128; f4 && 8 == f4.nodeType && f4.nextSibling; ) f4 = f4.nextSibling;
-          null != o3 && (o3[o3.indexOf(f4)] = null), u4.__e = f4;
-        } else if (null != o3) for (j2 = o3.length; j2--; ) b(o3[j2]);
-      } else u4.__e = t2.__e;
-      null == u4.__k && (u4.__k = t2.__k || []), n3.then || B(u4), l.__e(n3, u4, t2);
+          for (u5.__u |= c4 ? 160 : 128; f5 && 8 == f5.nodeType && f5.nextSibling; ) f5 = f5.nextSibling;
+          null != o4 && (o4[o4.indexOf(f5)] = null), u5.__e = f5;
+        } else if (null != o4) for (j3 = o4.length; j3--; ) b(o4[j3]);
+      } else u5.__e = t3.__e;
+      null == u5.__k && (u5.__k = t3.__k || []), n3.then || B(u5), l.__e(n3, u5, t3);
     }
-  } else null == o3 && u4.__v == t2.__v ? (u4.__k = t2.__k, u4.__e = t2.__e) : f4 = u4.__e = G(t2.__e, u4, t2, i3, r3, o3, e2, c3, a3);
-  return (s3 = l.diffed) && s3(u4), 128 & u4.__u ? void 0 : f4;
+  } else null == o4 && u5.__v == t3.__v ? (u5.__k = t3.__k, u5.__e = t3.__e) : f5 = u5.__e = G(t3.__e, u5, t3, i4, r4, o4, e3, c4, a4);
+  return (s4 = l.diffed) && s4(u5), 128 & u5.__u ? void 0 : f5;
 }
 function B(n2) {
   n2 && (n2.__c && (n2.__c.__e = true), n2.__k && n2.__k.some(B));
 }
-function D(n2, u4, t2) {
-  for (var i3 = 0; i3 < t2.length; i3++) J(t2[i3], t2[++i3], t2[++i3]);
-  l.__c && l.__c(u4, n2), n2.some(function(u5) {
+function D(n2, u5, t3) {
+  for (var i4 = 0; i4 < t3.length; i4++) J(t3[i4], t3[++i4], t3[++i4]);
+  l.__c && l.__c(u5, n2), n2.some(function(u6) {
     try {
-      n2 = u5.__h, u5.__h = [], n2.some(function(n3) {
-        n3.call(u5);
+      n2 = u6.__h, u6.__h = [], n2.some(function(n3) {
+        n3.call(u6);
       });
     } catch (n3) {
-      l.__e(n3, u5.__v);
+      l.__e(n3, u6.__v);
     }
   });
 }
 function E(n2) {
   return "object" != typeof n2 || null == n2 || n2.__b > 0 ? n2 : g(n2) ? n2.map(E) : void 0 !== n2.constructor ? null : m({}, n2);
 }
-function G(u4, t2, i3, r3, o3, e2, f4, c3, a3) {
-  var s3, h3, p3, v3, y3, w3, _3, m3 = i3.props || d, k3 = t2.props, x3 = t2.type;
-  if ("svg" == x3 ? o3 = "http://www.w3.org/2000/svg" : "math" == x3 ? o3 = "http://www.w3.org/1998/Math/MathML" : o3 || (o3 = "http://www.w3.org/1999/xhtml"), null != e2) {
-    for (s3 = 0; s3 < e2.length; s3++) if ((y3 = e2[s3]) && "setAttribute" in y3 == !!x3 && (x3 ? y3.localName == x3 : 3 == y3.nodeType)) {
-      u4 = y3, e2[s3] = null;
+function G(u5, t3, i4, r4, o4, e3, f5, c4, a4) {
+  var s4, h3, p4, v4, y3, w4, _3, m4 = i4.props || d, k4 = t3.props, x4 = t3.type;
+  if ("svg" == x4 ? o4 = "http://www.w3.org/2000/svg" : "math" == x4 ? o4 = "http://www.w3.org/1998/Math/MathML" : o4 || (o4 = "http://www.w3.org/1999/xhtml"), null != e3) {
+    for (s4 = 0; s4 < e3.length; s4++) if ((y3 = e3[s4]) && "setAttribute" in y3 == !!x4 && (x4 ? y3.localName == x4 : 3 == y3.nodeType)) {
+      u5 = y3, e3[s4] = null;
       break;
     }
   }
-  if (null == u4) {
-    if (null == x3) return document.createTextNode(k3);
-    u4 = document.createElementNS(o3, x3, k3.is && k3), c3 && (l.__m && l.__m(t2, e2), c3 = false), e2 = null;
+  if (null == u5) {
+    if (null == x4) return document.createTextNode(k4);
+    u5 = document.createElementNS(o4, x4, k4.is && k4), c4 && (l.__m && l.__m(t3, e3), c4 = false), e3 = null;
   }
-  if (null == x3) m3 === k3 || c3 && u4.data == k3 || (u4.data = k3);
+  if (null == x4) m4 === k4 || c4 && u5.data == k4 || (u5.data = k4);
   else {
-    if (e2 = "textarea" == x3 && null != k3.defaultValue ? null : e2 && n.call(u4.childNodes), !c3 && null != e2) for (m3 = {}, s3 = 0; s3 < u4.attributes.length; s3++) m3[(y3 = u4.attributes[s3]).name] = y3.value;
-    for (s3 in m3) y3 = m3[s3], "dangerouslySetInnerHTML" == s3 ? p3 = y3 : "children" == s3 || s3 in k3 || "value" == s3 && "defaultValue" in k3 || "checked" == s3 && "defaultChecked" in k3 || N(u4, s3, null, y3, o3);
-    for (s3 in k3) y3 = k3[s3], "children" == s3 ? v3 = y3 : "dangerouslySetInnerHTML" == s3 ? h3 = y3 : "value" == s3 ? w3 = y3 : "checked" == s3 ? _3 = y3 : c3 && "function" != typeof y3 || m3[s3] === y3 || N(u4, s3, y3, m3[s3], o3);
-    if (h3) c3 || p3 && (h3.__html == p3.__html || h3.__html == u4.innerHTML) || (u4.innerHTML = h3.__html), t2.__k = [];
-    else if (p3 && (u4.innerHTML = ""), L("template" == t2.type ? u4.content : u4, g(v3) ? v3 : [v3], t2, i3, r3, "foreignObject" == x3 ? "http://www.w3.org/1999/xhtml" : o3, e2, f4, e2 ? e2[0] : i3.__k && $(i3, 0), c3, a3), null != e2) for (s3 = e2.length; s3--; ) b(e2[s3]);
-    c3 && "textarea" != x3 || (s3 = "value", "progress" == x3 && null == w3 ? u4.removeAttribute("value") : null != w3 && (w3 !== u4[s3] || "progress" == x3 && !w3 || "option" == x3 && w3 != m3[s3]) && N(u4, s3, w3, m3[s3], o3), s3 = "checked", null != _3 && _3 != u4[s3] && N(u4, s3, _3, m3[s3], o3));
+    if (e3 = "textarea" == x4 && null != k4.defaultValue ? null : e3 && n.call(u5.childNodes), !c4 && null != e3) for (m4 = {}, s4 = 0; s4 < u5.attributes.length; s4++) m4[(y3 = u5.attributes[s4]).name] = y3.value;
+    for (s4 in m4) y3 = m4[s4], "dangerouslySetInnerHTML" == s4 ? p4 = y3 : "children" == s4 || s4 in k4 || "value" == s4 && "defaultValue" in k4 || "checked" == s4 && "defaultChecked" in k4 || N(u5, s4, null, y3, o4);
+    for (s4 in k4) y3 = k4[s4], "children" == s4 ? v4 = y3 : "dangerouslySetInnerHTML" == s4 ? h3 = y3 : "value" == s4 ? w4 = y3 : "checked" == s4 ? _3 = y3 : c4 && "function" != typeof y3 || m4[s4] === y3 || N(u5, s4, y3, m4[s4], o4);
+    if (h3) c4 || p4 && (h3.__html == p4.__html || h3.__html == u5.innerHTML) || (u5.innerHTML = h3.__html), t3.__k = [];
+    else if (p4 && (u5.innerHTML = ""), L("template" == t3.type ? u5.content : u5, g(v4) ? v4 : [v4], t3, i4, r4, "foreignObject" == x4 ? "http://www.w3.org/1999/xhtml" : o4, e3, f5, e3 ? e3[0] : i4.__k && $(i4, 0), c4, a4), null != e3) for (s4 = e3.length; s4--; ) b(e3[s4]);
+    c4 && "textarea" != x4 || (s4 = "value", "progress" == x4 && null == w4 ? u5.removeAttribute("value") : null != w4 && (w4 !== u5[s4] || "progress" == x4 && !w4 || "option" == x4 && w4 != m4[s4]) && N(u5, s4, w4, m4[s4], o4), s4 = "checked", null != _3 && _3 != u5[s4] && N(u5, s4, _3, m4[s4], o4));
   }
-  return u4;
+  return u5;
 }
-function J(n2, u4, t2) {
+function J(n2, u5, t3) {
   try {
     if ("function" == typeof n2) {
-      var i3 = "function" == typeof n2.__u;
-      i3 && n2.__u(), i3 && null == u4 || (n2.__u = n2(u4));
-    } else n2.current = u4;
+      var i4 = "function" == typeof n2.__u;
+      i4 && n2.__u(), i4 && null == u5 || (n2.__u = n2(u5));
+    } else n2.current = u5;
   } catch (n3) {
-    l.__e(n3, t2);
+    l.__e(n3, t3);
   }
 }
-function K(n2, u4, t2) {
-  var i3, r3;
-  if (l.unmount && l.unmount(n2), (i3 = n2.ref) && (i3.current && i3.current != n2.__e || J(i3, null, u4)), null != (i3 = n2.__c)) {
-    if (i3.componentWillUnmount) try {
-      i3.componentWillUnmount();
+function K(n2, u5, t3) {
+  var i4, r4;
+  if (l.unmount && l.unmount(n2), (i4 = n2.ref) && (i4.current && i4.current != n2.__e || J(i4, null, u5)), null != (i4 = n2.__c)) {
+    if (i4.componentWillUnmount) try {
+      i4.componentWillUnmount();
     } catch (n3) {
-      l.__e(n3, u4);
+      l.__e(n3, u5);
     }
-    i3.base = i3.__P = i3.__n = null;
+    i4.base = i4.__P = i4.__n = null;
   }
-  if (i3 = n2.__k) for (r3 = 0; r3 < i3.length; r3++) i3[r3] && K(i3[r3], u4, t2 || "function" != typeof n2.type);
-  t2 || b(n2.__e), n2.__c = n2.__ = n2.__e = void 0;
+  if (i4 = n2.__k) for (r4 = 0; r4 < i4.length; r4++) i4[r4] && K(i4[r4], u5, t3 || "function" != typeof n2.type);
+  t3 || b(n2.__e), n2.__c = n2.__ = n2.__e = void 0;
 }
-function Q(n2, l3, u4) {
-  return this.constructor(n2, u4);
+function Q(n2, l4, u5) {
+  return this.constructor(n2, u5);
 }
-n = w.slice, l = { __e: function(n2, l3, u4, t2) {
-  for (var i3, r3, o3; l3 = l3.__; ) if ((i3 = l3.__c) && !i3.__) try {
-    if ((r3 = i3.constructor) && null != r3.getDerivedStateFromError && (i3.setState(r3.getDerivedStateFromError(n2)), o3 = i3.__d), null != i3.componentDidCatch && (i3.componentDidCatch(n2, t2 || {}), o3 = i3.__d), o3) return i3.__E = i3;
-  } catch (l4) {
-    n2 = l4;
+function X(n2) {
+  function l4(n3) {
+    var u5, t3;
+    return this.getChildContext || (u5 = /* @__PURE__ */ new Set(), (t3 = {})[l4.__c] = this, this.getChildContext = function() {
+      return t3;
+    }, this.componentWillUnmount = function() {
+      u5 = null;
+    }, this.shouldComponentUpdate = function(n4) {
+      this.props.value != n4.value && u5.forEach(function(n5) {
+        n5.__e = true, A(n5);
+      });
+    }, this.sub = function(n4) {
+      u5.add(n4);
+      var l5 = n4.componentWillUnmount;
+      n4.componentWillUnmount = function() {
+        u5 && u5.delete(n4), l5 && l5.call(n4);
+      };
+    }), n3.children;
+  }
+  return l4.__c = "__cC" + y++, l4.__ = n2, l4.Provider = l4.__l = (l4.Consumer = function(n3, l5) {
+    return n3.children(l5);
+  }).contextType = l4, l4;
+}
+n = w.slice, l = { __e: function(n2, l4, u5, t3) {
+  for (var i4, r4, o4; l4 = l4.__; ) if ((i4 = l4.__c) && !i4.__) try {
+    if ((r4 = i4.constructor) && null != r4.getDerivedStateFromError && (i4.setState(r4.getDerivedStateFromError(n2)), o4 = i4.__d), null != i4.componentDidCatch && (i4.componentDidCatch(n2, t3 || {}), o4 = i4.__d), o4) return i4.__E = i4;
+  } catch (l5) {
+    n2 = l5;
   }
   throw n2;
 } }, u = 0, t = function(n2) {
   return null != n2 && void 0 === n2.constructor;
-}, C.prototype.setState = function(n2, l3) {
-  var u4;
-  u4 = null != this.__s && this.__s != this.state ? this.__s : this.__s = m({}, this.state), "function" == typeof n2 && (n2 = n2(m({}, u4), this.props)), n2 && m(u4, n2), null != n2 && this.__v && (l3 && this._sb.push(l3), A(this));
+}, C.prototype.setState = function(n2, l4) {
+  var u5;
+  u5 = null != this.__s && this.__s != this.state ? this.__s : this.__s = m({}, this.state), "function" == typeof n2 && (n2 = n2(m({}, u5), this.props)), n2 && m(u5, n2), null != n2 && this.__v && (l4 && this._sb.push(l4), A(this));
 }, C.prototype.forceUpdate = function(n2) {
   this.__v && (this.__e = true, n2 && this.__h.push(n2), A(this));
-}, C.prototype.render = S, i = [], o = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, e = function(n2, l3) {
-  return n2.__v.__b - l3.__v.__b;
+}, C.prototype.render = S, i = [], o = "function" == typeof Promise ? Promise.prototype.then.bind(Promise.resolve()) : setTimeout, e = function(n2, l4) {
+  return n2.__v.__b - l4.__v.__b;
 }, H.__r = 0, f = Math.random().toString(8), c = "__d" + f, a = "__a" + f, s = /(PointerCapture)$|Capture$/i, h = 0, p = V(false), v = V(true), y = 0;
 
 // node_modules/preact-render-to-string/dist/index.mjs
@@ -274,55 +298,55 @@ var f2 = /^(xlink|xmlns|xml)([A-Z])/;
 var p2 = /^(?:accessK|auto[A-Z]|cell|ch|col|cont|cross|dateT|encT|form[A-Z]|frame|hrefL|inputM|maxL|minL|noV|playsI|popoverT|readO|rowS|src[A-Z]|tabI|useM|item[A-Z])/;
 var h2 = /^ac|^ali|arabic|basel|cap|clipPath$|clipRule$|color|dominant|enable|fill|flood|font|glyph[^R]|horiz|image|letter|lighting|marker[^WUH]|overline|panose|pointe|paint|rendering|shape|stop|strikethrough|stroke|text[^L]|transform|underline|unicode|units|^v[^i]|^w|^xH/;
 var d2 = /* @__PURE__ */ new Set(["draggable", "spellcheck"]);
-function v2(e2) {
-  void 0 !== e2.__g ? e2.__g |= 8 : e2[u2] = true;
+function v2(e3) {
+  void 0 !== e3.__g ? e3.__g |= 8 : e3[u2] = true;
 }
-function m2(e2) {
-  void 0 !== e2.__g ? e2.__g &= -9 : e2[u2] = false;
+function m2(e3) {
+  void 0 !== e3.__g ? e3.__g &= -9 : e3[u2] = false;
 }
-function y2(e2) {
-  return void 0 !== e2.__g ? !!(8 & e2.__g) : true === e2[u2];
+function y2(e3) {
+  return void 0 !== e3.__g ? !!(8 & e3.__g) : true === e3[u2];
 }
 var _2 = /["&<]/;
-function g2(e2) {
-  if (0 === e2.length || false === _2.test(e2)) return e2;
-  for (var t2 = 0, n2 = 0, r3 = "", o3 = ""; n2 < e2.length; n2++) {
-    switch (e2.charCodeAt(n2)) {
+function g2(e3) {
+  if (0 === e3.length || false === _2.test(e3)) return e3;
+  for (var t3 = 0, n2 = 0, r4 = "", o4 = ""; n2 < e3.length; n2++) {
+    switch (e3.charCodeAt(n2)) {
       case 34:
-        o3 = "&quot;";
+        o4 = "&quot;";
         break;
       case 38:
-        o3 = "&amp;";
+        o4 = "&amp;";
         break;
       case 60:
-        o3 = "&lt;";
+        o4 = "&lt;";
         break;
       default:
         continue;
     }
-    n2 !== t2 && (r3 += e2.slice(t2, n2)), r3 += o3, t2 = n2 + 1;
+    n2 !== t3 && (r4 += e3.slice(t3, n2)), r4 += o4, t3 = n2 + 1;
   }
-  return n2 !== t2 && (r3 += e2.slice(t2, n2)), r3;
+  return n2 !== t3 && (r4 += e3.slice(t3, n2)), r4;
 }
 var b2 = {};
 var x2 = /* @__PURE__ */ new Set(["animation-iteration-count", "border-image-outset", "border-image-slice", "border-image-width", "box-flex", "box-flex-group", "box-ordinal-group", "column-count", "fill-opacity", "flex", "flex-grow", "flex-negative", "flex-order", "flex-positive", "flex-shrink", "flood-opacity", "font-weight", "grid-column", "grid-row", "line-clamp", "line-height", "opacity", "order", "orphans", "stop-opacity", "stroke-dasharray", "stroke-dashoffset", "stroke-miterlimit", "stroke-opacity", "stroke-width", "tab-size", "widows", "z-index", "zoom"]);
 var k2 = /[A-Z]/g;
-function w2(e2) {
-  var t2 = "";
-  for (var n2 in e2) {
-    var r3 = e2[n2];
-    if (null != r3 && "" !== r3) {
-      var o3 = "-" == n2[0] ? n2 : b2[n2] || (b2[n2] = n2.replace(k2, "-$&").toLowerCase()), i3 = ";";
-      "number" != typeof r3 || o3.startsWith("--") || x2.has(o3) || (i3 = "px;"), t2 = t2 + o3 + ":" + r3 + i3;
+function w2(e3) {
+  var t3 = "";
+  for (var n2 in e3) {
+    var r4 = e3[n2];
+    if (null != r4 && "" !== r4) {
+      var o4 = "-" == n2[0] ? n2 : b2[n2] || (b2[n2] = n2.replace(k2, "-$&").toLowerCase()), i4 = ";";
+      "number" != typeof r4 || o4.startsWith("--") || x2.has(o4) || (i4 = "px;"), t3 = t3 + o4 + ":" + r4 + i4;
     }
   }
-  return t2 || void 0;
+  return t3 || void 0;
 }
 function C2() {
   this.__d = true;
 }
-function A2(e2, t2) {
-  return { __v: e2, context: t2, props: e2.props, setState: C2, forceUpdate: C2, __d: true, __h: new Array(0) };
+function A2(e3, t3) {
+  return { __v: e3, context: t3, props: e3.props, setState: C2, forceUpdate: C2, __d: true, __h: new Array(0) };
 }
 var D2;
 var P2;
@@ -335,55 +359,55 @@ var z2 = Object.assign;
 var H2 = "";
 var N2 = "<!--$s-->";
 var q2 = "<!--/$s-->";
-function B2(e2) {
-  return "string" == typeof e2 ? N2 + e2 + q2 : W(e2) ? (e2.unshift(N2), e2.push(q2), e2) : e2 && "function" == typeof e2.then ? e2.then(B2) : N2 + e2 + q2;
+function B2(e3) {
+  return "string" == typeof e3 ? N2 + e3 + q2 : W(e3) ? (e3.unshift(N2), e3.push(q2), e3) : e3 && "function" == typeof e3.then ? e3.then(B2) : N2 + e3 + q2;
 }
-function I2(a3, u4, s3) {
-  var l3 = l[i2];
+function I2(a4, u5, s4) {
+  var l4 = l[i2];
   l[i2] = true, D2 = l.__b, P2 = l[r2], $2 = l.__r, U = l.unmount;
-  var f4 = k(S, null);
-  f4[c2] = [a3];
+  var f5 = k(S, null);
+  f5[c2] = [a4];
   try {
-    var p3 = R(a3, u4 || F, false, void 0, f4, false, s3);
-    return W(p3) ? p3.join(H2) : p3;
-  } catch (e2) {
-    if (e2.then) throw new Error('Use "renderToStringAsync" for suspenseful rendering.');
-    throw e2;
+    var p4 = R(a4, u5 || F, false, void 0, f5, false, s4);
+    return W(p4) ? p4.join(H2) : p4;
+  } catch (e3) {
+    if (e3.then) throw new Error('Use "renderToStringAsync" for suspenseful rendering.');
+    throw e3;
   } finally {
-    l[o2] && l[o2](a3, M), l[i2] = l3, M.length = 0;
+    l[o2] && l[o2](a4, M), l[i2] = l4, M.length = 0;
   }
 }
-function O2(e2, t2) {
-  var n2, r3 = e2.type, o3 = true;
-  return e2[a2] ? (o3 = false, (n2 = e2[a2]).state = n2[s2]) : n2 = new r3(e2.props, t2), e2[a2] = n2, n2.__v = e2, n2.props = e2.props, n2.context = t2, v2(n2), null == n2.state && (n2.state = F), null == n2[s2] && (n2[s2] = n2.state), r3.getDerivedStateFromProps ? n2.state = z2({}, n2.state, r3.getDerivedStateFromProps(n2.props, n2.state)) : o3 && n2.componentWillMount ? (n2.componentWillMount(), n2.state = n2[s2] !== n2.state ? n2[s2] : n2.state) : !o3 && n2.componentWillUpdate && n2.componentWillUpdate(), $2 && $2(e2), n2.render(n2.props, n2.state, t2);
+function O2(e3, t3) {
+  var n2, r4 = e3.type, o4 = true;
+  return e3[a2] ? (o4 = false, (n2 = e3[a2]).state = n2[s2]) : n2 = new r4(e3.props, t3), e3[a2] = n2, n2.__v = e3, n2.props = e3.props, n2.context = t3, v2(n2), null == n2.state && (n2.state = F), null == n2[s2] && (n2[s2] = n2.state), r4.getDerivedStateFromProps ? n2.state = z2({}, n2.state, r4.getDerivedStateFromProps(n2.props, n2.state)) : o4 && n2.componentWillMount ? (n2.componentWillMount(), n2.state = n2[s2] !== n2.state ? n2[s2] : n2.state) : !o4 && n2.componentWillUpdate && n2.componentWillUpdate(), $2 && $2(e3), n2.render(n2.props, n2.state, t3);
 }
-function R(t2, r3, o3, i3, u4, _3, b3) {
-  if (null == t2 || true === t2 || false === t2 || t2 === H2) return H2;
-  var x3 = typeof t2;
-  if ("object" != x3) return "function" == x3 ? H2 : "string" == x3 ? g2(t2) : t2 + H2;
-  if (W(t2)) {
-    var k3, C3 = H2;
-    u4[c2] = t2;
-    for (var S2 = t2.length, L2 = 0; L2 < S2; L2++) {
-      var E2 = t2[L2];
+function R(t3, r4, o4, i4, u5, _3, b3) {
+  if (null == t3 || true === t3 || false === t3 || t3 === H2) return H2;
+  var x4 = typeof t3;
+  if ("object" != x4) return "function" == x4 ? H2 : "string" == x4 ? g2(t3) : t3 + H2;
+  if (W(t3)) {
+    var k4, C3 = H2;
+    u5[c2] = t3;
+    for (var S2 = t3.length, L2 = 0; L2 < S2; L2++) {
+      var E2 = t3[L2];
       if (null != E2 && "boolean" != typeof E2) {
-        var j2, T2 = R(E2, r3, o3, i3, u4, _3, b3);
-        "string" == typeof T2 ? C3 += T2 : (k3 || (k3 = new Array(S2)), C3 && k3.push(C3), C3 = H2, W(T2) ? (j2 = k3).push.apply(j2, T2) : k3.push(T2));
+        var j3, T2 = R(E2, r4, o4, i4, u5, _3, b3);
+        "string" == typeof T2 ? C3 += T2 : (k4 || (k4 = new Array(S2)), C3 && k4.push(C3), C3 = H2, W(T2) ? (j3 = k4).push.apply(j3, T2) : k4.push(T2));
       }
     }
-    return k3 ? (C3 && k3.push(C3), k3) : C3;
+    return k4 ? (C3 && k4.push(C3), k4) : C3;
   }
-  if (void 0 !== t2.constructor) return H2;
-  t2.__ = u4, D2 && D2(t2);
-  var Z = t2.type, M2 = t2.props;
+  if (void 0 !== t3.constructor) return H2;
+  t3.__ = u5, D2 && D2(t3);
+  var Z = t3.type, M2 = t3.props;
   if ("function" == typeof Z) {
-    var N3, q3, I3, K3 = r3;
+    var N3, q3, I3, K3 = r4;
     if (Z === S) {
       if ("tpl" in M2) {
         for (var G2 = H2, Q2 = 0; Q2 < M2.tpl.length; Q2++) if (G2 += M2.tpl[Q2], M2.exprs && Q2 < M2.exprs.length) {
-          var X = M2.exprs[Q2];
-          if (null == X) continue;
-          "object" != typeof X || void 0 !== X.constructor && !W(X) ? G2 += X : G2 += R(X, r3, o3, i3, t2, _3, b3);
+          var X2 = M2.exprs[Q2];
+          if (null == X2) continue;
+          "object" != typeof X2 || void 0 !== X2.constructor && !W(X2) ? G2 += X2 : G2 += R(X2, r4, o4, i4, t3, _3, b3);
         }
         return G2;
       }
@@ -391,64 +415,64 @@ function R(t2, r3, o3, i3, u4, _3, b3) {
       q3 = M2.children;
     } else {
       if (null != (N3 = Z.contextType)) {
-        var Y = r3[N3.__c];
+        var Y = r4[N3.__c];
         K3 = Y ? Y.props.value : N3.__;
       }
       var ee = Z.prototype && "function" == typeof Z.prototype.render;
       if (ee) q3 = /**#__NOINLINE__**/
-      O2(t2, K3), I3 = t2[a2];
+      O2(t3, K3), I3 = t3[a2];
       else {
-        t2[a2] = I3 = /**#__NOINLINE__**/
-        A2(t2, K3);
+        t3[a2] = I3 = /**#__NOINLINE__**/
+        A2(t3, K3);
         for (var te = 0; y2(I3) && te++ < 25; ) {
-          m2(I3), $2 && $2(t2);
+          m2(I3), $2 && $2(t3);
           try {
             q3 = Z.call(I3, M2, K3);
-          } catch (e2) {
-            throw _3 && e2 && "function" == typeof e2.then && (t2._suspended = true), e2;
+          } catch (e3) {
+            throw _3 && e3 && "function" == typeof e3.then && (t3._suspended = true), e3;
           }
         }
         v2(I3);
       }
-      if (null != I3.getChildContext && (r3 = z2({}, r3, I3.getChildContext())), ee && l.errorBoundaries && (Z.getDerivedStateFromError || I3.componentDidCatch)) {
+      if (null != I3.getChildContext && (r4 = z2({}, r4, I3.getChildContext())), ee && l.errorBoundaries && (Z.getDerivedStateFromError || I3.componentDidCatch)) {
         q3 = null != q3 && q3.type === S && null == q3.key && null == q3.props.tpl ? q3.props.children : q3;
         try {
-          return R(q3, r3, o3, i3, t2, _3, false);
-        } catch (e2) {
-          return Z.getDerivedStateFromError && (I3[s2] = Z.getDerivedStateFromError(e2)), I3.componentDidCatch && I3.componentDidCatch(e2, F), y2(I3) ? (q3 = O2(t2, r3), null != (I3 = t2[a2]).getChildContext && (r3 = z2({}, r3, I3.getChildContext())), R(q3 = null != q3 && q3.type === S && null == q3.key && null == q3.props.tpl ? q3.props.children : q3, r3, o3, i3, t2, _3, b3)) : H2;
+          return R(q3, r4, o4, i4, t3, _3, false);
+        } catch (e3) {
+          return Z.getDerivedStateFromError && (I3[s2] = Z.getDerivedStateFromError(e3)), I3.componentDidCatch && I3.componentDidCatch(e3, F), y2(I3) ? (q3 = O2(t3, r4), null != (I3 = t3[a2]).getChildContext && (r4 = z2({}, r4, I3.getChildContext())), R(q3 = null != q3 && q3.type === S && null == q3.key && null == q3.props.tpl ? q3.props.children : q3, r4, o4, i4, t3, _3, b3)) : H2;
         } finally {
-          P2 && P2(t2), U && U(t2);
+          P2 && P2(t3), U && U(t3);
         }
       }
     }
     q3 = null != q3 && q3.type === S && null == q3.key && null == q3.props.tpl ? q3.props.children : q3;
     try {
-      var ne = R(q3, r3, o3, i3, t2, _3, b3);
-      return P2 && P2(t2), l.unmount && l.unmount(t2), t2._suspended ? B2(ne) : ne;
+      var ne = R(q3, r4, o4, i4, t3, _3, b3);
+      return P2 && P2(t3), l.unmount && l.unmount(t3), t3._suspended ? B2(ne) : ne;
     } catch (n2) {
       if (!_3 && b3 && b3.onError) {
-        var re = (function e2(n3) {
-          return b3.onError(n3, t2, function(t3, n4) {
+        var re = (function e3(n3) {
+          return b3.onError(n3, t3, function(t4, n4) {
             try {
-              return R(t3, r3, o3, i3, n4, _3, b3);
-            } catch (t4) {
-              return e2(t4);
+              return R(t4, r4, o4, i4, n4, _3, b3);
+            } catch (t5) {
+              return e3(t5);
             }
           });
         })(n2);
         if (void 0 !== re) return re;
         var oe = l.__e;
-        return oe && oe(n2, t2), H2;
+        return oe && oe(n2, t3), H2;
       }
       if (!_3) throw n2;
       if (!n2 || "function" != typeof n2.then) throw n2;
-      return n2.then(function e2() {
+      return n2.then(function e3() {
         try {
-          var n3 = R(q3, r3, o3, i3, t2, _3, b3);
-          return t2._suspended ? B2(n3) : n3;
-        } catch (t3) {
-          if (!t3 || "function" != typeof t3.then) throw t3;
-          return t3.then(e2);
+          var n3 = R(q3, r4, o4, i4, t3, _3, b3);
+          return t3._suspended ? B2(n3) : n3;
+        } catch (t4) {
+          if (!t4 || "function" != typeof t4.then) throw t4;
+          return t4.then(e3);
         }
       });
     }
@@ -487,10 +511,10 @@ function R(t2, r3, o3, i3, u4, _3, b3) {
               ie = se;
               continue;
             case "select":
-              i3 = se;
+              i4 = se;
               continue;
             case "option":
-              i3 != se || "selected" in M2 || (ae += " selected");
+              i4 != se || "selected" in M2 || (ae += " selected");
           }
           break;
         case "dangerouslySetInnerHTML":
@@ -507,31 +531,122 @@ function R(t2, r3, o3, i3, u4, _3, b3) {
           break;
         default:
           if (l2.test(ue)) continue;
-          f2.test(ue) ? ue = ue.replace(f2, "$1:$2").toLowerCase() : "-" !== ue[4] && !d2.has(ue) || null == se ? o3 ? h2.test(ue) && (ue = "panose1" === ue ? "panose-1" : ue.replace(/([A-Z])/g, "-$1").toLowerCase()) : p2.test(ue) && (ue = ue.toLowerCase()) : se += H2;
+          f2.test(ue) ? ue = ue.replace(f2, "$1:$2").toLowerCase() : "-" !== ue[4] && !d2.has(ue) || null == se ? o4 ? h2.test(ue) && (ue = "panose1" === ue ? "panose-1" : ue.replace(/([A-Z])/g, "-$1").toLowerCase()) : p2.test(ue) && (ue = ue.toLowerCase()) : se += H2;
       }
       null != se && false !== se && (ae = true === se || se === H2 ? ae + " " + ue : ae + " " + ue + '="' + ("string" == typeof se ? g2(se) : se + H2) + '"');
     }
   }
   if (l2.test(Z)) throw new Error(Z + " is not a valid HTML tag name in " + ae + ">");
-  if (ce || ("string" == typeof ie ? ce = g2(ie) : null != ie && false !== ie && true !== ie && (ce = R(ie, r3, "svg" === Z || "foreignObject" !== Z && o3, i3, t2, _3, b3))), P2 && P2(t2), U && U(t2), !ce && V2.has(Z)) return ae + "/>";
+  if (ce || ("string" == typeof ie ? ce = g2(ie) : null != ie && false !== ie && true !== ie && (ce = R(ie, r4, "svg" === Z || "foreignObject" !== Z && o4, i4, t3, _3, b3))), P2 && P2(t3), U && U(t3), !ce && V2.has(Z)) return ae + "/>";
   var le = "</" + Z + ">", fe = ae + ">";
   return W(ce) ? [fe].concat(ce, [le]) : "string" != typeof ce ? [fe, ce, le] : fe + ce + le;
 }
 var V2 = /* @__PURE__ */ new Set(["area", "base", "br", "col", "command", "embed", "hr", "img", "input", "keygen", "link", "meta", "param", "source", "track", "wbr"]);
 var K2 = I2;
-function J2(e2) {
-  return null !== e2 && "object" == typeof e2 && "function" == typeof e2.peek && "value" in e2;
+function J2(e3) {
+  return null !== e3 && "object" == typeof e3 && "function" == typeof e3.peek && "value" in e3;
+}
+
+// src/render/kontext.ts
+var LageKontext = X({ basis: "", h1: false });
+
+// node_modules/preact/hooks/dist/hooks.mjs
+var t2;
+var r3;
+var u3;
+var i3;
+var o3 = 0;
+var f3 = [];
+var c3 = l;
+var e2 = c3.__b;
+var a3 = c3.__r;
+var v3 = c3.diffed;
+var l3 = c3.__c;
+var m3 = c3.unmount;
+var p3 = c3.__;
+function s3(n2, t3) {
+  c3.__h && c3.__h(r3, n2, o3 || t3), o3 = 0;
+  var u5 = r3.__H || (r3.__H = { __: [], __h: [] });
+  return n2 >= u5.__.length && u5.__.push({}), u5.__[n2];
+}
+function x3(n2) {
+  var u5 = r3.context[n2.__c], i4 = s3(t2++, 9);
+  return i4.c = n2, u5 ? (null == i4.__ && (i4.__ = true, u5.sub(r3)), u5.props.value) : n2.__;
+}
+function j2() {
+  for (var n2; n2 = f3.shift(); ) {
+    var t3 = n2.__H;
+    if (n2.__P && t3) try {
+      t3.__h.some(z3), t3.__h.some(B3), t3.__h = [];
+    } catch (r4) {
+      t3.__h = [], c3.__e(r4, n2.__v);
+    }
+  }
+}
+c3.__b = function(n2) {
+  r3 = null, e2 && e2(n2);
+}, c3.__ = function(n2, t3) {
+  n2 && t3.__k && t3.__k.__m && (n2.__m = t3.__k.__m), p3 && p3(n2, t3);
+}, c3.__r = function(n2) {
+  a3 && a3(n2), t2 = 0;
+  var i4 = (r3 = n2.__c).__H;
+  i4 && (u3 === r3 ? (i4.__h = [], r3.__h = [], i4.__.some(function(n3) {
+    n3.__N && (n3.__ = n3.__N), n3.u = n3.__N = void 0;
+  })) : (i4.__h.some(z3), i4.__h.some(B3), i4.__h = [], t2 = 0)), u3 = r3;
+}, c3.diffed = function(n2) {
+  v3 && v3(n2);
+  var t3 = n2.__c;
+  t3 && t3.__H && (t3.__H.__h.length && (1 !== f3.push(t3) && i3 === c3.requestAnimationFrame || ((i3 = c3.requestAnimationFrame) || w3)(j2)), t3.__H.__.some(function(n3) {
+    n3.u && (n3.__H = n3.u, n3.u = void 0);
+  })), u3 = r3 = null;
+}, c3.__c = function(n2, t3) {
+  t3.some(function(n3) {
+    try {
+      n3.__h.some(z3), n3.__h = n3.__h.filter(function(n4) {
+        return !n4.__ || B3(n4);
+      });
+    } catch (r4) {
+      t3.some(function(n4) {
+        n4.__h && (n4.__h = []);
+      }), t3 = [], c3.__e(r4, n3.__v);
+    }
+  }), l3 && l3(n2, t3);
+}, c3.unmount = function(n2) {
+  m3 && m3(n2);
+  var t3, r4 = n2.__c;
+  r4 && r4.__H && (r4.__H.__.some(function(n3) {
+    try {
+      z3(n3);
+    } catch (n4) {
+      t3 = n4;
+    }
+  }), r4.__H = void 0, t3 && c3.__e(t3, r4.__v));
+};
+var k3 = "function" == typeof requestAnimationFrame;
+function w3(n2) {
+  var t3, r4 = function() {
+    clearTimeout(u5), k3 && cancelAnimationFrame(t3), setTimeout(n2);
+  }, u5 = setTimeout(r4, 35);
+  k3 && (t3 = requestAnimationFrame(r4));
+}
+function z3(n2) {
+  var t3 = r3, u5 = n2.__c;
+  "function" == typeof u5 && (n2.__c = void 0, u5()), r3 = t3;
+}
+function B3(n2) {
+  var t3 = r3;
+  n2.__c = n2.__(), r3 = t3;
 }
 
 // node_modules/preact/jsx-runtime/dist/jsxRuntime.mjs
-var f3 = 0;
-function u3(e2, t2, n2, o3, i3, u4) {
-  t2 || (t2 = {});
-  var a3, c3, p3 = t2;
-  if ("ref" in p3) for (c3 in p3 = {}, t2) "ref" == c3 ? a3 = t2[c3] : p3[c3] = t2[c3];
-  var l3 = { type: e2, props: p3, key: n2, ref: a3, __k: null, __: null, __b: 0, __e: null, __c: null, constructor: void 0, __v: --f3, __i: -1, __u: 0, __source: i3, __self: u4 };
-  if ("function" == typeof e2 && (a3 = e2.defaultProps)) for (c3 in a3) void 0 === p3[c3] && (p3[c3] = a3[c3]);
-  return l.vnode && l.vnode(l3), l3;
+var f4 = 0;
+function u4(e3, t3, n2, o4, i4, u5) {
+  t3 || (t3 = {});
+  var a4, c4, p4 = t3;
+  if ("ref" in p4) for (c4 in p4 = {}, t3) "ref" == c4 ? a4 = t3[c4] : p4[c4] = t3[c4];
+  var l4 = { type: e3, props: p4, key: n2, ref: a4, __k: null, __: null, __b: 0, __e: null, __c: null, constructor: void 0, __v: --f4, __i: -1, __u: 0, __source: i4, __self: u5 };
+  if ("function" == typeof e3 && (a4 = e3.defaultProps)) for (c4 in a4) void 0 === p4[c4] && (p4[c4] = a4[c4]);
+  return l.vnode && l.vnode(l4), l4;
 }
 
 // src/render/modules/bausteine.tsx
@@ -539,14 +654,16 @@ function Bildchen({
   bild,
   sofort = false
 }) {
-  return /* @__PURE__ */ u3(
+  const { basis } = x3(LageKontext);
+  return /* @__PURE__ */ u4(
     "img",
     {
-      src: bild.pfad,
+      src: basis + bild.pfad,
       alt: bild.alt,
       width: bild.breite,
       height: bild.hoehe,
       loading: sofort ? void 0 : "lazy",
+      fetchpriority: sofort ? "high" : void 0,
       decoding: "async"
     }
   );
@@ -556,7 +673,7 @@ function Abschnitt({
   klasse,
   kinder
 }) {
-  return /* @__PURE__ */ u3("section", { id, class: klasse ? `abschnitt ${klasse}` : "abschnitt", children: /* @__PURE__ */ u3("div", { class: "huelle", children: kinder }) });
+  return /* @__PURE__ */ u4("section", { id, class: klasse ? `abschnitt ${klasse}` : "abschnitt", children: /* @__PURE__ */ u4("div", { class: "huelle", children: kinder }) });
 }
 function AbschnittKopf({
   marke: marke2,
@@ -564,10 +681,11 @@ function AbschnittKopf({
   einleitung,
   zusatz
 }) {
-  return /* @__PURE__ */ u3("div", { class: "abschnitt-kopf", children: [
-    marke2 ? /* @__PURE__ */ u3("span", { class: "marke", children: marke2 }) : null,
-    /* @__PURE__ */ u3("h2", { children: titel }),
-    einleitung ? /* @__PURE__ */ u3("p", { children: einleitung }) : null,
+  const { h1 } = x3(LageKontext);
+  return /* @__PURE__ */ u4("div", { class: "abschnitt-kopf", children: [
+    marke2 ? /* @__PURE__ */ u4("span", { class: "marke", children: marke2 }) : null,
+    h1 ? /* @__PURE__ */ u4("h1", { children: titel }) : /* @__PURE__ */ u4("h2", { children: titel }),
+    einleitung ? /* @__PURE__ */ u4("p", { children: einleitung }) : null,
     zusatz
   ] });
 }
@@ -610,31 +728,31 @@ var WOCHENTAGE = [
 
 // src/render/modules/basis.tsx
 function HeroModul({ daten }) {
-  return /* @__PURE__ */ u3("section", { id: "start", class: "hero", children: [
-    /* @__PURE__ */ u3("div", { class: "hero-bild", "aria-hidden": "true", children: /* @__PURE__ */ u3(Bildchen, { bild: daten.bild, sofort: true }) }),
-    /* @__PURE__ */ u3("div", { class: "huelle", children: /* @__PURE__ */ u3("div", { class: "hero-innen", children: [
-      daten.dachzeile ? /* @__PURE__ */ u3("span", { class: "hero-dach", children: daten.dachzeile }) : null,
-      /* @__PURE__ */ u3("h1", { children: daten.ueberschrift }),
-      /* @__PURE__ */ u3("p", { children: daten.text }),
-      daten.aktionen.length > 0 ? /* @__PURE__ */ u3("div", { class: "hero-aktionen", children: daten.aktionen.map((a3, i3) => /* @__PURE__ */ u3("a", { href: a3.ziel, class: i3 === 0 ? "knopf knopf-voll" : "knopf knopf-leer", children: a3.label }, a3.ziel)) }) : null
+  return /* @__PURE__ */ u4("section", { id: "start", class: "hero", children: [
+    /* @__PURE__ */ u4("div", { class: "hero-bild", "aria-hidden": "true", children: /* @__PURE__ */ u4(Bildchen, { bild: daten.bild, sofort: true }) }),
+    /* @__PURE__ */ u4("div", { class: "huelle", children: /* @__PURE__ */ u4("div", { class: "hero-innen", children: [
+      daten.dachzeile ? /* @__PURE__ */ u4("span", { class: "hero-dach", children: daten.dachzeile }) : null,
+      /* @__PURE__ */ u4("h1", { children: daten.ueberschrift }),
+      /* @__PURE__ */ u4("p", { children: daten.text }),
+      daten.aktionen.length > 0 ? /* @__PURE__ */ u4("div", { class: "hero-aktionen", children: daten.aktionen.map((a4, i4) => /* @__PURE__ */ u4("a", { href: a4.ziel, class: i4 === 0 ? "knopf knopf-voll" : "knopf knopf-leer", children: a4.label }, a4.ziel)) }) : null
     ] }) })
   ] });
 }
 function HinweisbandModul({ daten }) {
   if (!daten.aktiv) return null;
   if (daten.text.trim() === "") return null;
-  return /* @__PURE__ */ u3("aside", { class: "hinweisband", children: /* @__PURE__ */ u3("div", { class: "huelle", children: daten.text }) });
+  return /* @__PURE__ */ u4("aside", { class: "hinweisband", children: /* @__PURE__ */ u4("div", { class: "huelle", children: daten.text }) });
 }
 function UeberUnsModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "ueber-uns",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.ueberUns, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u3("div", { class: daten.bild ? "zweispalt" : void 0, children: [
-          /* @__PURE__ */ u3("div", { class: "fliess", children: daten.absaetze.map((absatz, i3) => /* @__PURE__ */ u3("p", { style: i3 > 0 ? "margin-top:1.1rem" : void 0, children: absatz }, i3)) }),
-          daten.bild ? /* @__PURE__ */ u3(Bildchen, { bild: daten.bild }) : null
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.ueberUns, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: daten.bild ? "zweispalt" : void 0, children: [
+          /* @__PURE__ */ u4("div", { class: "fliess", children: daten.absaetze.map((absatz, i4) => /* @__PURE__ */ u4("p", { style: i4 > 0 ? "margin-top:1.1rem" : void 0, children: absatz }, i4)) }),
+          daten.bild ? /* @__PURE__ */ u4(Bildchen, { bild: daten.bild }) : null
         ] })
       ] })
     }
@@ -643,77 +761,77 @@ function UeberUnsModul({ daten }) {
 
 // src/render/modules/angebot.tsx
 function SortimentModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "sortiment",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.sortiment, titel: daten.ueberschrift, einleitung: daten.einleitung }),
-        /* @__PURE__ */ u3("div", { class: "karten", children: daten.kategorien.map((k3) => /* @__PURE__ */ u3("article", { class: "karte", children: [
-          /* @__PURE__ */ u3(Bildchen, { bild: k3.bild }),
-          /* @__PURE__ */ u3("div", { class: "karte-text", children: [
-            /* @__PURE__ */ u3("h3", { children: k3.titel }),
-            /* @__PURE__ */ u3("p", { children: k3.text })
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.sortiment, titel: daten.ueberschrift, einleitung: daten.einleitung }),
+        /* @__PURE__ */ u4("div", { class: "karten", children: daten.kategorien.map((k4) => /* @__PURE__ */ u4("article", { class: "karte", children: [
+          /* @__PURE__ */ u4(Bildchen, { bild: k4.bild }),
+          /* @__PURE__ */ u4("div", { class: "karte-text", children: [
+            /* @__PURE__ */ u4("h3", { children: k4.titel }),
+            /* @__PURE__ */ u4("p", { children: k4.text })
           ] })
-        ] }, k3.titel)) })
+        ] }, k4.titel)) })
       ] })
     }
   );
 }
 function PreislisteModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "preise",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(
           AbschnittKopf,
           {
             marke: daten.marke ?? MARKE.preisliste,
             titel: daten.ueberschrift,
-            zusatz: daten.stand ? /* @__PURE__ */ u3("p", { class: "stand", children: [
+            zusatz: daten.stand ? /* @__PURE__ */ u4("p", { class: "stand", children: [
               LABEL.stand,
               " ",
               daten.stand
             ] }) : void 0
           }
         ),
-        /* @__PURE__ */ u3("div", { class: "preisgruppen", children: daten.gruppen.map((g3) => /* @__PURE__ */ u3("div", { class: "preisgruppe", children: [
-          /* @__PURE__ */ u3("h3", { children: g3.titel }),
-          /* @__PURE__ */ u3("div", { class: "tabelle-rahmen", children: /* @__PURE__ */ u3("table", { children: [
-            /* @__PURE__ */ u3("caption", { class: "sr-only", style: "position:absolute;left:-9999px", children: g3.titel }),
-            /* @__PURE__ */ u3("tbody", { children: g3.zeilen.map((z4) => /* @__PURE__ */ u3("tr", { children: [
-              /* @__PURE__ */ u3("td", { children: [
-                z4.artikel,
-                z4.einheit ? /* @__PURE__ */ u3("span", { class: "einheit", children: [
+        /* @__PURE__ */ u4("div", { class: "preisgruppen", children: daten.gruppen.map((g3) => /* @__PURE__ */ u4("div", { class: "preisgruppe", children: [
+          /* @__PURE__ */ u4("h3", { children: g3.titel }),
+          /* @__PURE__ */ u4("div", { class: "tabelle-rahmen", children: /* @__PURE__ */ u4("table", { children: [
+            /* @__PURE__ */ u4("caption", { class: "sr-only", style: "position:absolute;left:-9999px", children: g3.titel }),
+            /* @__PURE__ */ u4("tbody", { children: g3.zeilen.map((z5) => /* @__PURE__ */ u4("tr", { children: [
+              /* @__PURE__ */ u4("td", { children: [
+                z5.artikel,
+                z5.einheit ? /* @__PURE__ */ u4("span", { class: "einheit", children: [
                   " \xB7 ",
-                  z4.einheit
+                  z5.einheit
                 ] }) : null
               ] }),
-              /* @__PURE__ */ u3("td", { class: "zahl", children: z4.preis })
-            ] }, z4.artikel + z4.einheit)) })
+              /* @__PURE__ */ u4("td", { class: "zahl", children: z5.preis })
+            ] }, z5.artikel + z5.einheit)) })
           ] }) })
         ] }, g3.titel)) }),
-        daten.fussnote ? /* @__PURE__ */ u3("p", { class: "fussnote", children: daten.fussnote }) : null
+        daten.fussnote ? /* @__PURE__ */ u4("p", { class: "fussnote", children: daten.fussnote }) : null
       ] })
     }
   );
 }
 function HofcafeModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "hofcafe",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.hofcafe, titel: daten.ueberschrift, einleitung: daten.einleitung }),
-        /* @__PURE__ */ u3("div", { class: "zweispalt", children: [
-          /* @__PURE__ */ u3(Bildchen, { bild: daten.bild }),
-          /* @__PURE__ */ u3("div", { class: "karte-liste", children: [
-            /* @__PURE__ */ u3("dl", { children: daten.karte.map((p3) => [
-              /* @__PURE__ */ u3("dt", { children: p3.position }, p3.position + "-t"),
-              /* @__PURE__ */ u3("dd", { children: p3.preis }, p3.position + "-d")
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.hofcafe, titel: daten.ueberschrift, einleitung: daten.einleitung }),
+        /* @__PURE__ */ u4("div", { class: "zweispalt", children: [
+          /* @__PURE__ */ u4(Bildchen, { bild: daten.bild }),
+          /* @__PURE__ */ u4("div", { class: "karte-liste", children: [
+            /* @__PURE__ */ u4("dl", { children: daten.karte.map((p4) => [
+              /* @__PURE__ */ u4("dt", { children: p4.position }, p4.position + "-t"),
+              /* @__PURE__ */ u4("dd", { children: p4.preis }, p4.position + "-d")
             ]) }),
-            daten.hinweis ? /* @__PURE__ */ u3("p", { class: "fussnote", children: daten.hinweis }) : null
+            daten.hinweis ? /* @__PURE__ */ u4("p", { class: "fussnote", children: daten.hinweis }) : null
           ] })
         ] })
       ] })
@@ -726,25 +844,25 @@ function istGeschlossen(zeit) {
   return zeit.trim().toLowerCase() === "geschlossen";
 }
 function OeffnungszeitenModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "oeffnungszeiten",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.oeffnungszeiten, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u3("div", { class: "zeit-sets", children: daten.sets.map((s3) => /* @__PURE__ */ u3("div", { class: "zeit-set", children: [
-          /* @__PURE__ */ u3("h3", { children: s3.titel }),
-          s3.zusatz ? /* @__PURE__ */ u3("p", { class: "zusatz", children: s3.zusatz }) : null,
-          /* @__PURE__ */ u3("dl", { children: s3.zeilen.map((z4) => [
-            /* @__PURE__ */ u3("dt", { children: z4.tag }, z4.tag + "-t"),
-            /* @__PURE__ */ u3("dd", { class: istGeschlossen(z4.zeit) ? "zu" : void 0, children: z4.zeit }, z4.tag + "-d")
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.oeffnungszeiten, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "zeit-sets", children: daten.sets.map((s4) => /* @__PURE__ */ u4("div", { class: "zeit-set", children: [
+          /* @__PURE__ */ u4("h3", { children: s4.titel }),
+          s4.zusatz ? /* @__PURE__ */ u4("p", { class: "zusatz", children: s4.zusatz }) : null,
+          /* @__PURE__ */ u4("dl", { children: s4.zeilen.map((z5) => [
+            /* @__PURE__ */ u4("dt", { children: z5.tag }, z5.tag + "-t"),
+            /* @__PURE__ */ u4("dd", { class: istGeschlossen(z5.zeit) ? "zu" : void 0, children: z5.zeit }, z5.tag + "-d")
           ]) })
-        ] }, s3.titel)) }),
-        daten.ausnahmen.length > 0 ? /* @__PURE__ */ u3("div", { class: "ausnahmen", children: [
-          /* @__PURE__ */ u3("h3", { children: daten.ausnahmenTitel ?? LABEL.abweichendeZeiten }),
-          /* @__PURE__ */ u3("dl", { children: daten.ausnahmen.map((a3) => [
-            /* @__PURE__ */ u3("dt", { children: a3.datum }, a3.datum + "-t"),
-            /* @__PURE__ */ u3("dd", { children: a3.was }, a3.datum + "-d")
+        ] }, s4.titel)) }),
+        daten.ausnahmen.length > 0 ? /* @__PURE__ */ u4("div", { class: "ausnahmen", children: [
+          /* @__PURE__ */ u4("h3", { children: daten.ausnahmenTitel ?? LABEL.abweichendeZeiten }),
+          /* @__PURE__ */ u4("dl", { children: daten.ausnahmen.map((a4) => [
+            /* @__PURE__ */ u4("dt", { children: a4.datum }, a4.datum + "-t"),
+            /* @__PURE__ */ u4("dd", { children: a4.was }, a4.datum + "-d")
           ]) })
         ] }) : null
       ] })
@@ -752,45 +870,45 @@ function OeffnungszeitenModul({ daten }) {
   );
 }
 function MaerkteModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "maerkte",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.maerkte, titel: daten.ueberschrift, einleitung: daten.einleitung }),
-        /* @__PURE__ */ u3("div", { class: "liste", children: daten.staende.map((s3) => /* @__PURE__ */ u3("article", { class: "eintrag", children: [
-          /* @__PURE__ */ u3("h3", { children: s3.ort }),
-          /* @__PURE__ */ u3("p", { class: "wann", children: [
-            s3.tag,
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.maerkte, titel: daten.ueberschrift, einleitung: daten.einleitung }),
+        /* @__PURE__ */ u4("div", { class: "liste", children: daten.staende.map((s4) => /* @__PURE__ */ u4("article", { class: "eintrag", children: [
+          /* @__PURE__ */ u4("h3", { children: s4.ort }),
+          /* @__PURE__ */ u4("p", { class: "wann", children: [
+            s4.tag,
             " \xB7 ",
-            s3.zeit
+            s4.zeit
           ] }),
-          /* @__PURE__ */ u3("p", { class: "wo", children: s3.platz })
-        ] }, s3.ort)) }),
-        daten.hinweis ? /* @__PURE__ */ u3("p", { class: "fussnote", children: daten.hinweis }) : null
+          /* @__PURE__ */ u4("p", { class: "wo", children: s4.platz })
+        ] }, s4.ort)) }),
+        daten.hinweis ? /* @__PURE__ */ u4("p", { class: "fussnote", children: daten.hinweis }) : null
       ] })
     }
   );
 }
 function VeranstaltungenModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "termine",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.veranstaltungen, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u3("div", { class: "liste", children: daten.termine.map((t2) => /* @__PURE__ */ u3("article", { class: "eintrag", children: [
-          /* @__PURE__ */ u3("h3", { children: [
-            t2.titel,
-            t2.anmeldung ? /* @__PURE__ */ u3("span", { class: "plakette", children: LABEL.anmeldungNoetig }) : null
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.veranstaltungen, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "liste", children: daten.termine.map((t3) => /* @__PURE__ */ u4("article", { class: "eintrag", children: [
+          /* @__PURE__ */ u4("h3", { children: [
+            t3.titel,
+            t3.anmeldung ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.anmeldungNoetig }) : null
           ] }),
-          /* @__PURE__ */ u3("p", { class: "wann", children: [
-            t2.datum,
-            t2.zeit ? ` \xB7 ${t2.zeit}` : "",
-            t2.preis ? ` \xB7 ${t2.preis}` : ""
+          /* @__PURE__ */ u4("p", { class: "wann", children: [
+            t3.datum,
+            t3.zeit ? ` \xB7 ${t3.zeit}` : "",
+            t3.preis ? ` \xB7 ${t3.preis}` : ""
           ] }),
-          /* @__PURE__ */ u3("p", { class: "was", children: t2.beschreibung })
-        ] }, t2.titel)) })
+          /* @__PURE__ */ u4("p", { class: "was", children: t3.beschreibung })
+        ] }, t3.titel)) })
       ] })
     }
   );
@@ -800,14 +918,14 @@ function VeranstaltungenModul({ daten }) {
 function KursplanModul({ daten }) {
   const nachTag = WOCHENTAGE.map((tag) => ({
     tag,
-    kurse: daten.kurse.filter((k3) => k3.tag === tag)
+    kurse: daten.kurse.filter((k4) => k4.tag === tag)
   }));
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "kursplan",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(
           AbschnittKopf,
           {
             marke: daten.marke ?? MARKE.kursplan,
@@ -815,19 +933,19 @@ function KursplanModul({ daten }) {
             einleitung: daten.einleitung
           }
         ),
-        /* @__PURE__ */ u3("div", { class: "woche", children: nachTag.map(({ tag, kurse }) => /* @__PURE__ */ u3("div", { class: kurse.length ? "wochentag" : "wochentag leer", children: [
-          /* @__PURE__ */ u3("h3", { children: tag }),
-          kurse.length ? kurse.map((k3, i3) => /* @__PURE__ */ u3("div", { class: "kurs", children: [
-            /* @__PURE__ */ u3("span", { class: "kurs-zeit", children: [
-              k3.zeit,
-              k3.dauer ? ` \xB7 ${k3.dauer} ${LABEL.minuten}` : ""
+        /* @__PURE__ */ u4("div", { class: "woche", children: nachTag.map(({ tag, kurse }) => /* @__PURE__ */ u4("div", { class: kurse.length ? "wochentag" : "wochentag leer", children: [
+          /* @__PURE__ */ u4("h3", { children: tag }),
+          kurse.length ? kurse.map((k4, i4) => /* @__PURE__ */ u4("div", { class: "kurs", children: [
+            /* @__PURE__ */ u4("span", { class: "kurs-zeit", children: [
+              k4.zeit,
+              k4.dauer ? ` \xB7 ${k4.dauer} ${LABEL.minuten}` : ""
             ] }),
-            /* @__PURE__ */ u3("span", { class: "kurs-titel", children: k3.titel }),
-            k3.ort ? /* @__PURE__ */ u3("span", { class: "kurs-ort", children: k3.ort }) : null,
-            k3.hinweis ? /* @__PURE__ */ u3("span", { class: "kurs-hinweis", children: k3.hinweis }) : null
-          ] }, `${k3.titel}-${k3.zeit}-${i3}`)) : /* @__PURE__ */ u3("p", { class: "kurs-keiner", "aria-label": "kein Kurs", children: LABEL.keinKurs })
+            /* @__PURE__ */ u4("span", { class: "kurs-titel", children: k4.titel }),
+            k4.ort ? /* @__PURE__ */ u4("span", { class: "kurs-ort", children: k4.ort }) : null,
+            k4.hinweis ? /* @__PURE__ */ u4("span", { class: "kurs-hinweis", children: k4.hinweis }) : null
+          ] }, `${k4.titel}-${k4.zeit}-${i4}`)) : /* @__PURE__ */ u4("p", { class: "kurs-keiner", "aria-label": "kein Kurs", children: LABEL.keinKurs })
         ] }, tag)) }),
-        daten.hinweis ? /* @__PURE__ */ u3("p", { class: "fussnote", children: daten.hinweis }) : null
+        daten.hinweis ? /* @__PURE__ */ u4("p", { class: "fussnote", children: daten.hinweis }) : null
       ] })
     }
   );
@@ -835,48 +953,48 @@ function KursplanModul({ daten }) {
 
 // src/render/modules/leute.tsx
 function TeamModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "team",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.team, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u3("div", { class: "personen", children: daten.personen.map((p3) => /* @__PURE__ */ u3("article", { class: "person", children: [
-          /* @__PURE__ */ u3(Bildchen, { bild: p3.bild }),
-          /* @__PURE__ */ u3("h3", { children: p3.name }),
-          p3.rolle ? /* @__PURE__ */ u3("span", { class: "rolle", children: p3.rolle }) : null,
-          p3.satz ? /* @__PURE__ */ u3("p", { children: p3.satz }) : null
-        ] }, p3.name)) })
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.team, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "personen", children: daten.personen.map((p4) => /* @__PURE__ */ u4("article", { class: "person", children: [
+          /* @__PURE__ */ u4(Bildchen, { bild: p4.bild }),
+          /* @__PURE__ */ u4("h3", { children: p4.name }),
+          p4.rolle ? /* @__PURE__ */ u4("span", { class: "rolle", children: p4.rolle }) : null,
+          p4.satz ? /* @__PURE__ */ u4("p", { children: p4.satz }) : null
+        ] }, p4.name)) })
       ] })
     }
   );
 }
 function StimmenModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "stimmen",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.stimmen, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u3("div", { class: "stimmen", children: daten.zitate.map((z4, i3) => /* @__PURE__ */ u3("figure", { class: "stimme", children: [
-          /* @__PURE__ */ u3("blockquote", { children: z4.text }),
-          z4.quelle ? /* @__PURE__ */ u3("figcaption", { children: z4.quelle }) : null
-        ] }, i3)) })
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.stimmen, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "stimmen", children: daten.zitate.map((z5, i4) => /* @__PURE__ */ u4("figure", { class: "stimme", children: [
+          /* @__PURE__ */ u4("blockquote", { children: z5.text }),
+          z5.quelle ? /* @__PURE__ */ u4("figcaption", { children: z5.quelle }) : null
+        ] }, i4)) })
       ] })
     }
   );
 }
 function FaqModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "faq",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.faq, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u3("div", { class: "faq", children: daten.fragen.map((f4) => /* @__PURE__ */ u3("details", { children: [
-          /* @__PURE__ */ u3("summary", { children: f4.frage }),
-          /* @__PURE__ */ u3("p", { children: f4.antwort })
-        ] }, f4.frage)) })
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.faq, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "faq", children: daten.fragen.map((f5) => /* @__PURE__ */ u4("details", { children: [
+          /* @__PURE__ */ u4("summary", { children: f5.frage }),
+          /* @__PURE__ */ u4("p", { children: f5.antwort })
+        ] }, f5.frage)) })
       ] })
     }
   );
@@ -884,31 +1002,31 @@ function FaqModul({ daten }) {
 
 // src/render/modules/medien.tsx
 function GalerieModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "galerie",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.galerie, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u3("div", { class: "galerie", children: daten.bilder.map((b3) => /* @__PURE__ */ u3(Bildchen, { bild: b3 }, b3.pfad)) })
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.galerie, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "galerie", children: daten.bilder.map((b3) => /* @__PURE__ */ u4(Bildchen, { bild: b3 }, b3.pfad)) })
       ] })
     }
   );
 }
 function SiegelModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "siegel",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.siegel, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u3("div", { class: "siegel", children: daten.eintraege.map((e2) => /* @__PURE__ */ u3("div", { class: "siegel-eintrag", children: [
-          /* @__PURE__ */ u3(Bildchen, { bild: e2.logo }),
-          /* @__PURE__ */ u3("div", { children: [
-            /* @__PURE__ */ u3("div", { class: "name", children: e2.name }),
-            e2.untertitel ? /* @__PURE__ */ u3("div", { class: "unter", children: e2.untertitel }) : null
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.siegel, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "siegel", children: daten.eintraege.map((e3) => /* @__PURE__ */ u4("div", { class: "siegel-eintrag", children: [
+          /* @__PURE__ */ u4(Bildchen, { bild: e3.logo }),
+          /* @__PURE__ */ u4("div", { children: [
+            /* @__PURE__ */ u4("div", { class: "name", children: e3.name }),
+            e3.untertitel ? /* @__PURE__ */ u4("div", { class: "unter", children: e3.untertitel }) : null
           ] })
-        ] }, e2.name)) })
+        ] }, e3.name)) })
       ] })
     }
   );
@@ -916,63 +1034,63 @@ function SiegelModul({ daten }) {
 
 // src/render/modules/rechtliches.tsx
 function KontaktModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "kontakt",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { marke: daten.marke ?? MARKE.kontakt, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u3("div", { class: "kontakt", children: [
-          /* @__PURE__ */ u3("div", { children: /* @__PURE__ */ u3("address", { children: [
-            /* @__PURE__ */ u3("strong", { children: daten.betrieb }),
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.kontakt, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "kontakt", children: [
+          /* @__PURE__ */ u4("div", { children: /* @__PURE__ */ u4("address", { children: [
+            /* @__PURE__ */ u4("strong", { children: daten.betrieb }),
             daten.strasse,
-            /* @__PURE__ */ u3("br", {}),
+            /* @__PURE__ */ u4("br", {}),
             daten.ort,
-            /* @__PURE__ */ u3("br", {}),
-            daten.telefon ? /* @__PURE__ */ u3(S, { children: [
-              /* @__PURE__ */ u3("a", { href: `tel:${daten.telefon.replace(/[^+0-9]/g, "")}`, children: daten.telefon }),
-              /* @__PURE__ */ u3("br", {})
+            /* @__PURE__ */ u4("br", {}),
+            daten.telefon ? /* @__PURE__ */ u4(S, { children: [
+              /* @__PURE__ */ u4("a", { href: `tel:${daten.telefon.replace(/[^+0-9]/g, "")}`, children: daten.telefon }),
+              /* @__PURE__ */ u4("br", {})
             ] }) : null,
-            daten.email ? /* @__PURE__ */ u3("a", { href: `mailto:${daten.email}`, children: daten.email }) : null
+            daten.email ? /* @__PURE__ */ u4("a", { href: `mailto:${daten.email}`, children: daten.email }) : null
           ] }) }),
-          /* @__PURE__ */ u3("div", { class: "kontakt-hinweise", children: daten.hinweise.map((h3) => /* @__PURE__ */ u3("div", { class: "kontakt-hinweis", children: [
-            /* @__PURE__ */ u3("h3", { children: h3.titel }),
-            /* @__PURE__ */ u3("p", { children: h3.text })
+          /* @__PURE__ */ u4("div", { class: "kontakt-hinweise", children: daten.hinweise.map((h3) => /* @__PURE__ */ u4("div", { class: "kontakt-hinweis", children: [
+            /* @__PURE__ */ u4("h3", { children: h3.titel }),
+            /* @__PURE__ */ u4("p", { children: h3.text })
           ] }, h3.titel)) }),
-          daten.karte ? /* @__PURE__ */ u3(Bildchen, { bild: daten.karte }) : null
+          daten.karte ? /* @__PURE__ */ u4(Bildchen, { bild: daten.karte }) : null
         ] })
       ] })
     }
   );
 }
 function ImpressumModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "impressum",
       klasse: "rechtliches",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { titel: daten.ueberschrift }),
-        /* @__PURE__ */ u3("dl", { children: daten.felder.map((f4) => [
-          /* @__PURE__ */ u3("dt", { children: f4.bezeichnung }, f4.bezeichnung + "-t"),
-          /* @__PURE__ */ u3("dd", { children: f4.wert }, f4.bezeichnung + "-d")
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("dl", { children: daten.felder.map((f5) => [
+          /* @__PURE__ */ u4("dt", { children: f5.bezeichnung }, f5.bezeichnung + "-t"),
+          /* @__PURE__ */ u4("dd", { children: f5.wert }, f5.bezeichnung + "-d")
         ]) })
       ] })
     }
   );
 }
 function DatenschutzModul({ daten }) {
-  return /* @__PURE__ */ u3(
+  return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "datenschutz",
       klasse: "rechtliches",
-      kinder: /* @__PURE__ */ u3(S, { children: [
-        /* @__PURE__ */ u3(AbschnittKopf, { titel: daten.ueberschrift }),
-        daten.absaetze.map((a3, i3) => /* @__PURE__ */ u3("div", { class: "absatz", children: [
-          a3.titel ? /* @__PURE__ */ u3("h3", { children: a3.titel }) : null,
-          /* @__PURE__ */ u3("p", { children: a3.text })
-        ] }, i3))
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { titel: daten.ueberschrift }),
+        daten.absaetze.map((a4, i4) => /* @__PURE__ */ u4("div", { class: "absatz", children: [
+          a4.titel ? /* @__PURE__ */ u4("h3", { children: a4.titel }) : null,
+          /* @__PURE__ */ u4("p", { children: a4.text })
+        ] }, i4))
       ] })
     }
   );
@@ -999,57 +1117,346 @@ var REGISTRY = {
   impressum: ImpressumModul,
   datenschutz: DatenschutzModul
 };
+var ANKER = {
+  hero: "start",
+  hinweisband: null,
+  ueberUns: "ueber-uns",
+  sortiment: "sortiment",
+  preisliste: "preise",
+  hofcafe: "hofcafe",
+  oeffnungszeiten: "oeffnungszeiten",
+  maerkte: "maerkte",
+  kursplan: "kursplan",
+  veranstaltungen: "termine",
+  team: "team",
+  galerie: "galerie",
+  siegel: "siegel",
+  stimmen: "stimmen",
+  faq: "faq",
+  kontakt: "kontakt",
+  impressum: "impressum",
+  datenschutz: "datenschutz"
+};
 function Modul({ typ, daten }) {
   if (daten === void 0 || daten === null) return null;
   const Komponente = REGISTRY[typ];
-  return /* @__PURE__ */ u3(Komponente, { daten });
+  return /* @__PURE__ */ u4(Komponente, { daten });
+}
+
+// src/render/seiten.ts
+function titelBauen(site, module) {
+  const erstes = module[0];
+  const daten = erstes ? site.inhalte[erstes] : void 0;
+  const ueberschrift = daten?.ueberschrift?.trim();
+  if (!ueberschrift) return site.meta.name;
+  const mitMarke = `${ueberschrift} \u2013 ${site.meta.name}`;
+  return mitMarke.length <= 60 ? mitMarke : ueberschrift;
+}
+function routen(site) {
+  const { meta: meta3 } = site;
+  const start = {
+    pfad: "",
+    module: meta3.module,
+    titel: meta3.titel ?? meta3.name,
+    beschreibung: meta3.beschreibung,
+    istStart: true
+  };
+  const unterseiten = meta3.seiten.map((s4) => ({
+    pfad: s4.pfad,
+    module: s4.module,
+    titel: s4.titel ?? titelBauen(site, s4.module),
+    beschreibung: s4.beschreibung ?? meta3.beschreibung,
+    istStart: false
+  }));
+  return [start, ...unterseiten];
+}
+var basisVon = (route) => route.istStart ? "" : "/";
+function verweis(site, von, typ) {
+  const eigene = site.meta.seiten.find((s4) => s4.module.includes(typ));
+  if (eigene) {
+    const anker2 = eigene.module[0] === typ ? "" : `#${ANKER[typ] ?? ""}`;
+    return `/${eigene.pfad}${anker2}`;
+  }
+  const anker = ANKER[typ];
+  if (!anker) return von.istStart ? "#" : "/";
+  return von.istStart ? `#${anker}` : `/#${anker}`;
+}
+function zielFuerSeite(ziel, von) {
+  if (!ziel.startsWith("#") || von.istStart) return ziel;
+  return `/${ziel}`;
 }
 
 // src/render/seite.tsx
-function Kopfbereich({ site }) {
+var absolut = (site, pfad = "") => `https://${site.meta.domain}/${pfad.replace(/^\/+/, "")}`;
+function Kopfbereich({ site, route }) {
   const { meta: meta3 } = site;
-  return /* @__PURE__ */ u3(S, { children: [
-    /* @__PURE__ */ u3("meta", { charSet: "utf-8" }),
-    /* @__PURE__ */ u3("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }),
-    /* @__PURE__ */ u3("title", { children: meta3.name }),
-    /* @__PURE__ */ u3("meta", { name: "description", content: meta3.beschreibung }),
-    /* @__PURE__ */ u3("link", { rel: "icon", href: meta3.logo }),
-    /* @__PURE__ */ u3("meta", { property: "og:type", content: "website" }),
-    /* @__PURE__ */ u3("meta", { property: "og:title", content: meta3.name }),
-    /* @__PURE__ */ u3("meta", { property: "og:description", content: meta3.beschreibung }),
-    /* @__PURE__ */ u3("meta", { property: "og:locale", content: meta3.sprache }),
-    meta3.ogBild ? /* @__PURE__ */ u3("meta", { property: "og:image", content: meta3.ogBild }) : null
+  const basis = basisVon(route);
+  const hier = absolut(site, route.pfad);
+  const heroBild = route.module.includes("hero") ? site.inhalte.hero?.bild : void 0;
+  return /* @__PURE__ */ u4(S, { children: [
+    /* @__PURE__ */ u4("meta", { charSet: "utf-8" }),
+    /* @__PURE__ */ u4("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }),
+    /* @__PURE__ */ u4("title", { children: route.titel }),
+    /* @__PURE__ */ u4("meta", { name: "description", content: route.beschreibung }),
+    /* @__PURE__ */ u4("link", { rel: "canonical", href: hier }),
+    /* @__PURE__ */ u4("link", { rel: "icon", href: basis + meta3.logo }),
+    heroBild ? /* @__PURE__ */ u4("link", { rel: "preload", as: "image", href: basis + heroBild.pfad, fetchpriority: "high" }) : null,
+    /* @__PURE__ */ u4("meta", { property: "og:type", content: "website" }),
+    /* @__PURE__ */ u4("meta", { property: "og:title", content: route.titel }),
+    /* @__PURE__ */ u4("meta", { property: "og:description", content: route.beschreibung }),
+    /* @__PURE__ */ u4("meta", { property: "og:url", content: hier }),
+    /* @__PURE__ */ u4("meta", { property: "og:site_name", content: meta3.name }),
+    /* @__PURE__ */ u4("meta", { property: "og:locale", content: meta3.sprache === "de" ? "de_DE" : meta3.sprache }),
+    meta3.ogBild ? /* @__PURE__ */ u4("meta", { property: "og:image", content: absolut(site, meta3.ogBild) }) : null,
+    meta3.ogBild && heroBild ? /* @__PURE__ */ u4(S, { children: [
+      /* @__PURE__ */ u4("meta", { property: "og:image:alt", content: heroBild.alt }),
+      heroBild.breite ? /* @__PURE__ */ u4("meta", { property: "og:image:width", content: String(heroBild.breite) }) : null,
+      heroBild.hoehe ? /* @__PURE__ */ u4("meta", { property: "og:image:height", content: String(heroBild.hoehe) }) : null
+    ] }) : null,
+    /* @__PURE__ */ u4("meta", { name: "twitter:card", content: "summary_large_image" })
   ] });
 }
-function Kopf({ site }) {
+function Kopf({ site, route }) {
   const { meta: meta3 } = site;
-  return /* @__PURE__ */ u3("header", { class: "kopf", children: /* @__PURE__ */ u3("div", { class: "huelle kopf-innen", children: [
-    /* @__PURE__ */ u3("a", { class: "kopf-logo", href: "#start", "aria-label": meta3.name, children: /* @__PURE__ */ u3("img", { src: meta3.logo, alt: meta3.name, height: 44 }) }),
-    meta3.navigation.length > 0 ? /* @__PURE__ */ u3("nav", { class: "kopf-nav", "aria-label": "Hauptnavigation", children: /* @__PURE__ */ u3("ul", { children: meta3.navigation.map((n2) => /* @__PURE__ */ u3("li", { children: /* @__PURE__ */ u3("a", { href: n2.ziel, children: n2.label }) }, n2.ziel)) }) }) : null
+  const basis = basisVon(route);
+  return /* @__PURE__ */ u4("header", { class: "kopf", children: /* @__PURE__ */ u4("div", { class: "huelle kopf-innen", children: [
+    /* @__PURE__ */ u4(
+      "a",
+      {
+        class: "kopf-logo",
+        href: route.istStart ? "#start" : "/",
+        "aria-label": meta3.name,
+        children: /* @__PURE__ */ u4("img", { src: basis + meta3.logo, alt: meta3.name, width: 44, height: 44 })
+      }
+    ),
+    meta3.navigation.length > 0 ? /* @__PURE__ */ u4("nav", { class: "kopf-nav", "aria-label": "Hauptnavigation", children: /* @__PURE__ */ u4("ul", { children: meta3.navigation.map((n2) => /* @__PURE__ */ u4("li", { children: /* @__PURE__ */ u4("a", { href: zielFuerSeite(n2.ziel, route), children: n2.label }) }, n2.ziel)) }) }) : null
   ] }) });
 }
-function Fuss({ site }) {
+function Fuss({ site, route }) {
   const { meta: meta3 } = site;
-  return /* @__PURE__ */ u3("footer", { class: "fuss", children: /* @__PURE__ */ u3("div", { class: "huelle fuss-innen", children: [
-    /* @__PURE__ */ u3("span", { children: meta3.name }),
-    /* @__PURE__ */ u3("span", { children: [
-      /* @__PURE__ */ u3("a", { href: "#impressum", children: "Impressum" }),
-      " \xB7 ",
-      /* @__PURE__ */ u3("a", { href: "#datenschutz", children: "Datenschutz" })
+  return /* @__PURE__ */ u4("footer", { class: "fuss", children: /* @__PURE__ */ u4("div", { class: "huelle fuss-innen", children: [
+    /* @__PURE__ */ u4("span", { children: meta3.name }),
+    /* @__PURE__ */ u4("span", { children: [
+      /* @__PURE__ */ u4("a", { href: verweis(site, route, "impressum"), children: "Impressum" }),
+      " \xB7",
+      " ",
+      /* @__PURE__ */ u4("a", { href: verweis(site, route, "datenschutz"), children: "Datenschutz" })
     ] })
   ] }) });
 }
-function Koerper({ site }) {
-  const { meta: meta3, inhalte } = site;
-  const zeigtHinweisband = meta3.module.includes("hinweisband");
-  const imMain = meta3.module.filter((t2) => t2 !== "hinweisband");
-  return /* @__PURE__ */ u3(S, { children: [
-    /* @__PURE__ */ u3("a", { class: "sprung", href: "#inhalt", children: "Zum Inhalt springen" }),
-    /* @__PURE__ */ u3(Kopf, { site }),
-    zeigtHinweisband ? /* @__PURE__ */ u3(Modul, { typ: "hinweisband", daten: inhalte.hinweisband }) : null,
-    /* @__PURE__ */ u3("main", { id: "inhalt", children: imMain.map((typ) => /* @__PURE__ */ u3(Modul, { typ, daten: inhalte[typ] }, typ)) }),
-    /* @__PURE__ */ u3(Fuss, { site })
+function Koerper({ site, route }) {
+  const { inhalte } = site;
+  const basis = basisVon(route);
+  const zeigtHinweisband = route.module.includes("hinweisband");
+  const imMain = route.module.filter((t3) => t3 !== "hinweisband");
+  const h1Traeger = route.istStart || route.module.includes("hero") ? null : imMain[0];
+  return /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: false }, children: [
+    /* @__PURE__ */ u4("a", { class: "sprung", href: "#inhalt", children: "Zum Inhalt springen" }),
+    /* @__PURE__ */ u4(Kopf, { site, route }),
+    zeigtHinweisband ? /* @__PURE__ */ u4(Modul, { typ: "hinweisband", daten: inhalte.hinweisband }) : null,
+    /* @__PURE__ */ u4("main", { id: "inhalt", children: imMain.map((typ) => /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: typ === h1Traeger }, children: /* @__PURE__ */ u4(Modul, { typ, daten: inhalte[typ] }) }, typ)) }),
+    /* @__PURE__ */ u4(Fuss, { site, route })
   ] });
+}
+
+// src/render/strukturdaten.ts
+function sauber(knoten) {
+  const raus = {};
+  for (const [schluessel, wert] of Object.entries(knoten)) {
+    if (wert === void 0 || wert === null) continue;
+    if (Array.isArray(wert) && wert.length === 0) continue;
+    raus[schluessel] = wert;
+  }
+  return raus;
+}
+var WOCHENTAG_URL = {
+  Montag: "https://schema.org/Monday",
+  Dienstag: "https://schema.org/Tuesday",
+  Mittwoch: "https://schema.org/Wednesday",
+  Donnerstag: "https://schema.org/Thursday",
+  Freitag: "https://schema.org/Friday",
+  Samstag: "https://schema.org/Saturday",
+  Sonntag: "https://schema.org/Sunday"
+};
+function endzeit(zeit, minuten) {
+  const treffer = /^(\d{1,2}):(\d{2})$/.exec(zeit);
+  if (!treffer || !Number.isFinite(minuten)) return void 0;
+  const gesamt = Number(treffer[1]) * 60 + Number(treffer[2]) + minuten;
+  const stunde = String(Math.floor(gesamt / 60) % 24).padStart(2, "0");
+  return `${stunde}:${String(gesamt % 60).padStart(2, "0")}`;
+}
+function strukturdaten(site, route) {
+  const { meta: meta3, inhalte } = site;
+  const url2 = (pfad = "") => `https://${meta3.domain}/${pfad.replace(/^\/+/, "")}`;
+  const id = (teil) => url2(`${route.istStart ? "" : route.pfad}#${teil}`);
+  const WEBSITE = url2("#website");
+  const BETRIEB = url2("#betrieb");
+  const PERSON = url2("#person");
+  const knoten = [];
+  const kontakt = inhalte.kontakt;
+  knoten.push(
+    sauber({
+      "@type": "WebSite",
+      "@id": WEBSITE,
+      url: url2(),
+      name: meta3.name,
+      inLanguage: meta3.sprache,
+      publisher: { "@id": BETRIEB }
+    })
+  );
+  if (kontakt?.person) {
+    knoten.push(
+      sauber({
+        "@type": "Person",
+        "@id": PERSON,
+        name: kontakt.person.name,
+        alternateName: kontakt.person.alternativName,
+        jobTitle: kontakt.person.rolle,
+        worksFor: { "@id": BETRIEB },
+        sameAs: meta3.sameAs
+      })
+    );
+  }
+  if (kontakt) {
+    const plzUndOrt = /^(\S+)\s+(.*)$/.exec(kontakt.ort);
+    knoten.push(
+      sauber({
+        "@type": "LocalBusiness",
+        "@id": BETRIEB,
+        name: kontakt.betrieb,
+        description: meta3.beschreibung,
+        url: url2(),
+        logo: url2(meta3.logo),
+        image: meta3.ogBild ? url2(meta3.ogBild) : void 0,
+        telephone: kontakt.telefon || void 0,
+        email: kontakt.email || void 0,
+        sameAs: meta3.sameAs,
+        founder: kontakt.person ? { "@id": PERSON } : void 0,
+        address: kontakt.anschriftOeffentlich && plzUndOrt ? {
+          "@type": "PostalAddress",
+          streetAddress: kontakt.strasse,
+          postalCode: plzUndOrt[1],
+          addressLocality: plzUndOrt[2],
+          addressCountry: "DE"
+        } : void 0,
+        areaServed: kontakt.gebiet.map((name) => ({ "@type": "Place", name }))
+      })
+    );
+  }
+  const kursplan = route.module.includes("kursplan") ? inhalte.kursplan : void 0;
+  if (kursplan) {
+    const ortId = /* @__PURE__ */ new Map();
+    for (const ort of kursplan.orte) {
+      const kennung = id(`ort-${ort.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`);
+      ortId.set(ort.name, kennung);
+      knoten.push(
+        sauber({
+          "@type": "SportsActivityLocation",
+          "@id": kennung,
+          name: ort.name,
+          url: ort.url,
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: ort.strasse,
+            postalCode: ort.plz,
+            addressLocality: ort.ort,
+            addressCountry: "DE"
+          }
+        })
+      );
+    }
+    const nachTitel = /* @__PURE__ */ new Map();
+    for (const kurs of kursplan.kurse) {
+      const liste = nachTitel.get(kurs.titel) ?? [];
+      liste.push(kurs);
+      nachTitel.set(kurs.titel, liste);
+    }
+    for (const [titel, kurse] of nachTitel) {
+      knoten.push(
+        sauber({
+          "@type": "Course",
+          "@id": id(`kurs-${titel.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`),
+          name: titel,
+          description: kursplan.einleitung ?? meta3.beschreibung,
+          inLanguage: meta3.sprache,
+          provider: { "@id": BETRIEB },
+          hasCourseInstance: kurse.map((kurs) => {
+            const minuten = Number.parseInt(kurs.dauer ?? "", 10);
+            const bis = endzeit(kurs.zeit, minuten);
+            const ort = kurs.ort ? ortId.get(kurs.ort) : void 0;
+            return sauber({
+              "@type": "CourseInstance",
+              name: `${titel} \xB7 ${kurs.tag} ${kurs.zeit}`,
+              courseMode: "onsite",
+              instructor: kontakt?.person ? { "@id": PERSON } : void 0,
+              location: ort ? { "@id": ort } : void 0,
+              courseSchedule: sauber({
+                "@type": "Schedule",
+                byDay: WOCHENTAG_URL[kurs.tag],
+                startTime: kurs.zeit,
+                endTime: bis,
+                duration: Number.isFinite(minuten) ? `PT${minuten}M` : void 0,
+                repeatFrequency: "P1W",
+                scheduleTimezone: "Europe/Berlin"
+              })
+            });
+          })
+        })
+      );
+    }
+  }
+  const faq = route.module.includes("faq") ? inhalte.faq : void 0;
+  if (faq) {
+    knoten.push({
+      "@type": "FAQPage",
+      "@id": id("faq"),
+      mainEntity: faq.fragen.map((frage) => ({
+        "@type": "Question",
+        name: frage.frage,
+        acceptedAnswer: { "@type": "Answer", text: frage.antwort }
+      }))
+    });
+  }
+  const team = route.module.includes("team") ? inhalte.team : void 0;
+  if (team) {
+    for (const person of team.personen) {
+      knoten.push(
+        sauber({
+          "@type": "Person",
+          name: person.name,
+          jobTitle: person.rolle || void 0,
+          description: person.satz || void 0,
+          image: url2(person.bild.pfad),
+          worksFor: { "@id": BETRIEB }
+        })
+      );
+    }
+  }
+  const hero = route.module.includes("hero") ? inhalte.hero : void 0;
+  knoten.push(
+    sauber({
+      "@type": "WebPage",
+      "@id": id("seite"),
+      url: url2(route.pfad),
+      name: route.titel,
+      description: route.beschreibung,
+      isPartOf: { "@id": WEBSITE },
+      about: kontakt ? { "@id": BETRIEB } : void 0,
+      inLanguage: meta3.sprache,
+      primaryImageOfPage: hero ? url2(hero.bild.pfad) : void 0
+    })
+  );
+  if (!route.istStart) {
+    knoten.push({
+      "@type": "BreadcrumbList",
+      "@id": id("pfad"),
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: meta3.name, item: url2() },
+        { "@type": "ListItem", position: 2, name: route.titel, item: url2(route.pfad) }
+      ]
+    });
+  }
+  return knoten;
 }
 
 // src/render/styles.ts
@@ -1062,13 +1469,13 @@ var MISCHUNG = {
   linie: 0.14
 };
 var prozent = (anteil) => `${Math.round(anteil * 100)}%`;
-function stylesheet(f4) {
+function stylesheet(f5) {
   return `
 :root {
-  --primaer: ${f4.primaer};
-  --akzent: ${f4.akzent};
-  --grund: ${f4.grund};
-  --tinte: ${f4.tinte};
+  --primaer: ${f5.primaer};
+  --akzent: ${f5.akzent};
+  --grund: ${f5.grund};
+  --tinte: ${f5.tinte};
   --flaeche: #ffffff;
   --linie: color-mix(in srgb, var(--tinte) ${prozent(MISCHUNG.linie)}, transparent);
   /* 70 %, nicht weniger: Darunter faellt der gedaempfte Ton unter 4,5:1 \u2014
@@ -1182,7 +1589,10 @@ p { margin: 0; }
 .abschnitt { padding-block: clamp(3rem, 8vw, 5.5rem); }
 .abschnitt + .abschnitt { border-top: 1px solid var(--linie); }
 .abschnitt-kopf { display: flex; flex-direction: column; gap: 0.9rem; margin-bottom: 2.4rem; }
-.abschnitt-kopf h2 { font-size: clamp(1.65rem, 4vw, 2.35rem); }
+/* h1 mitgefuehrt: Auf einer eigenen Seite traegt der Abschnittskopf die
+   Dokumentueberschrift (siehe kontext.ts). Ohne diese Regel faellt die
+   Groesse auf den Browser-Standard zurueck und der Kopf springt. */
+.abschnitt-kopf h1, .abschnitt-kopf h2 { font-size: clamp(1.65rem, 4vw, 2.35rem); }
 .abschnitt-kopf p { color: var(--gedaempft); max-width: 62ch; }
 .marke {
   font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
@@ -1367,6 +1777,9 @@ td.zahl, th.zahl { text-align: right; white-space: nowrap; }
 
 /* ---------- Rechtliches ---------- */
 .rechtliches { background: var(--flaeche); }
+/* Kleiner, solange der Rechtstext ein Abschnitt unten auf der Startseite
+   ist. Als eigene Seite ist seine Ueberschrift der Seitentitel und behaelt
+   die normale Groesse von oben \u2014 deshalb hier nur h2. */
 .rechtliches .abschnitt-kopf h2 { font-size: 1.35rem; }
 .rechtliches dl { display: grid; grid-template-columns: minmax(10rem, auto) 1fr; gap: 0.45rem 1.5rem; margin: 0; max-width: 58rem; }
 .rechtliches dt { font-weight: 700; font-size: 0.9rem; }
@@ -1404,17 +1817,33 @@ function cssPruefen(css) {
     );
   }
 }
-function seiteRendern(site) {
+function jsonLdPruefen(text2) {
+  if (/[<>]/.test(text2)) {
+    throw new Error(
+      "Strukturdaten enthalten '<' oder '>'. Der script-Block koennte verlassen werden \u2014 Render abgebrochen."
+    );
+  }
+}
+function strukturdatenText(site, route) {
+  const text2 = JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": strukturdaten(site, route)
+  }).replace(/</g, "\\u003c").replace(/>/g, "\\u003e").replace(/&/g, "\\u0026").replace(new RegExp(String.fromCharCode(8232), "g"), "\\u2028").replace(new RegExp(String.fromCharCode(8233), "g"), "\\u2029");
+  jsonLdPruefen(text2);
+  return text2;
+}
+function seiteRendern(site, route = routen(site)[0]) {
   const css = stylesheet(site.meta.farben);
   cssPruefen(css);
-  const kopf = K2(/* @__PURE__ */ u3(Kopfbereich, { site }));
-  const koerper = K2(/* @__PURE__ */ u3(Koerper, { site }));
+  const kopf = K2(/* @__PURE__ */ u4(Kopfbereich, { site, route }));
+  const koerper = K2(/* @__PURE__ */ u4(Koerper, { site, route }));
   return [
     "<!doctype html>",
     `<html lang="${site.meta.sprache}">`,
     "<head>",
     kopf,
     `<style>${css}</style>`,
+    `<script type="application/ld+json">${strukturdatenText(site, route)}</script>`,
     "</head>",
     "<body>",
     koerper,
@@ -1422,6 +1851,9 @@ function seiteRendern(site) {
     "</html>",
     ""
   ].join("\n");
+}
+function seitenRendern(site) {
+  return routen(site).map((route) => ({ pfad: route.pfad, html: seiteRendern(site, route) }));
 }
 
 // node_modules/zod/v4/classic/external.js
@@ -1971,10 +2403,10 @@ function $constructor(name, initializer3, params) {
     initializer3(inst, def);
     const proto = _3.prototype;
     const keys = Object.keys(proto);
-    for (let i3 = 0; i3 < keys.length; i3++) {
-      const k3 = keys[i3];
-      if (!(k3 in inst)) {
-        inst[k3] = proto[k3].bind(inst);
+    for (let i4 = 0; i4 < keys.length; i4++) {
+      const k4 = keys[i4];
+      if (!(k4 in inst)) {
+        inst[k4] = proto[k4].bind(inst);
       }
     }
   }
@@ -2104,8 +2536,8 @@ function assertNever(_x) {
 function assert(_3) {
 }
 function getEnumValues(entries) {
-  const numericValues = Object.values(entries).filter((v3) => typeof v3 === "number");
-  const values = Object.entries(entries).filter(([k3, _3]) => numericValues.indexOf(+k3) === -1).map(([_3, v3]) => v3);
+  const numericValues = Object.values(entries).filter((v4) => typeof v4 === "number");
+  const values = Object.entries(entries).filter(([k4, _3]) => numericValues.indexOf(+k4) === -1).map(([_3, v4]) => v4);
   return values;
 }
 function joinValues(array2, separator = "|") {
@@ -2159,9 +2591,9 @@ function defineLazy(object2, key, getter) {
       }
       return value;
     },
-    set(v3) {
+    set(v4) {
       Object.defineProperty(object2, key, {
-        value: v3
+        value: v4
         // configurable: true,
       });
     },
@@ -2200,8 +2632,8 @@ function promiseAllObject(promisesObj) {
   const promises = keys.map((key) => promisesObj[key]);
   return Promise.all(promises).then((results) => {
     const resolvedObj = {};
-    for (let i3 = 0; i3 < keys.length; i3++) {
-      resolvedObj[keys[i3]] = results[i3];
+    for (let i4 = 0; i4 < keys.length; i4++) {
+      resolvedObj[keys[i4]] = results[i4];
     }
     return resolvedObj;
   });
@@ -2209,7 +2641,7 @@ function promiseAllObject(promisesObj) {
 function randomString(length = 10) {
   const chars = "abcdefghijklmnopqrstuvwxyz";
   let str = "";
-  for (let i3 = 0; i3 < length; i3++) {
+  for (let i4 = 0; i4 < length; i4++) {
     str += chars[Math.floor(Math.random() * chars.length)];
   }
   return str;
@@ -2240,10 +2672,10 @@ var allowsEval = /* @__PURE__ */ cached(() => {
     return false;
   }
 });
-function isPlainObject(o3) {
-  if (isObject(o3) === false)
+function isPlainObject(o4) {
+  if (isObject(o4) === false)
     return false;
-  const ctor = o3.constructor;
+  const ctor = o4.constructor;
   if (ctor === void 0)
     return true;
   if (typeof ctor !== "function")
@@ -2256,16 +2688,16 @@ function isPlainObject(o3) {
   }
   return true;
 }
-function shallowClone(o3) {
-  if (isPlainObject(o3))
-    return { ...o3 };
-  if (Array.isArray(o3))
-    return [...o3];
-  if (o3 instanceof Map)
-    return new Map(o3);
-  if (o3 instanceof Set)
-    return new Set(o3);
-  return o3;
+function shallowClone(o4) {
+  if (isPlainObject(o4))
+    return { ...o4 };
+  if (Array.isArray(o4))
+    return [...o4];
+  if (o4 instanceof Map)
+    return new Map(o4);
+  if (o4 instanceof Set)
+    return new Set(o4);
+  return o4;
 }
 function numKeys(data) {
   let keyCount = 0;
@@ -2277,8 +2709,8 @@ function numKeys(data) {
   return keyCount;
 }
 var getParsedType = (data) => {
-  const t2 = typeof data;
-  switch (t2) {
+  const t3 = typeof data;
+  switch (t3) {
     case "undefined":
       return "undefined";
     case "string":
@@ -2317,7 +2749,7 @@ var getParsedType = (data) => {
       }
       return "object";
     default:
-      throw new Error(`Unknown data type: ${t2}`);
+      throw new Error(`Unknown data type: ${t3}`);
   }
 };
 var propertyKeyTypes = /* @__PURE__ */ new Set(["string", "number", "symbol"]);
@@ -2395,8 +2827,8 @@ function stringifyPrimitive(value) {
   return `${value}`;
 }
 function optionalKeys(shape) {
-  return Object.keys(shape).filter((k3) => {
-    return shape[k3]._zod.optin === "optional" && shape[k3]._zod.optout === "optional";
+  return Object.keys(shape).filter((k4) => {
+    return shape[k4]._zod.optin === "optional" && shape[k4]._zod.optout === "optional";
   });
 }
 var NUMBER_FORMAT_RANGES = {
@@ -2496,13 +2928,13 @@ function safeExtend(schema, shape) {
   });
   return clone(schema, def);
 }
-function merge(a3, b3) {
-  if (a3._zod.def.checks?.length) {
+function merge(a4, b3) {
+  if (a4._zod.def.checks?.length) {
     throw new Error(".merge() cannot be used on object schemas containing refinements. Use .safeExtend() instead.");
   }
-  const def = mergeDefs(a3._zod.def, {
+  const def = mergeDefs(a4._zod.def, {
     get shape() {
-      const _shape = { ...a3._zod.def.shape, ...b3._zod.def.shape };
+      const _shape = { ...a4._zod.def.shape, ...b3._zod.def.shape };
       assignProp(this, "shape", _shape);
       return _shape;
     },
@@ -2511,7 +2943,7 @@ function merge(a3, b3) {
     },
     checks: b3._zod.def.checks ?? []
   });
-  return clone(a3, def);
+  return clone(a4, def);
 }
 function partial(Class2, schema, mask) {
   const currDef = schema._zod.def;
@@ -2582,21 +3014,21 @@ function required(Class2, schema, mask) {
   });
   return clone(schema, def);
 }
-function aborted(x3, startIndex = 0) {
-  if (x3.aborted === true)
+function aborted(x4, startIndex = 0) {
+  if (x4.aborted === true)
     return true;
-  for (let i3 = startIndex; i3 < x3.issues.length; i3++) {
-    if (x3.issues[i3]?.continue !== true) {
+  for (let i4 = startIndex; i4 < x4.issues.length; i4++) {
+    if (x4.issues[i4]?.continue !== true) {
       return true;
     }
   }
   return false;
 }
-function explicitlyAborted(x3, startIndex = 0) {
-  if (x3.aborted === true)
+function explicitlyAborted(x4, startIndex = 0) {
+  if (x4.aborted === true)
     return true;
-  for (let i3 = startIndex; i3 < x3.issues.length; i3++) {
-    if (x3.issues[i3]?.continue === false) {
+  for (let i4 = startIndex; i4 < x4.issues.length; i4++) {
+    if (x4.issues[i4]?.continue === false) {
       return true;
     }
   }
@@ -2640,8 +3072,8 @@ function getLengthableOrigin(input) {
   return "unknown";
 }
 function parsedType(data) {
-  const t2 = typeof data;
-  switch (t2) {
+  const t3 = typeof data;
+  switch (t3) {
     case "number": {
       return Number.isNaN(data) ? "nan" : "number";
     }
@@ -2658,7 +3090,7 @@ function parsedType(data) {
       }
     }
   }
-  return t2;
+  return t3;
 }
 function issue(...args) {
   const [iss, input, inst] = args;
@@ -2673,22 +3105,22 @@ function issue(...args) {
   return { ...iss };
 }
 function cleanEnum(obj) {
-  return Object.entries(obj).filter(([k3, _3]) => {
-    return Number.isNaN(Number.parseInt(k3, 10));
+  return Object.entries(obj).filter(([k4, _3]) => {
+    return Number.isNaN(Number.parseInt(k4, 10));
   }).map((el) => el[1]);
 }
 function base64ToUint8Array(base643) {
   const binaryString = atob(base643);
   const bytes = new Uint8Array(binaryString.length);
-  for (let i3 = 0; i3 < binaryString.length; i3++) {
-    bytes[i3] = binaryString.charCodeAt(i3);
+  for (let i4 = 0; i4 < binaryString.length; i4++) {
+    bytes[i4] = binaryString.charCodeAt(i4);
   }
   return bytes;
 }
 function uint8ArrayToBase64(bytes) {
   let binaryString = "";
-  for (let i3 = 0; i3 < bytes.length; i3++) {
-    binaryString += String.fromCharCode(bytes[i3]);
+  for (let i4 = 0; i4 < bytes.length; i4++) {
+    binaryString += String.fromCharCode(bytes[i4]);
   }
   return btoa(binaryString);
 }
@@ -2706,8 +3138,8 @@ function hexToUint8Array(hex3) {
     throw new Error("Invalid hex string length");
   }
   const bytes = new Uint8Array(cleanHex.length / 2);
-  for (let i3 = 0; i3 < cleanHex.length; i3 += 2) {
-    bytes[i3 / 2] = Number.parseInt(cleanHex.slice(i3, i3 + 2), 16);
+  for (let i4 = 0; i4 < cleanHex.length; i4 += 2) {
+    bytes[i4 / 2] = Number.parseInt(cleanHex.slice(i4, i4 + 2), 16);
   }
   return bytes;
 }
@@ -2767,10 +3199,10 @@ function formatError(error51, mapper = (issue2) => issue2.message) {
           fieldErrors._errors.push(mapper(issue2));
         } else {
           let curr = fieldErrors;
-          let i3 = 0;
-          while (i3 < fullpath.length) {
-            const el = fullpath[i3];
-            const terminal = i3 === fullpath.length - 1;
+          let i4 = 0;
+          while (i4 < fullpath.length) {
+            const el = fullpath[i4];
+            const terminal = i4 === fullpath.length - 1;
             if (!terminal) {
               curr[el] = curr[el] || { _errors: [] };
             } else {
@@ -2778,7 +3210,7 @@ function formatError(error51, mapper = (issue2) => issue2.message) {
               curr[el]._errors.push(mapper(issue2));
             }
             curr = curr[el];
-            i3++;
+            i4++;
           }
         }
       }
@@ -2805,10 +3237,10 @@ function treeifyError(error51, mapper = (issue2) => issue2.message) {
           continue;
         }
         let curr = result;
-        let i3 = 0;
-        while (i3 < fullpath.length) {
-          const el = fullpath[i3];
-          const terminal = i3 === fullpath.length - 1;
+        let i4 = 0;
+        while (i4 < fullpath.length) {
+          const el = fullpath[i4];
+          const terminal = i4 === fullpath.length - 1;
           if (typeof el === "string") {
             curr.properties ?? (curr.properties = {});
             (_a3 = curr.properties)[el] ?? (_a3[el] = { errors: [] });
@@ -2821,7 +3253,7 @@ function treeifyError(error51, mapper = (issue2) => issue2.message) {
           if (terminal) {
             curr.errors.push(mapper(issue2));
           }
-          i3++;
+          i4++;
         }
       }
     }
@@ -2849,7 +3281,7 @@ function toDotPath(_path) {
 }
 function prettifyError(error51) {
   const lines = [];
-  const issues = [...error51.issues].sort((a3, b3) => (a3.path ?? []).length - (b3.path ?? []).length);
+  const issues = [...error51.issues].sort((a4, b3) => (a4.path ?? []).length - (b3.path ?? []).length);
   for (const issue2 of issues) {
     lines.push(`\u2716 ${issue2.message}`);
     if (issue2.path?.length)
@@ -2866,9 +3298,9 @@ var _parse = (_Err) => (schema, value, _ctx, _params) => {
     throw new $ZodAsyncError();
   }
   if (result.issues.length) {
-    const e2 = new (_params?.Err ?? _Err)(result.issues.map((iss) => finalizeIssue(iss, ctx, config())));
-    captureStackTrace(e2, _params?.callee);
-    throw e2;
+    const e3 = new (_params?.Err ?? _Err)(result.issues.map((iss) => finalizeIssue(iss, ctx, config())));
+    captureStackTrace(e3, _params?.callee);
+    throw e3;
   }
   return result.value;
 };
@@ -2879,9 +3311,9 @@ var _parseAsync = (_Err) => async (schema, value, _ctx, params) => {
   if (result instanceof Promise)
     result = await result;
   if (result.issues.length) {
-    const e2 = new (params?.Err ?? _Err)(result.issues.map((iss) => finalizeIssue(iss, ctx, config())));
-    captureStackTrace(e2, params?.callee);
-    throw e2;
+    const e3 = new (params?.Err ?? _Err)(result.issues.map((iss) => finalizeIssue(iss, ctx, config())));
+    captureStackTrace(e3, params?.callee);
+    throw e3;
   }
   return result.value;
 };
@@ -3673,9 +4105,9 @@ var Doc = class {
       return;
     }
     const content = arg;
-    const lines = content.split("\n").filter((x3) => x3);
-    const minIndent = Math.min(...lines.map((x3) => x3.length - x3.trimStart().length));
-    const dedented = lines.map((x3) => x3.slice(minIndent)).map((x3) => " ".repeat(this.indent * 2) + x3);
+    const lines = content.split("\n").filter((x4) => x4);
+    const minIndent = Math.min(...lines.map((x4) => x4.length - x4.trimStart().length));
+    const dedented = lines.map((x4) => x4.slice(minIndent)).map((x4) => " ".repeat(this.indent * 2) + x4);
     for (const line of dedented) {
       this.content.push(line);
     }
@@ -3684,7 +4116,7 @@ var Doc = class {
     const F2 = Function;
     const args = this?.args;
     const content = this?.content ?? [``];
-    const lines = [...content.map((x3) => `  ${x3}`)];
+    const lines = [...content.map((x4) => `  ${x4}`)];
     return new F2(...args, lines.join("\n"));
   }
 };
@@ -3798,10 +4230,10 @@ var $ZodType = /* @__PURE__ */ $constructor("$ZodType", (inst, def) => {
   defineLazy(inst, "~standard", () => ({
     validate: (value) => {
       try {
-        const r3 = safeParse(inst, value);
-        return r3.success ? { value: r3.data } : { issues: r3.error?.issues };
+        const r4 = safeParse(inst, value);
+        return r4.success ? { value: r4.data } : { issues: r4.error?.issues };
       } catch (_3) {
-        return safeParseAsync(inst, value).then((r3) => r3.success ? { value: r3.data } : { issues: r3.error?.issues });
+        return safeParseAsync(inst, value).then((r4) => r4.success ? { value: r4.data } : { issues: r4.error?.issues });
       }
     },
     vendor: "zod",
@@ -3848,10 +4280,10 @@ var $ZodUUID = /* @__PURE__ */ $constructor("$ZodUUID", (inst, def) => {
       v7: 7,
       v8: 8
     };
-    const v3 = versionMap[def.version];
-    if (v3 === void 0)
+    const v4 = versionMap[def.version];
+    if (v4 === void 0)
       throw new Error(`Invalid UUID version: "${def.version}"`);
-    def.pattern ?? (def.pattern = uuid(v3));
+    def.pattern ?? (def.pattern = uuid(v4));
   } else
     def.pattern ?? (def.pattern = uuid());
   $ZodStringFormat.init(inst, def);
@@ -4061,7 +4493,7 @@ var $ZodBase64 = /* @__PURE__ */ $constructor("$ZodBase64", (inst, def) => {
 function isValidBase64URL(data) {
   if (!base64url.test(data))
     return false;
-  const base643 = data.replace(/[-_]/g, (c3) => c3 === "-" ? "+" : "/");
+  const base643 = data.replace(/[-_]/g, (c4) => c4 === "-" ? "+" : "/");
   const padded = base643.padEnd(Math.ceil(base643.length / 4) * 4, "=");
   return isValidBase64(padded);
 }
@@ -4335,16 +4767,16 @@ var $ZodArray = /* @__PURE__ */ $constructor("$ZodArray", (inst, def) => {
     }
     payload.value = Array(input.length);
     const proms = [];
-    for (let i3 = 0; i3 < input.length; i3++) {
-      const item = input[i3];
+    for (let i4 = 0; i4 < input.length; i4++) {
+      const item = input[i4];
       const result = def.element._zod.run({
         value: item,
         issues: []
       }, ctx);
       if (result instanceof Promise) {
-        proms.push(result.then((result2) => handleArrayResult(result2, payload, i3)));
+        proms.push(result.then((result2) => handleArrayResult(result2, payload, i4)));
       } else {
-        handleArrayResult(result, payload, i3);
+        handleArrayResult(result, payload, i4);
       }
     }
     if (proms.length) {
@@ -4382,9 +4814,9 @@ function handlePropertyResult(result, final, key, input, isOptionalIn, isOptiona
 }
 function normalizeDef(def) {
   const keys = Object.keys(def.shape);
-  for (const k3 of keys) {
-    if (!def.shape?.[k3]?._zod?.traits?.has("$ZodType")) {
-      throw new Error(`Invalid element at key "${k3}": expected a Zod schema`);
+  for (const k4 of keys) {
+    if (!def.shape?.[k4]?._zod?.traits?.has("$ZodType")) {
+      throw new Error(`Invalid element at key "${k4}": expected a Zod schema`);
     }
   }
   const okeys = optionalKeys(def.shape);
@@ -4400,7 +4832,7 @@ function handleCatchall(proms, input, payload, ctx, def, inst) {
   const unrecognized = [];
   const keySet = def.keySet;
   const _catchall = def.catchall._zod;
-  const t2 = _catchall.def.type;
+  const t3 = _catchall.def.type;
   const isOptionalIn = _catchall.optin === "optional";
   const isOptionalOut = _catchall.optout === "optional";
   for (const key in input) {
@@ -4408,15 +4840,15 @@ function handleCatchall(proms, input, payload, ctx, def, inst) {
       continue;
     if (keySet.has(key))
       continue;
-    if (t2 === "never") {
+    if (t3 === "never") {
       unrecognized.push(key);
       continue;
     }
-    const r3 = _catchall.run({ value: input[key], issues: [] }, ctx);
-    if (r3 instanceof Promise) {
-      proms.push(r3.then((r4) => handlePropertyResult(r4, payload, key, input, isOptionalIn, isOptionalOut)));
+    const r4 = _catchall.run({ value: input[key], issues: [] }, ctx);
+    if (r4 instanceof Promise) {
+      proms.push(r4.then((r5) => handlePropertyResult(r5, payload, key, input, isOptionalIn, isOptionalOut)));
     } else {
-      handlePropertyResult(r3, payload, key, input, isOptionalIn, isOptionalOut);
+      handlePropertyResult(r4, payload, key, input, isOptionalIn, isOptionalOut);
     }
   }
   if (unrecognized.length) {
@@ -4456,8 +4888,8 @@ var $ZodObject = /* @__PURE__ */ $constructor("$ZodObject", (inst, def) => {
       const field = shape[key]._zod;
       if (field.values) {
         propValues[key] ?? (propValues[key] = /* @__PURE__ */ new Set());
-        for (const v3 of field.values)
-          propValues[key].add(v3);
+        for (const v4 of field.values)
+          propValues[key].add(v4);
       }
     }
     return propValues;
@@ -4484,11 +4916,11 @@ var $ZodObject = /* @__PURE__ */ $constructor("$ZodObject", (inst, def) => {
       const el = shape[key];
       const isOptionalIn = el._zod.optin === "optional";
       const isOptionalOut = el._zod.optout === "optional";
-      const r3 = el._zod.run({ value: input[key], issues: [] }, ctx);
-      if (r3 instanceof Promise) {
-        proms.push(r3.then((r4) => handlePropertyResult(r4, payload, key, input, isOptionalIn, isOptionalOut)));
+      const r4 = el._zod.run({ value: input[key], issues: [] }, ctx);
+      if (r4 instanceof Promise) {
+        proms.push(r4.then((r5) => handlePropertyResult(r5, payload, key, input, isOptionalIn, isOptionalOut)));
       } else {
-        handlePropertyResult(r3, payload, key, input, isOptionalIn, isOptionalOut);
+        handlePropertyResult(r4, payload, key, input, isOptionalIn, isOptionalOut);
       }
     }
     if (!catchall) {
@@ -4505,8 +4937,8 @@ var $ZodObjectJIT = /* @__PURE__ */ $constructor("$ZodObjectJIT", (inst, def) =>
     const doc = new Doc(["shape", "payload", "ctx"]);
     const normalized = _normalized.value;
     const parseStr = (key) => {
-      const k3 = esc(key);
-      return `shape[${k3}]._zod.run({ value: input[${k3}], issues: [] }, ctx)`;
+      const k4 = esc(key);
+      return `shape[${k4}]._zod.run({ value: input[${k4}], issues: [] }, ctx)`;
     };
     doc.write(`const input = payload.value;`);
     const ids = /* @__PURE__ */ Object.create(null);
@@ -4517,7 +4949,7 @@ var $ZodObjectJIT = /* @__PURE__ */ $constructor("$ZodObjectJIT", (inst, def) =>
     doc.write(`const newResult = {};`);
     for (const key of normalized.keys) {
       const id = ids[key];
-      const k3 = esc(key);
+      const k4 = esc(key);
       const schema = shape[key];
       const isOptionalIn = schema?._zod?.optin === "optional";
       const isOptionalOut = schema?._zod?.optout === "optional";
@@ -4525,30 +4957,30 @@ var $ZodObjectJIT = /* @__PURE__ */ $constructor("$ZodObjectJIT", (inst, def) =>
       if (isOptionalIn && isOptionalOut) {
         doc.write(`
         if (${id}.issues.length) {
-          if (${k3} in input) {
+          if (${k4} in input) {
             payload.issues = payload.issues.concat(${id}.issues.map(iss => ({
               ...iss,
-              path: iss.path ? [${k3}, ...iss.path] : [${k3}]
+              path: iss.path ? [${k4}, ...iss.path] : [${k4}]
             })));
           }
         }
         
         if (${id}.value === undefined) {
-          if (${k3} in input) {
-            newResult[${k3}] = undefined;
+          if (${k4} in input) {
+            newResult[${k4}] = undefined;
           }
         } else {
-          newResult[${k3}] = ${id}.value;
+          newResult[${k4}] = ${id}.value;
         }
         
       `);
       } else if (!isOptionalIn) {
         doc.write(`
-        const ${id}_present = ${k3} in input;
+        const ${id}_present = ${k4} in input;
         if (${id}.issues.length) {
           payload.issues = payload.issues.concat(${id}.issues.map(iss => ({
             ...iss,
-            path: iss.path ? [${k3}, ...iss.path] : [${k3}]
+            path: iss.path ? [${k4}, ...iss.path] : [${k4}]
           })));
         }
         if (!${id}_present && !${id}.issues.length) {
@@ -4556,15 +4988,15 @@ var $ZodObjectJIT = /* @__PURE__ */ $constructor("$ZodObjectJIT", (inst, def) =>
             code: "invalid_type",
             expected: "nonoptional",
             input: undefined,
-            path: [${k3}]
+            path: [${k4}]
           });
         }
 
         if (${id}_present) {
           if (${id}.value === undefined) {
-            newResult[${k3}] = undefined;
+            newResult[${k4}] = undefined;
           } else {
-            newResult[${k3}] = ${id}.value;
+            newResult[${k4}] = ${id}.value;
           }
         }
 
@@ -4574,16 +5006,16 @@ var $ZodObjectJIT = /* @__PURE__ */ $constructor("$ZodObjectJIT", (inst, def) =>
         if (${id}.issues.length) {
           payload.issues = payload.issues.concat(${id}.issues.map(iss => ({
             ...iss,
-            path: iss.path ? [${k3}, ...iss.path] : [${k3}]
+            path: iss.path ? [${k4}, ...iss.path] : [${k4}]
           })));
         }
         
         if (${id}.value === undefined) {
-          if (${k3} in input) {
-            newResult[${k3}] = undefined;
+          if (${k4} in input) {
+            newResult[${k4}] = undefined;
           }
         } else {
-          newResult[${k3}] = ${id}.value;
+          newResult[${k4}] = ${id}.value;
         }
         
       `);
@@ -4631,7 +5063,7 @@ function handleUnionResults(results, final, inst, ctx) {
       return final;
     }
   }
-  const nonaborted = results.filter((r3) => !aborted(r3));
+  const nonaborted = results.filter((r4) => !aborted(r4));
   if (nonaborted.length === 1) {
     final.value = nonaborted[0].value;
     return nonaborted[0];
@@ -4646,18 +5078,18 @@ function handleUnionResults(results, final, inst, ctx) {
 }
 var $ZodUnion = /* @__PURE__ */ $constructor("$ZodUnion", (inst, def) => {
   $ZodType.init(inst, def);
-  defineLazy(inst._zod, "optin", () => def.options.some((o3) => o3._zod.optin === "optional") ? "optional" : void 0);
-  defineLazy(inst._zod, "optout", () => def.options.some((o3) => o3._zod.optout === "optional") ? "optional" : void 0);
+  defineLazy(inst._zod, "optin", () => def.options.some((o4) => o4._zod.optin === "optional") ? "optional" : void 0);
+  defineLazy(inst._zod, "optout", () => def.options.some((o4) => o4._zod.optout === "optional") ? "optional" : void 0);
   defineLazy(inst._zod, "values", () => {
-    if (def.options.every((o3) => o3._zod.values)) {
+    if (def.options.every((o4) => o4._zod.values)) {
       return new Set(def.options.flatMap((option) => Array.from(option._zod.values)));
     }
     return void 0;
   });
   defineLazy(inst._zod, "pattern", () => {
-    if (def.options.every((o3) => o3._zod.pattern)) {
-      const patterns = def.options.map((o3) => o3._zod.pattern);
-      return new RegExp(`^(${patterns.map((p3) => cleanRegex(p3.source)).join("|")})$`);
+    if (def.options.every((o4) => o4._zod.pattern)) {
+      const patterns = def.options.map((o4) => o4._zod.pattern);
+      return new RegExp(`^(${patterns.map((p4) => cleanRegex(p4.source)).join("|")})$`);
     }
     return void 0;
   });
@@ -4690,7 +5122,7 @@ var $ZodUnion = /* @__PURE__ */ $constructor("$ZodUnion", (inst, def) => {
   };
 });
 function handleExclusiveUnionResults(results, final, inst, ctx) {
-  const successes = results.filter((r3) => r3.issues.length === 0);
+  const successes = results.filter((r4) => r4.issues.length === 0);
   if (successes.length === 1) {
     final.value = successes[0].value;
     return final;
@@ -4752,11 +5184,11 @@ var $ZodDiscriminatedUnion = /* @__PURE__ */ $constructor("$ZodDiscriminatedUnio
       const pv = option._zod.propValues;
       if (!pv || Object.keys(pv).length === 0)
         throw new Error(`Invalid discriminated union option at index "${def.options.indexOf(option)}"`);
-      for (const [k3, v3] of Object.entries(pv)) {
-        if (!propValues[k3])
-          propValues[k3] = /* @__PURE__ */ new Set();
-        for (const val of v3) {
-          propValues[k3].add(val);
+      for (const [k4, v4] of Object.entries(pv)) {
+        if (!propValues[k4])
+          propValues[k4] = /* @__PURE__ */ new Set();
+        for (const val of v4) {
+          propValues[k4].add(val);
         }
       }
     }
@@ -4765,15 +5197,15 @@ var $ZodDiscriminatedUnion = /* @__PURE__ */ $constructor("$ZodDiscriminatedUnio
   const disc = cached(() => {
     const opts = def.options;
     const map2 = /* @__PURE__ */ new Map();
-    for (const o3 of opts) {
-      const values = o3._zod.propValues?.[def.discriminator];
+    for (const o4 of opts) {
+      const values = o4._zod.propValues?.[def.discriminator];
       if (!values || values.size === 0)
-        throw new Error(`Invalid discriminated union option at index "${def.options.indexOf(o3)}"`);
-      for (const v3 of values) {
-        if (map2.has(v3)) {
-          throw new Error(`Duplicate discriminator value "${String(v3)}"`);
+        throw new Error(`Invalid discriminated union option at index "${def.options.indexOf(o4)}"`);
+      for (const v4 of values) {
+        if (map2.has(v4)) {
+          throw new Error(`Duplicate discriminator value "${String(v4)}"`);
         }
-        map2.set(v3, o3);
+        map2.set(v4, o4);
       }
     }
     return map2;
@@ -4824,19 +5256,19 @@ var $ZodIntersection = /* @__PURE__ */ $constructor("$ZodIntersection", (inst, d
     return handleIntersectionResults(payload, left, right);
   };
 });
-function mergeValues(a3, b3) {
-  if (a3 === b3) {
-    return { valid: true, data: a3 };
+function mergeValues(a4, b3) {
+  if (a4 === b3) {
+    return { valid: true, data: a4 };
   }
-  if (a3 instanceof Date && b3 instanceof Date && +a3 === +b3) {
-    return { valid: true, data: a3 };
+  if (a4 instanceof Date && b3 instanceof Date && +a4 === +b3) {
+    return { valid: true, data: a4 };
   }
-  if (isPlainObject(a3) && isPlainObject(b3)) {
+  if (isPlainObject(a4) && isPlainObject(b3)) {
     const bKeys = Object.keys(b3);
-    const sharedKeys = Object.keys(a3).filter((key) => bKeys.indexOf(key) !== -1);
-    const newObj = { ...a3, ...b3 };
+    const sharedKeys = Object.keys(a4).filter((key) => bKeys.indexOf(key) !== -1);
+    const newObj = { ...a4, ...b3 };
     for (const key of sharedKeys) {
-      const sharedValue = mergeValues(a3[key], b3[key]);
+      const sharedValue = mergeValues(a4[key], b3[key]);
       if (!sharedValue.valid) {
         return {
           valid: false,
@@ -4847,13 +5279,13 @@ function mergeValues(a3, b3) {
     }
     return { valid: true, data: newObj };
   }
-  if (Array.isArray(a3) && Array.isArray(b3)) {
-    if (a3.length !== b3.length) {
+  if (Array.isArray(a4) && Array.isArray(b3)) {
+    if (a4.length !== b3.length) {
       return { valid: false, mergeErrorPath: [] };
     }
     const newArray = [];
-    for (let index = 0; index < a3.length; index++) {
-      const itemA = a3[index];
+    for (let index = 0; index < a4.length; index++) {
+      const itemA = a4[index];
       const itemB = b3[index];
       const sharedValue = mergeValues(itemA, itemB);
       if (!sharedValue.valid) {
@@ -4874,10 +5306,10 @@ function handleIntersectionResults(result, left, right) {
   for (const iss of left.issues) {
     if (iss.code === "unrecognized_keys") {
       unrecIssue ?? (unrecIssue = iss);
-      for (const k3 of iss.keys) {
-        if (!unrecKeys.has(k3))
-          unrecKeys.set(k3, {});
-        unrecKeys.get(k3).l = true;
+      for (const k4 of iss.keys) {
+        if (!unrecKeys.has(k4))
+          unrecKeys.set(k4, {});
+        unrecKeys.get(k4).l = true;
       }
     } else {
       result.issues.push(iss);
@@ -4885,16 +5317,16 @@ function handleIntersectionResults(result, left, right) {
   }
   for (const iss of right.issues) {
     if (iss.code === "unrecognized_keys") {
-      for (const k3 of iss.keys) {
-        if (!unrecKeys.has(k3))
-          unrecKeys.set(k3, {});
-        unrecKeys.get(k3).r = true;
+      for (const k4 of iss.keys) {
+        if (!unrecKeys.has(k4))
+          unrecKeys.set(k4, {});
+        unrecKeys.get(k4).r = true;
       }
     } else {
       result.issues.push(iss);
     }
   }
-  const bothKeys = [...unrecKeys].filter(([, f4]) => f4.l && f4.r).map(([k3]) => k3);
+  const bothKeys = [...unrecKeys].filter(([, f5]) => f5.l && f5.r).map(([k4]) => k4);
   if (bothKeys.length && unrecIssue) {
     result.issues.push({ ...unrecIssue, keys: bothKeys });
   }
@@ -4949,26 +5381,26 @@ var $ZodTuple = /* @__PURE__ */ $constructor("$ZodTuple", (inst, def) => {
       }
     }
     const itemResults = new Array(items.length);
-    for (let i3 = 0; i3 < items.length; i3++) {
-      const r3 = items[i3]._zod.run({ value: input[i3], issues: [] }, ctx);
-      if (r3 instanceof Promise) {
-        proms.push(r3.then((rr) => {
-          itemResults[i3] = rr;
+    for (let i4 = 0; i4 < items.length; i4++) {
+      const r4 = items[i4]._zod.run({ value: input[i4], issues: [] }, ctx);
+      if (r4 instanceof Promise) {
+        proms.push(r4.then((rr) => {
+          itemResults[i4] = rr;
         }));
       } else {
-        itemResults[i3] = r3;
+        itemResults[i4] = r4;
       }
     }
     if (def.rest) {
-      let i3 = items.length - 1;
+      let i4 = items.length - 1;
       const rest = input.slice(items.length);
       for (const el of rest) {
-        i3++;
+        i4++;
         const result = def.rest._zod.run({ value: el, issues: [] }, ctx);
         if (result instanceof Promise) {
-          proms.push(result.then((r3) => handleTupleResult(r3, payload, i3)));
+          proms.push(result.then((r4) => handleTupleResult(r4, payload, i4)));
         } else {
-          handleTupleResult(result, payload, i3);
+          handleTupleResult(result, payload, i4);
         }
       }
     }
@@ -4979,9 +5411,9 @@ var $ZodTuple = /* @__PURE__ */ $constructor("$ZodTuple", (inst, def) => {
   };
 });
 function getTupleOptStart(items, key) {
-  for (let i3 = items.length - 1; i3 >= 0; i3--) {
-    if (items[i3]._zod[key] !== "optional")
-      return i3 + 1;
+  for (let i4 = items.length - 1; i4 >= 0; i4--) {
+    if (items[i4]._zod[key] !== "optional")
+      return i4 + 1;
   }
   return 0;
 }
@@ -4992,21 +5424,21 @@ function handleTupleResult(result, final, index) {
   final.value[index] = result.value;
 }
 function handleTupleResults(itemResults, final, items, input, optoutStart) {
-  for (let i3 = 0; i3 < items.length; i3++) {
-    const r3 = itemResults[i3];
-    const isPresent = i3 < input.length;
-    if (r3.issues.length) {
-      if (!isPresent && i3 >= optoutStart) {
-        final.value.length = i3;
+  for (let i4 = 0; i4 < items.length; i4++) {
+    const r4 = itemResults[i4];
+    const isPresent = i4 < input.length;
+    if (r4.issues.length) {
+      if (!isPresent && i4 >= optoutStart) {
+        final.value.length = i4;
         break;
       }
-      final.issues.push(...prefixIssues(i3, r3.issues));
+      final.issues.push(...prefixIssues(i4, r4.issues));
     }
-    final.value[i3] = r3.value;
+    final.value[i4] = r4.value;
   }
-  for (let i3 = final.value.length - 1; i3 >= input.length; i3--) {
-    if (items[i3]._zod.optout === "optional" && final.value[i3] === void 0) {
-      final.value.length = i3;
+  for (let i4 = final.value.length - 1; i4 >= input.length; i4--) {
+    if (items[i4]._zod.optout === "optional" && final.value[i4] === void 0) {
+      final.value.length = i4;
     } else {
       break;
     }
@@ -5238,7 +5670,7 @@ var $ZodEnum = /* @__PURE__ */ $constructor("$ZodEnum", (inst, def) => {
   const values = getEnumValues(def.entries);
   const valuesSet = new Set(values);
   inst._zod.values = valuesSet;
-  inst._zod.pattern = new RegExp(`^(${values.filter((k3) => propertyKeyTypes.has(typeof k3)).map((o3) => typeof o3 === "string" ? escapeRegex(o3) : o3.toString()).join("|")})$`);
+  inst._zod.pattern = new RegExp(`^(${values.filter((k4) => propertyKeyTypes.has(typeof k4)).map((o4) => typeof o4 === "string" ? escapeRegex(o4) : o4.toString()).join("|")})$`);
   inst._zod.parse = (payload, _ctx) => {
     const input = payload.value;
     if (valuesSet.has(input)) {
@@ -5260,7 +5692,7 @@ var $ZodLiteral = /* @__PURE__ */ $constructor("$ZodLiteral", (inst, def) => {
   }
   const values = new Set(def.values);
   inst._zod.values = values;
-  inst._zod.pattern = new RegExp(`^(${def.values.map((o3) => typeof o3 === "string" ? escapeRegex(o3) : o3 ? escapeRegex(o3.toString()) : String(o3)).join("|")})$`);
+  inst._zod.pattern = new RegExp(`^(${def.values.map((o4) => typeof o4 === "string" ? escapeRegex(o4) : o4 ? escapeRegex(o4.toString()) : String(o4)).join("|")})$`);
   inst._zod.parse = (payload, _ctx) => {
     const input = payload.value;
     if (values.has(input)) {
@@ -5336,7 +5768,7 @@ var $ZodOptional = /* @__PURE__ */ $constructor("$ZodOptional", (inst, def) => {
       const input = payload.value;
       const result = def.innerType._zod.run(payload, ctx);
       if (result instanceof Promise)
-        return result.then((r3) => handleOptionalResult(r3, input));
+        return result.then((r4) => handleOptionalResult(r4, input));
       return handleOptionalResult(result, input);
     }
     if (payload.value === void 0) {
@@ -5412,8 +5844,8 @@ var $ZodPrefault = /* @__PURE__ */ $constructor("$ZodPrefault", (inst, def) => {
 var $ZodNonOptional = /* @__PURE__ */ $constructor("$ZodNonOptional", (inst, def) => {
   $ZodType.init(inst, def);
   defineLazy(inst._zod, "values", () => {
-    const v3 = def.innerType._zod.values;
-    return v3 ? new Set([...v3].filter((x3) => x3 !== void 0)) : void 0;
+    const v4 = def.innerType._zod.values;
+    return v4 ? new Set([...v4].filter((x4) => x4 !== void 0)) : void 0;
   });
   inst._zod.parse = (payload, ctx) => {
     const result = def.innerType._zod.run(payload, ctx);
@@ -5763,11 +6195,11 @@ var $ZodCustom = /* @__PURE__ */ $constructor("$ZodCustom", (inst, def) => {
   };
   inst._zod.check = (payload) => {
     const input = payload.value;
-    const r3 = def.fn(input);
-    if (r3 instanceof Promise) {
-      return r3.then((r4) => handleRefineResult(r4, payload, input, inst));
+    const r4 = def.fn(input);
+    if (r4 instanceof Promise) {
+      return r4.then((r5) => handleRefineResult(r5, payload, input, inst));
     }
-    handleRefineResult(r3, payload, input, inst);
+    handleRefineResult(r4, payload, input, inst);
     return;
   };
 });
@@ -6989,7 +7421,7 @@ var error10 = () => {
         return `Invalid key in ${issue2.origin}`;
       case "invalid_union":
         if (issue2.options && Array.isArray(issue2.options) && issue2.options.length > 0) {
-          const opts = issue2.options.map((o3) => `'${o3}'`).join(" | ");
+          const opts = issue2.options.map((o4) => `'${o4}'`).join(" | ");
           return `Invalid discriminator value. Expected ${opts}`;
         }
         return "Invalid input";
@@ -7741,17 +8173,17 @@ var error17 = () => {
     number: { unit: "", shortLabel: "\u05E7\u05D8\u05DF", longLabel: "\u05D2\u05D3\u05D5\u05DC" }
     // no unit
   };
-  const typeEntry = (t2) => t2 ? TypeNames[t2] : void 0;
-  const typeLabel = (t2) => {
-    const e2 = typeEntry(t2);
-    if (e2)
-      return e2.label;
-    return t2 ?? TypeNames.unknown.label;
+  const typeEntry = (t3) => t3 ? TypeNames[t3] : void 0;
+  const typeLabel = (t3) => {
+    const e3 = typeEntry(t3);
+    if (e3)
+      return e3.label;
+    return t3 ?? TypeNames.unknown.label;
   };
-  const withDefinite = (t2) => `\u05D4${typeLabel(t2)}`;
-  const verbFor = (t2) => {
-    const e2 = typeEntry(t2);
-    const gender = e2?.gender ?? "m";
+  const withDefinite = (t3) => `\u05D4${typeLabel(t3)}`;
+  const verbFor = (t3) => {
+    const e3 = typeEntry(t3);
+    const gender = e3?.gender ?? "m";
     return gender === "f" ? "\u05E6\u05E8\u05D9\u05DB\u05D4 \u05DC\u05D4\u05D9\u05D5\u05EA" : "\u05E6\u05E8\u05D9\u05DA \u05DC\u05D4\u05D9\u05D5\u05EA";
   };
   const getSizing = (origin) => {
@@ -7810,7 +8242,7 @@ var error17 = () => {
         if (issue2.values.length === 1) {
           return `\u05E2\u05E8\u05DA \u05DC\u05D0 \u05EA\u05E7\u05D9\u05DF: \u05D4\u05E2\u05E8\u05DA \u05D7\u05D9\u05D9\u05D1 \u05DC\u05D4\u05D9\u05D5\u05EA ${stringifyPrimitive(issue2.values[0])}`;
         }
-        const stringified = issue2.values.map((v3) => stringifyPrimitive(v3));
+        const stringified = issue2.values.map((v4) => stringifyPrimitive(v4));
         if (issue2.values.length === 2) {
           return `\u05E2\u05E8\u05DA \u05DC\u05D0 \u05EA\u05E7\u05D9\u05DF: \u05D4\u05D0\u05E4\u05E9\u05E8\u05D5\u05D9\u05D5\u05EA \u05D4\u05DE\u05EA\u05D0\u05D9\u05DE\u05D5\u05EA \u05D4\u05DF ${stringified[0]} \u05D0\u05D5 ${stringified[1]}`;
         }
@@ -11775,12 +12207,12 @@ var $ZodRegistry = class {
     return this;
   }
   get(schema) {
-    const p3 = schema._zod.parent;
-    if (p3) {
-      const pm = { ...this.get(p3) ?? {} };
+    const p4 = schema._zod.parent;
+    if (p4) {
+      const pm = { ...this.get(p4) ?? {} };
       delete pm.id;
-      const f4 = { ...pm, ...this._map.get(schema) };
-      return Object.keys(f4).length ? f4 : void 0;
+      const f5 = { ...pm, ...this._map.get(schema) };
+      return Object.keys(f5).length ? f5 : void 0;
     }
     return this._map.get(schema);
   }
@@ -12565,7 +12997,7 @@ function _set(Class2, valueType, params) {
 }
 // @__NO_SIDE_EFFECTS__
 function _enum(Class2, values, params) {
-  const entries = Array.isArray(values) ? Object.fromEntries(values.map((v3) => [v3, v3])) : values;
+  const entries = Array.isArray(values) ? Object.fromEntries(values.map((v4) => [v4, v4])) : values;
   return new Class2({
     type: "enum",
     entries,
@@ -12770,8 +13202,8 @@ function _stringbool(Classes, _params) {
   let truthyArray = params.truthy ?? ["true", "1", "yes", "on", "y", "enabled"];
   let falsyArray = params.falsy ?? ["false", "0", "no", "off", "n", "disabled"];
   if (params.case !== "sensitive") {
-    truthyArray = truthyArray.map((v3) => typeof v3 === "string" ? v3.toLowerCase() : v3);
-    falsyArray = falsyArray.map((v3) => typeof v3 === "string" ? v3.toLowerCase() : v3);
+    truthyArray = truthyArray.map((v4) => typeof v4 === "string" ? v4.toLowerCase() : v4);
+    falsyArray = falsyArray.map((v4) => typeof v4 === "string" ? v4.toLowerCase() : v4);
   }
   const truthySet = new Set(truthyArray);
   const falsySet = new Set(falsyArray);
@@ -13313,9 +13745,9 @@ var dateProcessor = (_schema, ctx, _json, _params) => {
 var enumProcessor = (schema, _ctx, json2, _params) => {
   const def = schema._zod.def;
   const values = getEnumValues(def.entries);
-  if (values.every((v3) => typeof v3 === "number"))
+  if (values.every((v4) => typeof v4 === "number"))
     json2.type = "number";
-  if (values.every((v3) => typeof v3 === "string"))
+  if (values.every((v4) => typeof v4 === "string"))
     json2.type = "string";
   json2.enum = values;
 };
@@ -13348,13 +13780,13 @@ var literalProcessor = (schema, ctx, json2, _params) => {
       json2.const = val;
     }
   } else {
-    if (vals.every((v3) => typeof v3 === "number"))
+    if (vals.every((v4) => typeof v4 === "number"))
       json2.type = "number";
-    if (vals.every((v3) => typeof v3 === "string"))
+    if (vals.every((v4) => typeof v4 === "string"))
       json2.type = "string";
-    if (vals.every((v3) => typeof v3 === "boolean"))
+    if (vals.every((v4) => typeof v4 === "boolean"))
       json2.type = "boolean";
-    if (vals.every((v3) => v3 === null))
+    if (vals.every((v4) => v4 === null))
       json2.type = "null";
     json2.enum = vals;
   }
@@ -13390,7 +13822,7 @@ var fileProcessor = (schema, _ctx, json2, _params) => {
       Object.assign(_json, file2);
     } else {
       Object.assign(_json, file2);
-      _json.anyOf = mime.map((m3) => ({ contentMediaType: m3 }));
+      _json.anyOf = mime.map((m4) => ({ contentMediaType: m4 }));
     }
   } else {
     Object.assign(_json, file2);
@@ -13452,11 +13884,11 @@ var objectProcessor = (schema, ctx, _json, params) => {
   }
   const allKeys = new Set(Object.keys(shape));
   const requiredKeys = new Set([...allKeys].filter((key) => {
-    const v3 = def.shape[key]._zod;
+    const v4 = def.shape[key]._zod;
     if (ctx.io === "input") {
-      return v3.optin === void 0;
+      return v4.optin === void 0;
     } else {
-      return v3.optout === void 0;
+      return v4.optout === void 0;
     }
   }));
   if (requiredKeys.size > 0) {
@@ -13477,9 +13909,9 @@ var objectProcessor = (schema, ctx, _json, params) => {
 var unionProcessor = (schema, ctx, json2, params) => {
   const def = schema._zod.def;
   const isExclusive = def.inclusive === false;
-  const options = def.options.map((x3, i3) => process2(x3, ctx, {
+  const options = def.options.map((x4, i4) => process2(x4, ctx, {
     ...params,
-    path: [...params.path, isExclusive ? "oneOf" : "anyOf", i3]
+    path: [...params.path, isExclusive ? "oneOf" : "anyOf", i4]
   }));
   if (isExclusive) {
     json2.oneOf = options;
@@ -13489,7 +13921,7 @@ var unionProcessor = (schema, ctx, json2, params) => {
 };
 var intersectionProcessor = (schema, ctx, json2, params) => {
   const def = schema._zod.def;
-  const a3 = process2(def.left, ctx, {
+  const a4 = process2(def.left, ctx, {
     ...params,
     path: [...params.path, "allOf", 0]
   });
@@ -13499,7 +13931,7 @@ var intersectionProcessor = (schema, ctx, json2, params) => {
   });
   const isSimpleIntersection = (val) => "allOf" in val && Object.keys(val).length === 1;
   const allOf = [
-    ...isSimpleIntersection(a3) ? a3.allOf : [a3],
+    ...isSimpleIntersection(a4) ? a4.allOf : [a4],
     ...isSimpleIntersection(b3) ? b3.allOf : [b3]
   ];
   json2.allOf = allOf;
@@ -13510,9 +13942,9 @@ var tupleProcessor = (schema, ctx, _json, params) => {
   json2.type = "array";
   const prefixPath = ctx.target === "draft-2020-12" ? "prefixItems" : "items";
   const restPath = ctx.target === "draft-2020-12" ? "items" : ctx.target === "openapi-3.0" ? "items" : "additionalItems";
-  const prefixItems = def.items.map((x3, i3) => process2(x3, ctx, {
+  const prefixItems = def.items.map((x4, i4) => process2(x4, ctx, {
     ...params,
-    path: [...params.path, prefixPath, i3]
+    path: [...params.path, prefixPath, i4]
   }));
   const rest = def.rest ? process2(def.rest, ctx, {
     ...params,
@@ -13576,7 +14008,7 @@ var recordProcessor = (schema, ctx, _json, params) => {
   }
   const keyValues = keyType._zod.values;
   if (keyValues) {
-    const validKeyValues = [...keyValues].filter((v3) => typeof v3 === "string" || typeof v3 === "number");
+    const validKeyValues = [...keyValues].filter((v4) => typeof v4 === "string" || typeof v4 === "number");
     if (validKeyValues.length > 0) {
       json2.required = validKeyValues;
     }
@@ -14141,12 +14573,12 @@ function _installLazyMethods(inst, group, methods) {
         });
         return bound;
       },
-      set(v3) {
+      set(v4) {
         Object.defineProperty(this, key, {
           configurable: true,
           writable: true,
           enumerable: true,
-          value: v3
+          value: v4
         });
       }
     });
@@ -14737,9 +15169,9 @@ var ZodDate = /* @__PURE__ */ $constructor("ZodDate", (inst, def) => {
   inst._zod.processJSONSchema = (ctx, json2, params) => dateProcessor(inst, ctx, json2, params);
   inst.min = (value, params) => inst.check(_gte(value, params));
   inst.max = (value, params) => inst.check(_lte(value, params));
-  const c3 = inst._zod.bag;
-  inst.minDate = c3.minimum ? new Date(c3.minimum) : null;
-  inst.maxDate = c3.maximum ? new Date(c3.maximum) : null;
+  const c4 = inst._zod.bag;
+  inst.minDate = c4.minimum ? new Date(c4.minimum) : null;
+  inst.maxDate = c4.maximum ? new Date(c4.maximum) : null;
 });
 function date3(params) {
   return _date(ZodDate, params);
@@ -14942,11 +15374,11 @@ function record(keyType, valueType, params) {
   });
 }
 function partialRecord(keyType, valueType, params) {
-  const k3 = clone(keyType);
-  k3._zod.values = void 0;
+  const k4 = clone(keyType);
+  k4._zod.values = void 0;
   return new ZodRecord({
     type: "record",
-    keyType: k3,
+    keyType: k4,
     valueType,
     ...util_exports.normalizeParams(params)
   });
@@ -15034,7 +15466,7 @@ var ZodEnum = /* @__PURE__ */ $constructor("ZodEnum", (inst, def) => {
   };
 });
 function _enum2(values, params) {
-  const entries = Array.isArray(values) ? Object.fromEntries(values.map((v3) => [v3, v3])) : values;
+  const entries = Array.isArray(values) ? Object.fromEntries(values.map((v4) => [v4, v4])) : values;
   return new ZodEnum({
     type: "enum",
     entries,
@@ -15431,7 +15863,7 @@ var ZodFirstPartyTypeKind;
 })(ZodFirstPartyTypeKind || (ZodFirstPartyTypeKind = {}));
 
 // node_modules/zod/v4/classic/from-json-schema.js
-var z3 = {
+var z4 = {
   ...schemas_exports2,
   ...checks_exports2,
   iso: iso_exports
@@ -15541,7 +15973,7 @@ function resolveRef(ref, ctx) {
 function convertBaseSchema(schema, ctx) {
   if (schema.not !== void 0) {
     if (typeof schema.not === "object" && Object.keys(schema.not).length === 0) {
-      return z3.never();
+      return z4.never();
     }
     throw new Error("not is not supported in Zod (except { not: {} } for never)");
   }
@@ -15563,7 +15995,7 @@ function convertBaseSchema(schema, ctx) {
       return ctx.refs.get(refPath);
     }
     if (ctx.processing.has(refPath)) {
-      return z3.lazy(() => {
+      return z4.lazy(() => {
         if (!ctx.refs.has(refPath)) {
           throw new Error(`Circular reference not resolved: ${refPath}`);
         }
@@ -15580,95 +16012,95 @@ function convertBaseSchema(schema, ctx) {
   if (schema.enum !== void 0) {
     const enumValues = schema.enum;
     if (ctx.version === "openapi-3.0" && schema.nullable === true && enumValues.length === 1 && enumValues[0] === null) {
-      return z3.null();
+      return z4.null();
     }
     if (enumValues.length === 0) {
-      return z3.never();
+      return z4.never();
     }
     if (enumValues.length === 1) {
-      return z3.literal(enumValues[0]);
+      return z4.literal(enumValues[0]);
     }
-    if (enumValues.every((v3) => typeof v3 === "string")) {
-      return z3.enum(enumValues);
+    if (enumValues.every((v4) => typeof v4 === "string")) {
+      return z4.enum(enumValues);
     }
-    const literalSchemas = enumValues.map((v3) => z3.literal(v3));
+    const literalSchemas = enumValues.map((v4) => z4.literal(v4));
     if (literalSchemas.length < 2) {
       return literalSchemas[0];
     }
-    return z3.union([literalSchemas[0], literalSchemas[1], ...literalSchemas.slice(2)]);
+    return z4.union([literalSchemas[0], literalSchemas[1], ...literalSchemas.slice(2)]);
   }
   if (schema.const !== void 0) {
-    return z3.literal(schema.const);
+    return z4.literal(schema.const);
   }
   const type = schema.type;
   if (Array.isArray(type)) {
-    const typeSchemas = type.map((t2) => {
-      const typeSchema = { ...schema, type: t2 };
+    const typeSchemas = type.map((t3) => {
+      const typeSchema = { ...schema, type: t3 };
       return convertBaseSchema(typeSchema, ctx);
     });
     if (typeSchemas.length === 0) {
-      return z3.never();
+      return z4.never();
     }
     if (typeSchemas.length === 1) {
       return typeSchemas[0];
     }
-    return z3.union(typeSchemas);
+    return z4.union(typeSchemas);
   }
   if (!type) {
-    return z3.any();
+    return z4.any();
   }
   let zodSchema;
   switch (type) {
     case "string": {
-      let stringSchema = z3.string();
+      let stringSchema = z4.string();
       if (schema.format) {
         const format = schema.format;
         if (format === "email") {
-          stringSchema = stringSchema.check(z3.email());
+          stringSchema = stringSchema.check(z4.email());
         } else if (format === "uri" || format === "uri-reference") {
-          stringSchema = stringSchema.check(z3.url());
+          stringSchema = stringSchema.check(z4.url());
         } else if (format === "uuid" || format === "guid") {
-          stringSchema = stringSchema.check(z3.uuid());
+          stringSchema = stringSchema.check(z4.uuid());
         } else if (format === "date-time") {
-          stringSchema = stringSchema.check(z3.iso.datetime());
+          stringSchema = stringSchema.check(z4.iso.datetime());
         } else if (format === "date") {
-          stringSchema = stringSchema.check(z3.iso.date());
+          stringSchema = stringSchema.check(z4.iso.date());
         } else if (format === "time") {
-          stringSchema = stringSchema.check(z3.iso.time());
+          stringSchema = stringSchema.check(z4.iso.time());
         } else if (format === "duration") {
-          stringSchema = stringSchema.check(z3.iso.duration());
+          stringSchema = stringSchema.check(z4.iso.duration());
         } else if (format === "ipv4") {
-          stringSchema = stringSchema.check(z3.ipv4());
+          stringSchema = stringSchema.check(z4.ipv4());
         } else if (format === "ipv6") {
-          stringSchema = stringSchema.check(z3.ipv6());
+          stringSchema = stringSchema.check(z4.ipv6());
         } else if (format === "mac") {
-          stringSchema = stringSchema.check(z3.mac());
+          stringSchema = stringSchema.check(z4.mac());
         } else if (format === "cidr") {
-          stringSchema = stringSchema.check(z3.cidrv4());
+          stringSchema = stringSchema.check(z4.cidrv4());
         } else if (format === "cidr-v6") {
-          stringSchema = stringSchema.check(z3.cidrv6());
+          stringSchema = stringSchema.check(z4.cidrv6());
         } else if (format === "base64") {
-          stringSchema = stringSchema.check(z3.base64());
+          stringSchema = stringSchema.check(z4.base64());
         } else if (format === "base64url") {
-          stringSchema = stringSchema.check(z3.base64url());
+          stringSchema = stringSchema.check(z4.base64url());
         } else if (format === "e164") {
-          stringSchema = stringSchema.check(z3.e164());
+          stringSchema = stringSchema.check(z4.e164());
         } else if (format === "jwt") {
-          stringSchema = stringSchema.check(z3.jwt());
+          stringSchema = stringSchema.check(z4.jwt());
         } else if (format === "emoji") {
-          stringSchema = stringSchema.check(z3.emoji());
+          stringSchema = stringSchema.check(z4.emoji());
         } else if (format === "nanoid") {
-          stringSchema = stringSchema.check(z3.nanoid());
+          stringSchema = stringSchema.check(z4.nanoid());
         } else if (format === "cuid") {
-          stringSchema = stringSchema.check(z3.cuid());
+          stringSchema = stringSchema.check(z4.cuid());
         } else if (format === "cuid2") {
-          stringSchema = stringSchema.check(z3.cuid2());
+          stringSchema = stringSchema.check(z4.cuid2());
         } else if (format === "ulid") {
-          stringSchema = stringSchema.check(z3.ulid());
+          stringSchema = stringSchema.check(z4.ulid());
         } else if (format === "xid") {
-          stringSchema = stringSchema.check(z3.xid());
+          stringSchema = stringSchema.check(z4.xid());
         } else if (format === "ksuid") {
-          stringSchema = stringSchema.check(z3.ksuid());
+          stringSchema = stringSchema.check(z4.ksuid());
         }
       }
       if (typeof schema.minLength === "number") {
@@ -15685,7 +16117,7 @@ function convertBaseSchema(schema, ctx) {
     }
     case "number":
     case "integer": {
-      let numberSchema = type === "integer" ? z3.number().int() : z3.number();
+      let numberSchema = type === "integer" ? z4.number().int() : z4.number();
       if (typeof schema.minimum === "number") {
         numberSchema = numberSchema.min(schema.minimum);
       }
@@ -15709,11 +16141,11 @@ function convertBaseSchema(schema, ctx) {
       break;
     }
     case "boolean": {
-      zodSchema = z3.boolean();
+      zodSchema = z4.boolean();
       break;
     }
     case "null": {
-      zodSchema = z3.null();
+      zodSchema = z4.null();
       break;
     }
     case "object": {
@@ -15726,14 +16158,14 @@ function convertBaseSchema(schema, ctx) {
       }
       if (schema.propertyNames) {
         const keySchema = convertSchema(schema.propertyNames, ctx);
-        const valueSchema = schema.additionalProperties && typeof schema.additionalProperties === "object" ? convertSchema(schema.additionalProperties, ctx) : z3.any();
+        const valueSchema = schema.additionalProperties && typeof schema.additionalProperties === "object" ? convertSchema(schema.additionalProperties, ctx) : z4.any();
         if (Object.keys(shape).length === 0) {
-          zodSchema = z3.record(keySchema, valueSchema);
+          zodSchema = z4.record(keySchema, valueSchema);
           break;
         }
-        const objectSchema2 = z3.object(shape).passthrough();
-        const recordSchema = z3.looseRecord(keySchema, valueSchema);
-        zodSchema = z3.intersection(objectSchema2, recordSchema);
+        const objectSchema2 = z4.object(shape).passthrough();
+        const recordSchema = z4.looseRecord(keySchema, valueSchema);
+        zodSchema = z4.intersection(objectSchema2, recordSchema);
         break;
       }
       if (schema.patternProperties) {
@@ -15742,28 +16174,28 @@ function convertBaseSchema(schema, ctx) {
         const looseRecords = [];
         for (const pattern of patternKeys) {
           const patternValue = convertSchema(patternProps[pattern], ctx);
-          const keySchema = z3.string().regex(new RegExp(pattern));
-          looseRecords.push(z3.looseRecord(keySchema, patternValue));
+          const keySchema = z4.string().regex(new RegExp(pattern));
+          looseRecords.push(z4.looseRecord(keySchema, patternValue));
         }
         const schemasToIntersect = [];
         if (Object.keys(shape).length > 0) {
-          schemasToIntersect.push(z3.object(shape).passthrough());
+          schemasToIntersect.push(z4.object(shape).passthrough());
         }
         schemasToIntersect.push(...looseRecords);
         if (schemasToIntersect.length === 0) {
-          zodSchema = z3.object({}).passthrough();
+          zodSchema = z4.object({}).passthrough();
         } else if (schemasToIntersect.length === 1) {
           zodSchema = schemasToIntersect[0];
         } else {
-          let result = z3.intersection(schemasToIntersect[0], schemasToIntersect[1]);
-          for (let i3 = 2; i3 < schemasToIntersect.length; i3++) {
-            result = z3.intersection(result, schemasToIntersect[i3]);
+          let result = z4.intersection(schemasToIntersect[0], schemasToIntersect[1]);
+          for (let i4 = 2; i4 < schemasToIntersect.length; i4++) {
+            result = z4.intersection(result, schemasToIntersect[i4]);
           }
           zodSchema = result;
         }
         break;
       }
-      const objectSchema = z3.object(shape);
+      const objectSchema = z4.object(shape);
       if (schema.additionalProperties === false) {
         zodSchema = objectSchema.strict();
       } else if (typeof schema.additionalProperties === "object") {
@@ -15780,33 +16212,33 @@ function convertBaseSchema(schema, ctx) {
         const tupleItems = prefixItems.map((item) => convertSchema(item, ctx));
         const rest = items && typeof items === "object" && !Array.isArray(items) ? convertSchema(items, ctx) : void 0;
         if (rest) {
-          zodSchema = z3.tuple(tupleItems).rest(rest);
+          zodSchema = z4.tuple(tupleItems).rest(rest);
         } else {
-          zodSchema = z3.tuple(tupleItems);
+          zodSchema = z4.tuple(tupleItems);
         }
         if (typeof schema.minItems === "number") {
-          zodSchema = zodSchema.check(z3.minLength(schema.minItems));
+          zodSchema = zodSchema.check(z4.minLength(schema.minItems));
         }
         if (typeof schema.maxItems === "number") {
-          zodSchema = zodSchema.check(z3.maxLength(schema.maxItems));
+          zodSchema = zodSchema.check(z4.maxLength(schema.maxItems));
         }
       } else if (Array.isArray(items)) {
         const tupleItems = items.map((item) => convertSchema(item, ctx));
         const rest = schema.additionalItems && typeof schema.additionalItems === "object" ? convertSchema(schema.additionalItems, ctx) : void 0;
         if (rest) {
-          zodSchema = z3.tuple(tupleItems).rest(rest);
+          zodSchema = z4.tuple(tupleItems).rest(rest);
         } else {
-          zodSchema = z3.tuple(tupleItems);
+          zodSchema = z4.tuple(tupleItems);
         }
         if (typeof schema.minItems === "number") {
-          zodSchema = zodSchema.check(z3.minLength(schema.minItems));
+          zodSchema = zodSchema.check(z4.minLength(schema.minItems));
         }
         if (typeof schema.maxItems === "number") {
-          zodSchema = zodSchema.check(z3.maxLength(schema.maxItems));
+          zodSchema = zodSchema.check(z4.maxLength(schema.maxItems));
         }
       } else if (items !== void 0) {
         const element = convertSchema(items, ctx);
-        let arraySchema = z3.array(element);
+        let arraySchema = z4.array(element);
         if (typeof schema.minItems === "number") {
           arraySchema = arraySchema.min(schema.minItems);
         }
@@ -15815,7 +16247,7 @@ function convertBaseSchema(schema, ctx) {
         }
         zodSchema = arraySchema;
       } else {
-        zodSchema = z3.array(z3.any());
+        zodSchema = z4.array(z4.any());
       }
       break;
     }
@@ -15826,37 +16258,37 @@ function convertBaseSchema(schema, ctx) {
 }
 function convertSchema(schema, ctx) {
   if (typeof schema === "boolean") {
-    return schema ? z3.any() : z3.never();
+    return schema ? z4.any() : z4.never();
   }
   let baseSchema = convertBaseSchema(schema, ctx);
   const hasExplicitType = schema.type || schema.enum !== void 0 || schema.const !== void 0;
   if (schema.anyOf && Array.isArray(schema.anyOf)) {
-    const options = schema.anyOf.map((s3) => convertSchema(s3, ctx));
-    const anyOfUnion = z3.union(options);
-    baseSchema = hasExplicitType ? z3.intersection(baseSchema, anyOfUnion) : anyOfUnion;
+    const options = schema.anyOf.map((s4) => convertSchema(s4, ctx));
+    const anyOfUnion = z4.union(options);
+    baseSchema = hasExplicitType ? z4.intersection(baseSchema, anyOfUnion) : anyOfUnion;
   }
   if (schema.oneOf && Array.isArray(schema.oneOf)) {
-    const options = schema.oneOf.map((s3) => convertSchema(s3, ctx));
-    const oneOfUnion = z3.xor(options);
-    baseSchema = hasExplicitType ? z3.intersection(baseSchema, oneOfUnion) : oneOfUnion;
+    const options = schema.oneOf.map((s4) => convertSchema(s4, ctx));
+    const oneOfUnion = z4.xor(options);
+    baseSchema = hasExplicitType ? z4.intersection(baseSchema, oneOfUnion) : oneOfUnion;
   }
   if (schema.allOf && Array.isArray(schema.allOf)) {
     if (schema.allOf.length === 0) {
-      baseSchema = hasExplicitType ? baseSchema : z3.any();
+      baseSchema = hasExplicitType ? baseSchema : z4.any();
     } else {
       let result = hasExplicitType ? baseSchema : convertSchema(schema.allOf[0], ctx);
       const startIdx = hasExplicitType ? 0 : 1;
-      for (let i3 = startIdx; i3 < schema.allOf.length; i3++) {
-        result = z3.intersection(result, convertSchema(schema.allOf[i3], ctx));
+      for (let i4 = startIdx; i4 < schema.allOf.length; i4++) {
+        result = z4.intersection(result, convertSchema(schema.allOf[i4], ctx));
       }
       baseSchema = result;
     }
   }
   if (schema.nullable === true && ctx.version === "openapi-3.0") {
-    baseSchema = z3.nullable(baseSchema);
+    baseSchema = z4.nullable(baseSchema);
   }
   if (schema.readOnly === true) {
-    baseSchema = z3.readonly(baseSchema);
+    baseSchema = z4.readonly(baseSchema);
   }
   if (schema.default !== void 0) {
     baseSchema = baseSchema.default(schema.default);
@@ -15889,7 +16321,7 @@ function convertSchema(schema, ctx) {
 }
 function fromJSONSchema(schema, params) {
   if (typeof schema === "boolean") {
-    return schema ? z3.any() : z3.never();
+    return schema ? z4.any() : z4.never();
   }
   let normalized;
   try {
@@ -16052,7 +16484,25 @@ var KursplanSchema = external_exports.object({
     })
   ).min(1),
   /** Steht unter dem Raster, z. B. wie man sich anmeldet. */
-  hinweis: text(300).optional()
+  hinweis: text(300).optional(),
+  /**
+   * Die Veranstaltungsorte mit Anschrift.
+   *
+   * "kurse[].ort" ist nur ein Name. Fuer die Strukturdaten braucht ein Termin
+   * eine Anschrift, und die stand bisher als Fliesstext im Hinweis — die zu
+   * zerlegen waere geraten. Wer hier einen Ort eintraegt, dessen Name mit
+   * "kurse[].ort" uebereinstimmt, bekommt ihn als Veranstaltungsort
+   * ausgezeichnet. Fehlt er, entfaellt nur die Anschrift; der Kurs bleibt.
+   */
+  orte: external_exports.array(
+    external_exports.object({
+      name: kurz(80).min(1),
+      strasse: kurz(120).min(1),
+      plz: kurz(10).min(1),
+      ort: kurz(80).min(1),
+      url: external_exports.string().url().optional()
+    })
+  ).default([])
 });
 var VeranstaltungenSchema = external_exports.object({
   marke: marke(),
@@ -16115,7 +16565,41 @@ var KontaktSchema = external_exports.object({
   telefon: kurz(40),
   email: external_exports.string().email().or(external_exports.literal("")),
   hinweise: external_exports.array(external_exports.object({ titel: kurz(60).min(1), text: text(400).min(1) })).default([]),
-  karte: BildSchema.optional()
+  karte: BildSchema.optional(),
+  /**
+   * Ob die Anschrift als Geschaeftsanschrift ausgezeichnet werden darf.
+   *
+   * Bei einer Einzelunternehmerin ist die Impressumsanschrift die
+   * Wohnanschrift. Im Impressum steht sie, weil § 5 DDG das verlangt. Als
+   * "address" einer LocalBusiness gefuettert, macht Google daraus eine
+   * Kartennadel auf der Wohnung — das ist etwas anderes als eine
+   * Pflichtangabe im Fussbereich. Der sichtbare Text bleibt in beiden Faellen
+   * gleich; es geht allein um die Strukturdaten.
+   */
+  anschriftOeffentlich: external_exports.boolean().default(true),
+  /**
+   * Die Person hinter dem Betrieb.
+   *
+   * Bei einer Einzelunternehmerin sind Marke und Person zwei Namen fuer
+   * dasselbe — "Lebensfit mit Anni" und "Antje Kindler". Fuer eine
+   * Antwortmaschine sind das ohne diese Angabe zwei unverbundene Zeichenketten,
+   * und auf die Frage "wer gibt die Kurse" gibt es keine Antwort.
+   *
+   * "alternativName" ist fuer den Fall, dass die Marke einen Rufnamen enthaelt,
+   * der nicht der Vorname ist.
+   */
+  person: external_exports.object({
+    name: kurz(80).min(1),
+    rolle: kurz(60).optional(),
+    alternativName: kurz(40).optional()
+  }).optional(),
+  /**
+   * Wo gearbeitet wird, wenn es keinen Ladenort gibt.
+   *
+   * Sagt fuer die Suche dasselbe wie eine Anschrift, ohne einen Ort zu
+   * behaupten, an dem niemand hingehen kann.
+   */
+  gebiet: external_exports.array(kurz(80)).default([])
 });
 var ImpressumSchema = external_exports.object({
   ueberschrift: kurz(90).min(1),
@@ -16164,20 +16648,81 @@ var NavPunktSchema = external_exports.object({
   label: kurz(30).min(1),
   ziel: external_exports.string().min(1)
 });
+var RESERVIERTE_PFADE = ["assets", "robots", "sitemap", "404", "index"];
+var SeiteSchema = external_exports.object({
+  /**
+   * Ein Segment, kleingeschrieben — aus "impressum" wird "/impressum".
+   * Keine Schraegstriche: Verschachtelte Pfade braucht niemand, und sie
+   * machen das Umschreiben relativer Verweise zweistufig.
+   */
+  pfad: external_exports.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'Ein Pfadsegment wie "impressum" \u2014 klein, ohne Schraegstrich.').refine(
+    (wert) => !RESERVIERTE_PFADE.includes(wert),
+    "Diesen Pfad belegt der Build selbst (assets, robots, sitemap, 404, index)."
+  ),
+  module: external_exports.array(external_exports.enum(MODUL_TYPEN)).min(1),
+  /** Eigener Titel. Fehlt er, baut der Renderer ihn aus Ueberschrift und Name. */
+  titel: kurz(60).optional(),
+  beschreibung: kurz(200).optional()
+});
 var SiteMetaSchema = external_exports.object({
   id: external_exports.string().regex(/^[a-z0-9-]+$/, "Nur Kleinbuchstaben, Ziffern und Bindestriche."),
   name: kurz(120).min(1),
   // Eng gefasst, weil dieser Wert als Attribut in die zusammengesetzte
   // Dokumenthuelle geht und dort nicht durch Preact laeuft.
   sprache: external_exports.string().regex(/^[a-z]{2}(-[A-Z]{2})?$/, 'Sprachkuerzel wie "de" oder "de-AT".').default("de"),
-  domain: external_exports.string().min(1),
+  /**
+   * Die Domain, unter der die Seite ausgeliefert wird.
+   *
+   * Daran haengen Canonical, og:url, die absolute og:image-URL, die
+   * sitemap.xml und jede @id der Strukturdaten. Bis zum 7. Oktober 2026 war
+   * das Feld Pflicht, wurde validiert — und nirgends ausgeliefert. Beide
+   * Kunden standen deshalb auf einem .example-Platzhalter, ohne dass es
+   * auffiel.
+   *
+   * Die reservierte Endung .example bleibt ausdruecklich erlaubt: Der
+   * Pilotkunde ist ein fiktiver Betrieb und soll genau deshalb nicht auf eine
+   * echte Adresse zeigen. Die Sperre sitzt da, wo sie hingehoert — beim
+   * Vorbereiten des Kundenrepos in tools/kundenrepo.mjs. Eine Seite darf
+   * fiktiv sein; veroeffentlicht werden darf sie dann nicht.
+   */
+  domain: external_exports.string().regex(
+    /^[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*\.[a-z]{2,}$/,
+    'Eine Domain wie "beispiel.de" \u2014 ohne Schema, ohne Pfad, klein geschrieben.'
+  ),
   beschreibung: kurz(200).min(1),
+  /**
+   * Der Dokumenttitel, falls er nicht der Name sein soll.
+   *
+   * Der Name ist die Marke. Danach sucht nur, wer sie schon kennt — gesucht
+   * wird nach Leistung und Ort. 60 Zeichen, weil Google darueber abschneidet.
+   */
+  titel: kurz(60).optional(),
+  /**
+   * Profile desselben Betriebs woanders (Instagram, Facebook, Branchenbuch).
+   *
+   * Fuer Suchmaschinen und Antwortmaschinen ist das die Verknuepfung zwischen
+   * dieser Seite und allem, was ueber den Betrieb sonst im Netz steht.
+   */
+  sameAs: external_exports.array(external_exports.string().url()).default([]),
   logo: external_exports.string().min(1),
   ogBild: external_exports.string().optional(),
   farben: FarbenSchema,
   navigation: external_exports.array(NavPunktSchema).default([]),
-  /** Reihenfolge und Bestand der Module. In Version 1 fest. */
-  module: external_exports.array(external_exports.enum(MODUL_TYPEN)).min(1)
+  /** Reihenfolge und Bestand der Module auf der Startseite. */
+  module: external_exports.array(external_exports.enum(MODUL_TYPEN)).min(1),
+  /**
+   * Module, die eine eigene Adresse bekommen statt ein Abschnitt der
+   * Startseite zu sein.
+   *
+   * Rechtstexte sind der erste Fall: Impressum und Datenschutz sind rund 5 KB
+   * Markup ohne Bezug zum Thema, /impressum ist die Adresse, die Leute
+   * eintippen, und eine Seite mit genau EINEM indexierbaren Dokument hat
+   * nichts, womit sie zu verschiedenen Fragen auftauchen koennte.
+   *
+   * Ein Modul steht entweder in "module" oder in einer Unterseite, nie in
+   * beidem — validieren.ts prueft das.
+   */
+  seiten: external_exports.array(SeiteSchema).default([])
 });
 
 // src/render/validieren.ts
@@ -16193,12 +16738,34 @@ function siteValidieren(rohMeta, rohInhalte) {
     }
     return { ok: false, fehler };
   }
+  const seiten = meta3.data.seiten;
+  const aufUnterseiten = seiten.flatMap((s4) => s4.module);
+  const gesehen = /* @__PURE__ */ new Set();
+  for (const typ of [...meta3.data.module, ...aufUnterseiten]) {
+    if (gesehen.has(typ)) {
+      fehler.push({
+        wo: "meta",
+        feld: "seiten",
+        meldung: `Modul "${typ}" steht auf mehr als einer Seite. Es gehoert genau einer.`
+      });
+    }
+    gesehen.add(typ);
+  }
+  const pfade = /* @__PURE__ */ new Set();
+  for (const s4 of seiten) {
+    if (pfade.has(s4.pfad)) {
+      fehler.push({ wo: "meta", feld: "seiten", meldung: `Pfad "${s4.pfad}" kommt zweimal vor.` });
+    }
+    pfade.add(s4.pfad);
+  }
   const modulListe = [...meta3.data.module];
   for (const pflicht of PFLICHTMODULE) {
-    if (!modulListe.includes(pflicht)) modulListe.push(pflicht);
+    if (!modulListe.includes(pflicht) && !aufUnterseiten.includes(pflicht)) {
+      modulListe.push(pflicht);
+    }
   }
   const inhalte = {};
-  for (const typ of modulListe) {
+  for (const typ of [...modulListe, ...aufUnterseiten]) {
     const roh = rohInhalte[typ];
     if (roh === void 0) {
       fehler.push({
@@ -16229,11 +16796,11 @@ function siteValidieren(rohMeta, rohInhalte) {
   if (fehler.length > 0) return { ok: false, fehler };
   return {
     ok: true,
-    site: { meta: { ...meta3.data, module: modulListe }, inhalte }
+    site: { meta: { ...meta3.data, module: modulListe, seiten }, inhalte }
   };
 }
 function fehlerFormatieren(fehler) {
-  return fehler.map((f4) => `  ${f4.wo}${f4.feld ? " \u2192 " + f4.feld : ""}: ${f4.meldung}`).join("\n");
+  return fehler.map((f5) => `  ${f5.wo}${f5.feld ? " \u2192 " + f5.feld : ""}: ${f5.meldung}`).join("\n");
 }
 
 // src/entries/build.ts
@@ -16265,11 +16832,21 @@ function bauen(siteVerzeichnis2, zielVerzeichnis2) {
 ${fehlerFormatieren(ergebnis.fehler)}`
     );
   }
-  const html = seiteRendern(ergebnis.site);
+  const { meta: meta3 } = ergebnis.site;
+  const seiten = seitenRendern(ergebnis.site);
+  const start = seiten[0];
   rmSync(zielVerzeichnis2, { recursive: true, force: true });
   mkdirSync(zielVerzeichnis2, { recursive: true });
-  writeFileSync(join(zielVerzeichnis2, "index.html"), html, "utf8");
-  writeFileSync(join(zielVerzeichnis2, "404.html"), html, "utf8");
+  for (const seite of seiten) {
+    if (seite.pfad === "") {
+      writeFileSync(join(zielVerzeichnis2, "index.html"), seite.html, "utf8");
+      continue;
+    }
+    mkdirSync(join(zielVerzeichnis2, seite.pfad), { recursive: true });
+    writeFileSync(join(zielVerzeichnis2, seite.pfad, "index.html"), seite.html, "utf8");
+  }
+  const fehlerseite = start.html.replace(/<link rel="canonical"[^>]*\/>/, "").replace("<head>", '<head>\n<meta name="robots" content="noindex"/>');
+  writeFileSync(join(zielVerzeichnis2, "404.html"), fehlerseite, "utf8");
   const assets = join(siteVerzeichnis2, "assets");
   if (existsSync(assets)) {
     cpSync(assets, join(zielVerzeichnis2, "assets"), { recursive: true });
@@ -16299,10 +16876,48 @@ ${fehlerFormatieren(ergebnis.fehler)}`
     "  Referrer-Policy: strict-origin-when-cross-origin",
     "  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=(), interest-cohort=()",
     "  Cross-Origin-Opener-Policy: same-origin",
+    "  Strict-Transport-Security: max-age=31536000",
     ""
   ].join("\n");
   writeFileSync(join(zielVerzeichnis2, "_headers"), headerZeilen, "utf8");
-  return html;
+  let stand = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
+  try {
+    const iso = execFileSync("git", ["log", "-1", "--format=%cI", "--", "site.json", "content", "assets"], {
+      cwd: siteVerzeichnis2,
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "ignore"]
+    }).trim();
+    if (iso) stand = iso.slice(0, 10);
+  } catch {
+  }
+  const adresse = (pfad) => `https://${meta3.domain}/${pfad}`;
+  const eintraege = seiten.map((s4) => `  <url>
+    <loc>${adresse(s4.pfad)}</loc>
+    <lastmod>${stand}</lastmod>
+  </url>`).join("\n");
+  writeFileSync(
+    join(zielVerzeichnis2, "sitemap.xml"),
+    `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${eintraege}
+</urlset>
+`,
+    "utf8"
+  );
+  writeFileSync(
+    join(zielVerzeichnis2, "robots.txt"),
+    [
+      `# ${meta3.name}`,
+      "User-agent: *",
+      "Content-Signal: search=yes, ai-input=yes, ai-train=no",
+      "Allow: /",
+      "",
+      `Sitemap: ${adresse("sitemap.xml")}`,
+      ""
+    ].join("\n"),
+    "utf8"
+  );
+  return start.html;
 }
 var siteVerzeichnis = resolve(process.argv[2] ?? "sites/hofladen-sonnleiten");
 var zielVerzeichnis = resolve(process.argv[3] ?? "dist");
@@ -16310,6 +16925,10 @@ try {
   const html = bauen(siteVerzeichnis, zielVerzeichnis);
   const kb = (Buffer.byteLength(html, "utf8") / 1024).toFixed(1);
   console.log(`Gebaut: ${join(zielVerzeichnis, "index.html")}  (${kb} KB)`);
+  for (const datei of readdirSync(zielVerzeichnis, { withFileTypes: true })) {
+    if (!datei.isDirectory() || datei.name === "assets") continue;
+    console.log(`        /${datei.name}`);
+  }
 } catch (fehler) {
   console.error(`
 Build abgebrochen.
