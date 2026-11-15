@@ -1,7 +1,20 @@
 {
-  // Muss dem Worker-Namen im Cloudflare-Dashboard entsprechen.
+  // Muss dem Worker-Namen im Cloudflare-Dashboard entsprechen. Cloudflare
+  // benennt einen neuen Worker nach dem Repo, und das Repo heisst
+  // kunde-<kennung> -- deshalb hier derselbe Vorsatz. Ohne ihn legt
+  // `wrangler deploy` einen zweiten Worker unter der blossen Kennung an,
+  // statt den vorhandenen zu aktualisieren.
   "name": "kunde-hofladen-sonnleiten",
   "compatibility_date": "2026-08-16",
+
+  // Baut die Seite, bevor wrangler sie ausliefert.
+  // Steht hier und nicht im Cloudflare-Dashboard: Dort waere es eine
+  // Einstellung, die man je Kunde von Hand setzen und wissen muss. Fehlt sie,
+  // geht der Lauf direkt zu `wrangler deploy`, findet kein dist/ und bricht
+  // mit "assets.directory does not exist" ab -- genau so passiert.
+  "build": {
+    "command": "node tools/build.mjs . dist"
+  },
 
   // Reine Asset-Auslieferung: kein Worker-Skript, nur das Build-Ergebnis.
   "assets": {
