@@ -548,7 +548,7 @@ function J2(e3) {
 }
 
 // src/render/kontext.ts
-var LageKontext = X({ basis: "", h1: false });
+var LageKontext = X({ basis: "", h1: false, ziel: (ziel) => ziel });
 
 // node_modules/preact/hooks/dist/hooks.mjs
 var t2;
@@ -728,13 +728,14 @@ var WOCHENTAGE = [
 
 // src/render/modules/basis.tsx
 function HeroModul({ daten }) {
+  const { ziel } = x3(LageKontext);
   return /* @__PURE__ */ u4("section", { id: "start", class: "hero", children: [
     /* @__PURE__ */ u4("div", { class: "hero-bild", "aria-hidden": "true", children: /* @__PURE__ */ u4(Bildchen, { bild: daten.bild, sofort: true }) }),
     /* @__PURE__ */ u4("div", { class: "huelle", children: /* @__PURE__ */ u4("div", { class: "hero-innen", children: [
       daten.dachzeile ? /* @__PURE__ */ u4("span", { class: "hero-dach", children: daten.dachzeile }) : null,
       /* @__PURE__ */ u4("h1", { children: daten.ueberschrift }),
       /* @__PURE__ */ u4("p", { children: daten.text }),
-      daten.aktionen.length > 0 ? /* @__PURE__ */ u4("div", { class: "hero-aktionen", children: daten.aktionen.map((a4, i4) => /* @__PURE__ */ u4("a", { href: a4.ziel, class: i4 === 0 ? "knopf knopf-voll" : "knopf knopf-leer", children: a4.label }, a4.ziel)) }) : null
+      daten.aktionen.length > 0 ? /* @__PURE__ */ u4("div", { class: "hero-aktionen", children: daten.aktionen.map((a4, i4) => /* @__PURE__ */ u4("a", { href: ziel(a4.ziel), class: i4 === 0 ? "knopf knopf-voll" : "knopf knopf-leer", children: a4.label }, a4.ziel)) }) : null
     ] }) })
   ] });
 }
@@ -1159,46 +1160,58 @@ function routen(site) {
     module: meta3.module,
     titel: meta3.titel ?? meta3.name,
     beschreibung: meta3.beschreibung,
-    istStart: true
+    istStart: true,
+    wurzelbezogen: false,
+    fehlerseite: false
   };
   const unterseiten = meta3.seiten.map((s4) => ({
     pfad: s4.pfad,
     module: s4.module,
     titel: s4.titel ?? titelBauen(site, s4.module),
     beschreibung: s4.beschreibung ?? meta3.beschreibung,
-    istStart: false
+    istStart: false,
+    wurzelbezogen: true,
+    fehlerseite: false
   }));
   return [start, ...unterseiten];
 }
-var basisVon = (route) => route.istStart ? "" : "/";
+var fehlerRoute = (start) => ({ ...start, wurzelbezogen: true, fehlerseite: true });
+var adresseVon = (domain2, pfad) => `https://${domain2}/${pfad === "" ? "" : `${pfad}/`}`;
+var pfadVon = (pfad) => pfad === "" ? "/" : `/${pfad}/`;
+var basisVon = (route) => route.wurzelbezogen ? "/" : "";
 function verweis(site, von, typ) {
   const eigene = site.meta.seiten.find((s4) => s4.module.includes(typ));
   if (eigene) {
     const anker2 = eigene.module[0] === typ ? "" : `#${ANKER[typ] ?? ""}`;
-    return `/${eigene.pfad}${anker2}`;
+    return `${pfadVon(eigene.pfad)}${anker2}`;
   }
   const anker = ANKER[typ];
-  if (!anker) return von.istStart ? "#" : "/";
-  return von.istStart ? `#${anker}` : `/#${anker}`;
+  if (!anker) return von.wurzelbezogen ? "/" : "#";
+  return von.wurzelbezogen ? `/#${anker}` : `#${anker}`;
 }
-function zielFuerSeite(ziel, von) {
-  if (!ziel.startsWith("#") || von.istStart) return ziel;
-  return `/${ziel}`;
+function zielFuerSeite(site, ziel, von) {
+  if (ziel.startsWith("#")) return von.wurzelbezogen ? `/${ziel}` : ziel;
+  const pfad = /^\/([^/#?]+)(#.*)?$/.exec(ziel);
+  if (pfad && site.meta.seiten.some((s4) => s4.pfad === pfad[1])) {
+    return `${pfadVon(pfad[1])}${pfad[2] ?? ""}`;
+  }
+  return ziel;
 }
 
 // src/render/seite.tsx
-var absolut = (site, pfad = "") => `https://${site.meta.domain}/${pfad.replace(/^\/+/, "")}`;
+var absolut = (site, pfad) => `https://${site.meta.domain}/${pfad.replace(/^\/+/, "")}`;
 function Kopfbereich({ site, route }) {
   const { meta: meta3 } = site;
   const basis = basisVon(route);
-  const hier = absolut(site, route.pfad);
+  const hier = adresseVon(meta3.domain, route.pfad);
   const heroBild = route.module.includes("hero") ? site.inhalte.hero?.bild : void 0;
   return /* @__PURE__ */ u4(S, { children: [
     /* @__PURE__ */ u4("meta", { charSet: "utf-8" }),
     /* @__PURE__ */ u4("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }),
+    route.fehlerseite || !meta3.indexierbar ? /* @__PURE__ */ u4("meta", { name: "robots", content: meta3.indexierbar ? "noindex" : "noindex, nofollow" }) : null,
     /* @__PURE__ */ u4("title", { children: route.titel }),
     /* @__PURE__ */ u4("meta", { name: "description", content: route.beschreibung }),
-    /* @__PURE__ */ u4("link", { rel: "canonical", href: hier }),
+    route.fehlerseite ? null : /* @__PURE__ */ u4("link", { rel: "canonical", href: hier }),
     /* @__PURE__ */ u4("link", { rel: "icon", href: basis + meta3.logo }),
     heroBild ? /* @__PURE__ */ u4("link", { rel: "preload", as: "image", href: basis + heroBild.pfad, fetchpriority: "high" }) : null,
     /* @__PURE__ */ u4("meta", { property: "og:type", content: "website" }),
@@ -1224,12 +1237,12 @@ function Kopf({ site, route }) {
       "a",
       {
         class: "kopf-logo",
-        href: route.istStart ? "#start" : "/",
+        href: route.wurzelbezogen ? "/" : "#start",
         "aria-label": meta3.name,
         children: /* @__PURE__ */ u4("img", { src: basis + meta3.logo, alt: meta3.name, width: 44, height: 44 })
       }
     ),
-    meta3.navigation.length > 0 ? /* @__PURE__ */ u4("nav", { class: "kopf-nav", "aria-label": "Hauptnavigation", children: /* @__PURE__ */ u4("ul", { children: meta3.navigation.map((n2) => /* @__PURE__ */ u4("li", { children: /* @__PURE__ */ u4("a", { href: zielFuerSeite(n2.ziel, route), children: n2.label }) }, n2.ziel)) }) }) : null
+    meta3.navigation.length > 0 ? /* @__PURE__ */ u4("nav", { class: "kopf-nav", "aria-label": "Hauptnavigation", children: /* @__PURE__ */ u4("ul", { children: meta3.navigation.map((n2) => /* @__PURE__ */ u4("li", { children: /* @__PURE__ */ u4("a", { href: zielFuerSeite(site, n2.ziel, route), children: n2.label }) }, n2.ziel)) }) }) : null
   ] }) });
 }
 function Fuss({ site, route }) {
@@ -1247,14 +1260,15 @@ function Fuss({ site, route }) {
 function Koerper({ site, route }) {
   const { inhalte } = site;
   const basis = basisVon(route);
+  const ziel = (z5) => zielFuerSeite(site, z5, route);
   const zeigtHinweisband = route.module.includes("hinweisband");
   const imMain = route.module.filter((t3) => t3 !== "hinweisband");
   const h1Traeger = route.istStart || route.module.includes("hero") ? null : imMain[0];
-  return /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: false }, children: [
+  return /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: false, ziel }, children: [
     /* @__PURE__ */ u4("a", { class: "sprung", href: "#inhalt", children: "Zum Inhalt springen" }),
     /* @__PURE__ */ u4(Kopf, { site, route }),
     zeigtHinweisband ? /* @__PURE__ */ u4(Modul, { typ: "hinweisband", daten: inhalte.hinweisband }) : null,
-    /* @__PURE__ */ u4("main", { id: "inhalt", children: imMain.map((typ) => /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: typ === h1Traeger }, children: /* @__PURE__ */ u4(Modul, { typ, daten: inhalte[typ] }) }, typ)) }),
+    /* @__PURE__ */ u4("main", { id: "inhalt", children: imMain.map((typ) => /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: typ === h1Traeger, ziel }, children: /* @__PURE__ */ u4(Modul, { typ, daten: inhalte[typ] }) }, typ)) }),
     /* @__PURE__ */ u4(Fuss, { site, route })
   ] });
 }
@@ -1278,6 +1292,10 @@ var WOCHENTAG_URL = {
   Samstag: "https://schema.org/Saturday",
   Sonntag: "https://schema.org/Sunday"
 };
+function telefonKompakt(telefon) {
+  const kompakt = telefon.replace(/\s+/g, "");
+  return kompakt === "" ? void 0 : kompakt;
+}
 function endzeit(zeit, minuten) {
   const treffer = /^(\d{1,2}):(\d{2})$/.exec(zeit);
   if (!treffer || !Number.isFinite(minuten)) return void 0;
@@ -1288,7 +1306,8 @@ function endzeit(zeit, minuten) {
 function strukturdaten(site, route) {
   const { meta: meta3, inhalte } = site;
   const url2 = (pfad = "") => `https://${meta3.domain}/${pfad.replace(/^\/+/, "")}`;
-  const id = (teil) => url2(`${route.istStart ? "" : route.pfad}#${teil}`);
+  const hier = adresseVon(meta3.domain, route.pfad);
+  const id = (teil) => `${hier}#${teil}`;
   const WEBSITE = url2("#website");
   const BETRIEB = url2("#betrieb");
   const PERSON = url2("#person");
@@ -1328,7 +1347,7 @@ function strukturdaten(site, route) {
         url: url2(),
         logo: url2(meta3.logo),
         image: meta3.ogBild ? url2(meta3.ogBild) : void 0,
-        telephone: kontakt.telefon || void 0,
+        telephone: telefonKompakt(kontakt.telefon),
         email: kontakt.email || void 0,
         sameAs: meta3.sameAs,
         founder: kontakt.person ? { "@id": PERSON } : void 0,
@@ -1337,6 +1356,7 @@ function strukturdaten(site, route) {
           streetAddress: kontakt.strasse,
           postalCode: plzUndOrt[1],
           addressLocality: plzUndOrt[2],
+          addressRegion: kontakt.region,
           addressCountry: "DE"
         } : void 0,
         areaServed: kontakt.gebiet.map((name) => ({ "@type": "Place", name }))
@@ -1360,6 +1380,7 @@ function strukturdaten(site, route) {
             streetAddress: ort.strasse,
             postalCode: ort.plz,
             addressLocality: ort.ort,
+            addressRegion: ort.region,
             addressCountry: "DE"
           }
         })
@@ -1437,7 +1458,7 @@ function strukturdaten(site, route) {
     sauber({
       "@type": "WebPage",
       "@id": id("seite"),
-      url: url2(route.pfad),
+      url: hier,
       name: route.titel,
       description: route.beschreibung,
       isPartOf: { "@id": WEBSITE },
@@ -1452,7 +1473,7 @@ function strukturdaten(site, route) {
       "@id": id("pfad"),
       itemListElement: [
         { "@type": "ListItem", position: 1, name: meta3.name, item: url2() },
-        { "@type": "ListItem", position: 2, name: route.titel, item: url2(route.pfad) }
+        { "@type": "ListItem", position: 2, name: route.titel, item: hier }
       ]
     });
   }
@@ -1854,6 +1875,9 @@ function seiteRendern(site, route = routen(site)[0]) {
 }
 function seitenRendern(site) {
   return routen(site).map((route) => ({ pfad: route.pfad, html: seiteRendern(site, route) }));
+}
+function fehlerseiteRendern(site) {
+  return seiteRendern(site, fehlerRoute(routen(site)[0]));
 }
 
 // node_modules/zod/v4/classic/external.js
@@ -16500,6 +16524,8 @@ var KursplanSchema = external_exports.object({
       strasse: kurz(120).min(1),
       plz: kurz(10).min(1),
       ort: kurz(80).min(1),
+      /** Bundesland o. ae. — wird als addressRegion ausgezeichnet. */
+      region: kurz(60).optional(),
       url: external_exports.string().url().optional()
     })
   ).default([])
@@ -16562,6 +16588,8 @@ var KontaktSchema = external_exports.object({
   betrieb: kurz(120).min(1),
   strasse: kurz(120).min(1),
   ort: kurz(120).min(1),
+  /** Bundesland o. ae. — nur fuer die Strukturdaten (addressRegion). */
+  region: kurz(60).optional(),
   telefon: kurz(40),
   email: external_exports.string().email().or(external_exports.literal("")),
   hinweise: external_exports.array(external_exports.object({ titel: kurz(60).min(1), text: text(400).min(1) })).default([]),
@@ -16690,6 +16718,15 @@ var SiteMetaSchema = external_exports.object({
     'Eine Domain wie "beispiel.de" \u2014 ohne Schema, ohne Pfad, klein geschrieben.'
   ),
   beschreibung: kurz(200).min(1),
+  /**
+   * Ob Suchmaschinen die Seite aufnehmen duerfen.
+   *
+   * Mit `false` tragen alle Seiten noindex/nofollow, _headers sendet es
+   * zusaetzlich, und es entstehen keine sitemap.xml und keine Sitemap-Zeile.
+   * Gedacht fuer fiktive Betriebe und Vorschauen auf oeffentlich erreichbaren
+   * Adressen — dort waeren Strukturdaten und Sitemap eine falsche Auskunft.
+   */
+  indexierbar: external_exports.boolean().default(true),
   /**
    * Der Dokumenttitel, falls er nicht der Name sein soll.
    *
@@ -16845,8 +16882,7 @@ ${fehlerFormatieren(ergebnis.fehler)}`
     mkdirSync(join(zielVerzeichnis2, seite.pfad), { recursive: true });
     writeFileSync(join(zielVerzeichnis2, seite.pfad, "index.html"), seite.html, "utf8");
   }
-  const fehlerseite = start.html.replace(/<link rel="canonical"[^>]*\/>/, "").replace("<head>", '<head>\n<meta name="robots" content="noindex"/>');
-  writeFileSync(join(zielVerzeichnis2, "404.html"), fehlerseite, "utf8");
+  writeFileSync(join(zielVerzeichnis2, "404.html"), fehlerseiteRendern(ergebnis.site), "utf8");
   const assets = join(siteVerzeichnis2, "assets");
   if (existsSync(assets)) {
     cpSync(assets, join(zielVerzeichnis2, "assets"), { recursive: true });
@@ -16877,33 +16913,37 @@ ${fehlerFormatieren(ergebnis.fehler)}`
     "  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=(), interest-cohort=()",
     "  Cross-Origin-Opener-Policy: same-origin",
     "  Strict-Transport-Security: max-age=31536000",
+    /* Zusaetzlich zum Meta-Tag: gilt auch fuer Bilder und andere Nicht-HTML-Dateien. */
+    ...meta3.indexierbar ? [] : ["  X-Robots-Tag: noindex, nofollow"],
     ""
   ].join("\n");
   writeFileSync(join(zielVerzeichnis2, "_headers"), headerZeilen, "utf8");
-  let stand = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
-  try {
-    const iso = execFileSync("git", ["log", "-1", "--format=%cI", "--", "site.json", "content", "assets"], {
-      cwd: siteVerzeichnis2,
-      encoding: "utf8",
-      stdio: ["ignore", "pipe", "ignore"]
-    }).trim();
-    if (iso) stand = iso.slice(0, 10);
-  } catch {
-  }
-  const adresse = (pfad) => `https://${meta3.domain}/${pfad}`;
-  const eintraege = seiten.map((s4) => `  <url>
-    <loc>${adresse(s4.pfad)}</loc>
+  const sitemapUrl = `https://${meta3.domain}/sitemap.xml`;
+  if (meta3.indexierbar) {
+    let stand = (/* @__PURE__ */ new Date()).toISOString().slice(0, 10);
+    try {
+      const iso = execFileSync("git", ["log", "-1", "--format=%cI", "--", "site.json", "content", "assets"], {
+        cwd: siteVerzeichnis2,
+        encoding: "utf8",
+        stdio: ["ignore", "pipe", "ignore"]
+      }).trim();
+      if (iso) stand = iso.slice(0, 10);
+    } catch {
+    }
+    const eintraege = seiten.map((s4) => `  <url>
+    <loc>${adresseVon(meta3.domain, s4.pfad)}</loc>
     <lastmod>${stand}</lastmod>
   </url>`).join("\n");
-  writeFileSync(
-    join(zielVerzeichnis2, "sitemap.xml"),
-    `<?xml version="1.0" encoding="UTF-8"?>
+    writeFileSync(
+      join(zielVerzeichnis2, "sitemap.xml"),
+      `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${eintraege}
 </urlset>
 `,
-    "utf8"
-  );
+      "utf8"
+    );
+  }
   writeFileSync(
     join(zielVerzeichnis2, "robots.txt"),
     [
@@ -16912,8 +16952,7 @@ ${eintraege}
       "Content-Signal: search=yes, ai-input=yes, ai-train=no",
       "Allow: /",
       "",
-      `Sitemap: ${adresse("sitemap.xml")}`,
-      ""
+      ...meta3.indexierbar ? [`Sitemap: ${sitemapUrl}`, ""] : []
     ].join("\n"),
     "utf8"
   );
