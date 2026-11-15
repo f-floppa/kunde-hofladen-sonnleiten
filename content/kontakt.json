@@ -24,5 +24,14 @@
     "alt": "Kartenausschnitt mit der Lage des Hofes an der Aichberger Straße",
     "breite": 1200,
     "hoehe": 800
+  },
+  "art": "Hofladen",
+  "gebiet": [
+    "Sonnleiten",
+    "Vilsbiburg"
+  ],
+  "lage": {
+    "breite": 48.3,
+    "laenge": 12.35
   }
 }

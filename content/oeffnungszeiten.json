@@ -7,31 +7,64 @@
       "zeilen": [
         {
           "tag": "Montag",
-          "zeit": "geschlossen"
+          "zeit": "geschlossen",
+          "tage": [
+            "Montag"
+          ],
+          "geschlossen": true
         },
         {
           "tag": "Dienstag",
-          "zeit": "9:00 – 18:00"
+          "zeit": "9:00 – 18:00",
+          "tage": [
+            "Dienstag"
+          ],
+          "von": "9:00",
+          "bis": "18:00"
         },
         {
           "tag": "Mittwoch",
-          "zeit": "9:00 – 18:00"
+          "zeit": "9:00 – 18:00",
+          "tage": [
+            "Mittwoch"
+          ],
+          "von": "9:00",
+          "bis": "18:00"
         },
         {
           "tag": "Donnerstag",
-          "zeit": "9:00 – 18:00"
+          "zeit": "9:00 – 18:00",
+          "tage": [
+            "Donnerstag"
+          ],
+          "von": "9:00",
+          "bis": "18:00"
         },
         {
           "tag": "Freitag",
-          "zeit": "9:00 – 18:00"
+          "zeit": "9:00 – 18:00",
+          "tage": [
+            "Freitag"
+          ],
+          "von": "9:00",
+          "bis": "18:00"
         },
         {
           "tag": "Samstag",
-          "zeit": "8:00 – 13:00"
+          "zeit": "8:00 – 13:00",
+          "tage": [
+            "Samstag"
+          ],
+          "von": "8:00",
+          "bis": "13:00"
         },
         {
           "tag": "Sonntag",
-          "zeit": "geschlossen"
+          "zeit": "geschlossen",
+          "tage": [
+            "Sonntag"
+          ],
+          "geschlossen": true
         }
       ]
     },

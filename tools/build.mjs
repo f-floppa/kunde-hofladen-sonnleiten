@@ -714,8 +714,15 @@ var LABEL = {
   /** Kurzform fuer Minuten im Kursplan: "60 Min". */
   minuten: "Min",
   /** Steht an einem Wochentag ohne Eintrag. */
-  keinKurs: "\u2014"
+  keinKurs: "\u2014",
+  einzugsgebiet: "Einzugsgebiet:",
+  googleMaps: "Auf Google Maps ansehen",
+  googleBewerten: "Auf Google bewerten"
 };
+function aufzaehlung(punkte) {
+  if (punkte.length <= 1) return punkte[0] ?? "";
+  return `${punkte.slice(0, -1).join(", ")} und ${punkte[punkte.length - 1]}`;
+}
 var WOCHENTAGE = [
   "Montag",
   "Dienstag",
@@ -745,12 +752,13 @@ function HinweisbandModul({ daten }) {
   return /* @__PURE__ */ u4("aside", { class: "hinweisband", children: /* @__PURE__ */ u4("div", { class: "huelle", children: daten.text }) });
 }
 function UeberUnsModul({ daten }) {
+  const { kurzfassung } = x3(LageKontext);
   return /* @__PURE__ */ u4(
     Abschnitt,
     {
       id: "ueber-uns",
       kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.ueberUns, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.ueberUns, titel: daten.ueberschrift, einleitung: kurzfassung }),
         /* @__PURE__ */ u4("div", { class: daten.bild ? "zweispalt" : void 0, children: [
           /* @__PURE__ */ u4("div", { class: "fliess", children: daten.absaetze.map((absatz, i4) => /* @__PURE__ */ u4("p", { style: i4 > 0 ? "margin-top:1.1rem" : void 0, children: absatz }, i4)) }),
           daten.bild ? /* @__PURE__ */ u4(Bildchen, { bild: daten.bild }) : null
@@ -840,6 +848,45 @@ function HofcafeModul({ daten }) {
   );
 }
 
+// src/render/oeffnung.ts
+var zeitNormal = (z5) => z5.length === 4 ? `0${z5}` : z5;
+function tageText(tage) {
+  const index = [...new Set(tage.map((t3) => WOCHENTAGE.indexOf(t3)))].sort((a4, b3) => a4 - b3);
+  const namen = index.map((i4) => WOCHENTAGE[i4]);
+  const lueckenlos = index.every((wert, i4) => i4 === 0 || wert === index[i4 - 1] + 1);
+  if (namen.length >= 3 && lueckenlos) return `${namen[0]} \u2013 ${namen[namen.length - 1]}`;
+  if (namen.length === 1) return namen[0];
+  return `${namen.slice(0, -1).join(", ")} und ${namen[namen.length - 1]}`;
+}
+var tagAnzeige = (z5) => z5.tag || (z5.tage ? tageText(z5.tage) : "");
+function zeitAnzeige(z5) {
+  if (z5.zeit) return z5.zeit;
+  if (z5.geschlossen) return "geschlossen";
+  return z5.von && z5.bis ? `${z5.von} \u2013 ${z5.bis} Uhr` : "";
+}
+var TAG_URL = {
+  Montag: "https://schema.org/Monday",
+  Dienstag: "https://schema.org/Tuesday",
+  Mittwoch: "https://schema.org/Wednesday",
+  Donnerstag: "https://schema.org/Thursday",
+  Freitag: "https://schema.org/Friday",
+  Samstag: "https://schema.org/Saturday",
+  Sonntag: "https://schema.org/Sunday"
+};
+function oeffnungsSpezifikation(zeilen) {
+  const raus = [];
+  for (const z5 of zeilen) {
+    if (z5.geschlossen || !z5.tage?.length || !z5.von || !z5.bis) continue;
+    raus.push({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [...new Set(z5.tage)].sort((a4, b3) => WOCHENTAGE.indexOf(a4) - WOCHENTAGE.indexOf(b3)).map((t3) => TAG_URL[t3]),
+      opens: zeitNormal(z5.von),
+      closes: zeitNormal(z5.bis)
+    });
+  }
+  return raus;
+}
+
 // src/render/modules/zeiten.tsx
 function istGeschlossen(zeit) {
   return zeit.trim().toLowerCase() === "geschlossen";
@@ -854,9 +901,9 @@ function OeffnungszeitenModul({ daten }) {
         /* @__PURE__ */ u4("div", { class: "zeit-sets", children: daten.sets.map((s4) => /* @__PURE__ */ u4("div", { class: "zeit-set", children: [
           /* @__PURE__ */ u4("h3", { children: s4.titel }),
           s4.zusatz ? /* @__PURE__ */ u4("p", { class: "zusatz", children: s4.zusatz }) : null,
-          /* @__PURE__ */ u4("dl", { children: s4.zeilen.map((z5) => [
-            /* @__PURE__ */ u4("dt", { children: z5.tag }, z5.tag + "-t"),
-            /* @__PURE__ */ u4("dd", { class: istGeschlossen(z5.zeit) ? "zu" : void 0, children: z5.zeit }, z5.tag + "-d")
+          /* @__PURE__ */ u4("dl", { children: s4.zeilen.map((z5, i4) => [
+            /* @__PURE__ */ u4("dt", { children: tagAnzeige(z5) }, `${i4}-t`),
+            /* @__PURE__ */ u4("dd", { class: z5.geschlossen || istGeschlossen(zeitAnzeige(z5)) ? "zu" : void 0, children: zeitAnzeige(z5) }, `${i4}-d`)
           ]) })
         ] }, s4.titel)) }),
         daten.ausnahmen.length > 0 ? /* @__PURE__ */ u4("div", { class: "ausnahmen", children: [
@@ -1042,18 +1089,31 @@ function KontaktModul({ daten }) {
       kinder: /* @__PURE__ */ u4(S, { children: [
         /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.kontakt, titel: daten.ueberschrift }),
         /* @__PURE__ */ u4("div", { class: "kontakt", children: [
-          /* @__PURE__ */ u4("div", { children: /* @__PURE__ */ u4("address", { children: [
-            /* @__PURE__ */ u4("strong", { children: daten.betrieb }),
-            daten.strasse,
-            /* @__PURE__ */ u4("br", {}),
-            daten.ort,
-            /* @__PURE__ */ u4("br", {}),
-            daten.telefon ? /* @__PURE__ */ u4(S, { children: [
-              /* @__PURE__ */ u4("a", { href: `tel:${daten.telefon.replace(/[^+0-9]/g, "")}`, children: daten.telefon }),
-              /* @__PURE__ */ u4("br", {})
+          /* @__PURE__ */ u4("div", { children: [
+            /* @__PURE__ */ u4("address", { children: [
+              /* @__PURE__ */ u4("strong", { children: daten.betrieb }),
+              daten.strasse,
+              /* @__PURE__ */ u4("br", {}),
+              daten.ort,
+              /* @__PURE__ */ u4("br", {}),
+              daten.telefon ? /* @__PURE__ */ u4(S, { children: [
+                /* @__PURE__ */ u4("a", { href: `tel:${daten.telefon.replace(/[^+0-9]/g, "")}`, children: daten.telefon }),
+                /* @__PURE__ */ u4("br", {})
+              ] }) : null,
+              daten.email ? /* @__PURE__ */ u4("a", { href: `mailto:${daten.email}`, children: daten.email }) : null
+            ] }),
+            daten.gebiet.length > 0 ? /* @__PURE__ */ u4("p", { class: "fussnote", children: [
+              LABEL.einzugsgebiet,
+              " ",
+              aufzaehlung(daten.gebiet),
+              "."
             ] }) : null,
-            daten.email ? /* @__PURE__ */ u4("a", { href: `mailto:${daten.email}`, children: daten.email }) : null
-          ] }) }),
+            daten.profile?.googleMaps || daten.profile?.bewerten ? /* @__PURE__ */ u4("p", { class: "fussnote", children: [
+              daten.profile.googleMaps ? /* @__PURE__ */ u4("a", { href: daten.profile.googleMaps, rel: "noopener", children: LABEL.googleMaps }) : null,
+              daten.profile.googleMaps && daten.profile.bewerten ? /* @__PURE__ */ u4("br", {}) : null,
+              daten.profile.bewerten ? /* @__PURE__ */ u4("a", { href: daten.profile.bewerten, rel: "noopener", children: LABEL.googleBewerten }) : null
+            ] }) : null
+          ] }),
           /* @__PURE__ */ u4("div", { class: "kontakt-hinweise", children: daten.hinweise.map((h3) => /* @__PURE__ */ u4("div", { class: "kontakt-hinweis", children: [
             /* @__PURE__ */ u4("h3", { children: h3.titel }),
             /* @__PURE__ */ u4("p", { children: h3.text })
@@ -1261,16 +1321,49 @@ function Koerper({ site, route }) {
   const { inhalte } = site;
   const basis = basisVon(route);
   const ziel = (z5) => zielFuerSeite(site, z5, route);
+  const kurzfassung = route.istStart ? site.meta.kurzfassung : void 0;
+  const kurzfassungEigen = kurzfassung !== void 0 && !route.module.includes("ueberUns");
+  const kurzfassungBlock = kurzfassungEigen ? /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "kurzfassung",
+      kinder: /* @__PURE__ */ u4("div", { class: "abschnitt-kopf", children: /* @__PURE__ */ u4("p", { children: kurzfassung }) })
+    }
+  ) : null;
   const zeigtHinweisband = route.module.includes("hinweisband");
   const imMain = route.module.filter((t3) => t3 !== "hinweisband");
   const h1Traeger = route.istStart || route.module.includes("hero") ? null : imMain[0];
-  return /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: false, ziel }, children: [
+  return /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: false, ziel, kurzfassung }, children: [
     /* @__PURE__ */ u4("a", { class: "sprung", href: "#inhalt", children: "Zum Inhalt springen" }),
     /* @__PURE__ */ u4(Kopf, { site, route }),
     zeigtHinweisband ? /* @__PURE__ */ u4(Modul, { typ: "hinweisband", daten: inhalte.hinweisband }) : null,
-    /* @__PURE__ */ u4("main", { id: "inhalt", children: imMain.map((typ) => /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: typ === h1Traeger, ziel }, children: /* @__PURE__ */ u4(Modul, { typ, daten: inhalte[typ] }) }, typ)) }),
+    /* @__PURE__ */ u4("main", { id: "inhalt", children: [
+      imMain.includes("hero") ? null : kurzfassungBlock,
+      imMain.map((typ) => /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: typ === h1Traeger, ziel, kurzfassung }, children: [
+        /* @__PURE__ */ u4(Modul, { typ, daten: inhalte[typ] }),
+        typ === "hero" ? kurzfassungBlock : null
+      ] }, typ))
+    ] }),
     /* @__PURE__ */ u4(Fuss, { site, route })
   ] });
+}
+
+// src/render/betriebsart.ts
+var BETRIEBSARTEN = [
+  { name: "Hofladen", typ: "GroceryStore", ladenartig: true },
+  { name: "Laden", typ: "Store", ladenartig: true },
+  { name: "Caf\xE9", typ: "CafeOrCoffeeShop", ladenartig: true },
+  { name: "Restaurant", typ: "Restaurant", ladenartig: true },
+  { name: "Sportkurse", typ: "SportsActivityLocation", ladenartig: false },
+  { name: "Fitnessstudio", typ: "ExerciseGym", ladenartig: true },
+  { name: "Handwerksbetrieb", typ: "HomeAndConstructionBusiness", ladenartig: false },
+  { name: "Verein", typ: "Organization", ladenartig: false },
+  { name: "Praxis", typ: "MedicalBusiness", ladenartig: true },
+  { name: "Dienstleistung", typ: "ProfessionalService", ladenartig: false }
+];
+var BETRIEBSART_NAMEN = BETRIEBSARTEN.map((a4) => a4.name);
+function betriebsartVon(name) {
+  return BETRIEBSARTEN.find((a4) => a4.name === name);
 }
 
 // src/render/strukturdaten.ts
@@ -1340,16 +1433,21 @@ function strukturdaten(site, route) {
     const plzUndOrt = /^(\S+)\s+(.*)$/.exec(kontakt.ort);
     knoten.push(
       sauber({
-        "@type": "LocalBusiness",
+        "@type": betriebsartVon(kontakt.art)?.typ ?? "LocalBusiness",
         "@id": BETRIEB,
         name: kontakt.betrieb,
-        description: meta3.beschreibung,
+        description: meta3.kurzfassung ?? meta3.beschreibung,
         url: url2(),
         logo: url2(meta3.logo),
         image: meta3.ogBild ? url2(meta3.ogBild) : void 0,
         telephone: telefonKompakt(kontakt.telefon),
         email: kontakt.email || void 0,
-        sameAs: meta3.sameAs,
+        sameAs: [.../* @__PURE__ */ new Set([...meta3.sameAs, ...kontakt.profile?.googleMaps ? [kontakt.profile.googleMaps] : []])],
+        hasMap: kontakt.profile?.googleMaps,
+        openingHoursSpecification: oeffnungsSpezifikation(inhalte.oeffnungszeiten?.sets[0]?.zeilen ?? []),
+        /* Koordinaten sind eine Anschrift auf zehn Meter: nur wo die Anschrift
+           ohnehin oeffentlich ist. */
+        geo: kontakt.lage && kontakt.anschriftOeffentlich ? { "@type": "GeoCoordinates", latitude: kontakt.lage.breite, longitude: kontakt.lage.laenge } : void 0,
         founder: kontakt.person ? { "@id": PERSON } : void 0,
         address: kontakt.anschriftOeffentlich && plzUndOrt ? {
           "@type": "PostalAddress",
@@ -1878,6 +1976,30 @@ function seitenRendern(site) {
 }
 function fehlerseiteRendern(site) {
   return seiteRendern(site, fehlerRoute(routen(site)[0]));
+}
+
+// src/render/crawler.ts
+var TRAININGS_CRAWLER = ["GPTBot", "ClaudeBot", "Google-Extended", "Applebot-Extended", "CCBot"];
+var ANTWORT_CRAWLER = [
+  "OAI-SearchBot",
+  "ChatGPT-User",
+  "Claude-SearchBot",
+  "Claude-User",
+  "PerplexityBot",
+  "Perplexity-User"
+];
+function robotsTxt(meta3) {
+  const gesperrt = meta3.ki === "alles" ? [] : meta3.ki === "nichts" ? [...TRAININGS_CRAWLER, ...ANTWORT_CRAWLER] : TRAININGS_CRAWLER;
+  const signal = `search=yes, ai-input=${meta3.ki === "nichts" ? "no" : "yes"}, ai-train=${meta3.ki === "alles" ? "yes" : "no"}`;
+  return [
+    `# ${meta3.name}`,
+    ...gesperrt.flatMap((bot) => [`User-agent: ${bot}`, "Disallow: /", ""]),
+    "User-agent: *",
+    `Content-Signal: ${signal}`,
+    "Allow: /",
+    "",
+    ...meta3.indexierbar ? [`Sitemap: https://${meta3.domain}/sitemap.xml`, ""] : []
+  ].join("\n");
 }
 
 // node_modules/zod/v4/classic/external.js
@@ -16466,6 +16588,24 @@ var HofcafeSchema = external_exports.object({
   karte: external_exports.array(external_exports.object({ position: kurz(90).min(1), preis: kurz(20).min(1) })).min(1),
   hinweis: text(300).optional()
 });
+var uhrzeit = () => external_exports.string().trim().regex(/^(\d|[01]\d|2[0-3]):[0-5]\d$|^24:00$/, 'Eine Uhrzeit wie "9:00" oder "18:30".');
+var OeffnungsZeileSchema = external_exports.object({
+  tag: kurz(40).optional(),
+  zeit: kurz(40).optional(),
+  tage: external_exports.array(external_exports.enum(WOCHENTAGE)).min(1).optional(),
+  von: uhrzeit().optional(),
+  bis: uhrzeit().optional(),
+  geschlossen: external_exports.boolean().optional()
+}).superRefine((zl, ctx) => {
+  const melde = (path, message) => ctx.addIssue({ code: "custom", path: [path], message });
+  const strukturiert = zl.tage !== void 0 || zl.von !== void 0 || zl.bis !== void 0 || zl.geschlossen;
+  if (!zl.tag && !zl.tage) melde("tag", "Entweder ein Text (Tag) oder die Auswahl der Tage.");
+  if (!zl.zeit && !zl.geschlossen && !(zl.von && zl.bis)) melde("zeit", "Entweder ein Text (Zeit), von und bis, oder geschlossen.");
+  if (zl.von === void 0 !== (zl.bis === void 0)) melde("von", "Von und bis gehoeren zusammen.");
+  if (zl.geschlossen && (zl.von || zl.bis)) melde("geschlossen", "Geschlossen und Uhrzeiten schliessen sich aus.");
+  if (strukturiert && !zl.tage) melde("tage", "Uhrzeiten und geschlossen brauchen die Auswahl der Tage.");
+  if (zl.von === "24:00") melde("von", "24:00 gibt es nur als Ende.");
+});
 var OeffnungszeitenSchema = external_exports.object({
   marke: marke(),
   ueberschrift: kurz(90).min(1),
@@ -16473,7 +16613,7 @@ var OeffnungszeitenSchema = external_exports.object({
     external_exports.object({
       titel: kurz(60).min(1),
       zusatz: kurz(80).optional(),
-      zeilen: external_exports.array(external_exports.object({ tag: kurz(40).min(1), zeit: kurz(40).min(1) })).min(1)
+      zeilen: external_exports.array(OeffnungsZeileSchema).min(1)
     })
   ).min(1),
   ausnahmenTitel: kurz(60).optional(),
@@ -16582,6 +16722,18 @@ var FaqSchema = external_exports.object({
   ueberschrift: kurz(90).min(1),
   fragen: external_exports.array(external_exports.object({ frage: kurz(160).min(1), antwort: text(700).min(1) })).min(1)
 });
+var GOOGLE_HOSTS = ["google.com", "google.de", "goo.gl", "g.page", "g.co"];
+function istGoogleAdresse(wert) {
+  let url2;
+  try {
+    url2 = new URL(wert);
+  } catch {
+    return false;
+  }
+  if (url2.protocol !== "https:" || url2.username || url2.password) return false;
+  return GOOGLE_HOSTS.some((h3) => url2.hostname === h3 || url2.hostname.endsWith(`.${h3}`));
+}
+var googleAdresse = () => external_exports.string().trim().max(500).refine(istGoogleAdresse, "Eine https-Adresse von Google (google.com, maps.app.goo.gl, g.page).");
 var KontaktSchema = external_exports.object({
   marke: marke(),
   ueberschrift: kurz(90).min(1),
@@ -16627,7 +16779,28 @@ var KontaktSchema = external_exports.object({
    * Sagt fuer die Suche dasselbe wie eine Anschrift, ohne einen Ort zu
    * behaupten, an dem niemand hingehen kann.
    */
-  gebiet: external_exports.array(kurz(80)).default([])
+  gebiet: external_exports.array(kurz(80)).default([]),
+  /**
+   * Was fuer ein Betrieb das ist — ein Wort aus einer festen Liste
+   * (betriebsart.ts). Daraus wird der genaue schema.org-Typ.
+   */
+  art: external_exports.enum(BETRIEBSART_NAMEN).optional(),
+  /**
+   * Die Lage als Koordinaten. Nur ausgezeichnet, wenn die Anschrift
+   * oeffentlich ist — Koordinaten sind eine Anschrift auf zehn Meter genau.
+   */
+  lage: external_exports.object({
+    breite: external_exports.number().min(-90).max(90),
+    laenge: external_exports.number().min(-180).max(180)
+  }).optional(),
+  /**
+   * Verweise auf das Google-Profil des Betriebs. Nur Adressen von Google:
+   * Das Feld soll kein Schlupfloch fuer beliebige Links sein.
+   */
+  profile: external_exports.object({
+    googleMaps: googleAdresse().optional(),
+    bewerten: googleAdresse().optional()
+  }).optional()
 });
 var ImpressumSchema = external_exports.object({
   ueberschrift: kurz(90).min(1),
@@ -16719,6 +16892,12 @@ var SiteMetaSchema = external_exports.object({
   ),
   beschreibung: kurz(200).min(1),
   /**
+   * Ein Satz: wer, was, wo. Erscheint sichtbar als Einleitung ("Ueber uns"
+   * bzw. am Anfang der Startseite) und speist die Beschreibung des Betriebs in
+   * den Strukturdaten. Die Meta-Beschreibung bleibt `beschreibung`.
+   */
+  kurzfassung: kurz(250).min(80, "Ein vollstaendiger Satz: wer, was, wo \u2014 mindestens 80 Zeichen.").optional(),
+  /**
    * Ob Suchmaschinen die Seite aufnehmen duerfen.
    *
    * Mit `false` tragen alle Seiten noindex/nofollow, _headers sendet es
@@ -16727,6 +16906,14 @@ var SiteMetaSchema = external_exports.object({
    * Adressen — dort waeren Strukturdaten und Sitemap eine falsche Auskunft.
    */
   indexierbar: external_exports.boolean().default(true),
+  /**
+   * Was KI-Anbieter mit der Seite tun duerfen (steuert nur robots.txt).
+   *
+   * "antworten": Such- und Antwort-Crawler ja, Trainings-Crawler nein.
+   * "alles": keine Sperren, auch Training erlaubt.
+   * "nichts": zusaetzlich keine KI-Suche und keine KI-Antworten.
+   */
+  ki: external_exports.enum(["antworten", "alles", "nichts"]).default("antworten"),
   /**
    * Der Dokumenttitel, falls er nicht der Name sein soll.
    *
@@ -16840,6 +17027,54 @@ function fehlerFormatieren(fehler) {
   return fehler.map((f5) => `  ${f5.wo}${f5.feld ? " \u2192 " + f5.feld : ""}: ${f5.meldung}`).join("\n");
 }
 
+// src/render/warnungen.ts
+var ortAusAnschrift = (ort) => /^\S+\s+(.*)$/.exec(ort)?.[1]?.trim() || void 0;
+function warnungen(site) {
+  const { meta: meta3, inhalte } = site;
+  const kontakt = inhalte.kontakt;
+  const raus = [];
+  if (!meta3.kurzfassung) {
+    raus.push({
+      code: "kurzfassung-fehlt",
+      text: "Die Kurzfassung fehlt: ein Satz, der sagt, wer was wo anbietet. Sie erscheint auf der Seite und beschreibt den Betrieb in den Strukturdaten."
+    });
+  }
+  if (kontakt) {
+    const orte = [ortAusAnschrift(kontakt.ort), ...kontakt.gebiet].filter((o4) => !!o4);
+    const texte = `${meta3.titel ?? meta3.name} ${meta3.kurzfassung ?? ""}`.toLowerCase();
+    if (orte.length > 0 && !orte.some((o4) => texte.includes(o4.toLowerCase()))) {
+      raus.push({
+        code: "ortsbezug-fehlt",
+        text: `Weder Titel noch Kurzfassung nennen einen Ort (${orte.join(", ")}). Wer nach "\u2026 in <Ort>" sucht, findet die Seite so schwerer.`
+      });
+    }
+    if (!kontakt.anschriftOeffentlich && kontakt.gebiet.length === 0) {
+      raus.push({
+        code: "gebiet-fehlt",
+        text: "Die Anschrift ist nicht oeffentlich und das Einzugsgebiet ist leer: Die Seite sagt nirgends, wo der Betrieb arbeitet."
+      });
+    }
+    if (!kontakt.art) {
+      raus.push({ code: "art-fehlt", text: "Die Art des Betriebs fehlt (Kontakt, Art). Ohne sie bleibt der Betrieb ein allgemeiner LocalBusiness." });
+    } else if (betriebsartVon(kontakt.art)?.ladenartig) {
+      const strukturiert = inhalte.oeffnungszeiten?.sets[0]?.zeilen.some((z5) => z5.tage && (z5.geschlossen || z5.von && z5.bis));
+      if (!strukturiert) {
+        raus.push({
+          code: "oeffnungszeiten-fehlen",
+          text: `Bei einem Betrieb der Art "${kontakt.art}" suchen Besucher nach Oeffnungszeiten, und es gibt keine strukturierten (Tage, von, bis).`
+        });
+      }
+    }
+    if (!kontakt.profile?.googleMaps) {
+      raus.push({
+        code: "google-maps-fehlt",
+        text: "Der Link zum Google-Profil fehlt (Kontakt, Profile, Google Maps). Er verbindet die Seite mit dem Eintrag, der in der Umgebungssuche zaehlt."
+      });
+    }
+  }
+  return raus;
+}
+
 // src/entries/build.ts
 function jsonLesen(pfad) {
   try {
@@ -16944,30 +17179,20 @@ ${eintraege}
       "utf8"
     );
   }
-  writeFileSync(
-    join(zielVerzeichnis2, "robots.txt"),
-    [
-      `# ${meta3.name}`,
-      "User-agent: *",
-      "Content-Signal: search=yes, ai-input=yes, ai-train=no",
-      "Allow: /",
-      "",
-      ...meta3.indexierbar ? [`Sitemap: ${sitemapUrl}`, ""] : []
-    ].join("\n"),
-    "utf8"
-  );
-  return start.html;
+  writeFileSync(join(zielVerzeichnis2, "robots.txt"), robotsTxt(meta3), "utf8");
+  return { html: start.html, hinweise: warnungen(ergebnis.site).map((w4) => w4.text) };
 }
 var siteVerzeichnis = resolve(process.argv[2] ?? "sites/hofladen-sonnleiten");
 var zielVerzeichnis = resolve(process.argv[3] ?? "dist");
 try {
-  const html = bauen(siteVerzeichnis, zielVerzeichnis);
+  const { html, hinweise } = bauen(siteVerzeichnis, zielVerzeichnis);
   const kb = (Buffer.byteLength(html, "utf8") / 1024).toFixed(1);
   console.log(`Gebaut: ${join(zielVerzeichnis, "index.html")}  (${kb} KB)`);
   for (const datei of readdirSync(zielVerzeichnis, { withFileTypes: true })) {
     if (!datei.isDirectory() || datei.name === "assets") continue;
     console.log(`        /${datei.name}`);
   }
+  for (const h3 of hinweise) console.log(`Hinweis: ${h3}`);
 } catch (fehler) {
   console.error(`
 Build abgebrochen.
