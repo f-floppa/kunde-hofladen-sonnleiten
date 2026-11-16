@@ -1,6 +1,5 @@
 {
-  "ueberschrift": "Unsere Marktstände",
-  "einleitung": "Drei Märkte in der Region — wer es nicht auf den Hof schafft, findet uns dort.",
+  "hinweis": "An Feiertagen entfallen die Märkte. Kurzfristige Ausfälle stehen im Hinweisband ganz oben.",
   "staende": [
     {
       "ort": "Landshut, Wochenmarkt",
@@ -21,5 +20,6 @@
       "platz": "Domplatz, Nordseite"
     }
   ],
-  "hinweis": "An Feiertagen entfallen die Märkte. Kurzfristige Ausfälle stehen im Hinweisband ganz oben."
+  "einleitung": "Drei Märkte in der Region — wer es nicht auf den Hof schafft, findet uns dort.",
+  "ueberschrift": "Unsere Marktstände"
 }

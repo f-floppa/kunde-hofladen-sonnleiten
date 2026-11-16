@@ -1,37 +1,37 @@
 {
-  "ueberschrift": "Was bei uns los ist",
   "termine": [
     {
-      "titel": "Hoffest",
-      "datum": "13. – 14. Juni 2026",
       "zeit": "11:00 – 18:00",
-      "anmeldung": false,
+      "datum": "13. – 14. Juni 2026",
       "preis": "Eintritt frei",
+      "titel": "Hoffest",
+      "anmeldung": false,
       "beschreibung": "Zwei Tage Hof zum Anschauen: Stallführungen, Musik am Samstagabend, Käseverkostung, Kaffee und Kuchen."
     },
     {
-      "titel": "Hofführung mit Käseverkostung",
-      "datum": "Jeden ersten Samstag im Monat",
       "zeit": "14:00",
-      "anmeldung": true,
+      "datum": "Jeden ersten Samstag im Monat",
       "preis": "12,00 €",
+      "titel": "Hofführung mit Käseverkostung",
+      "anmeldung": true,
       "beschreibung": "Rund 90 Minuten durch Stall, Käserei und Gemüsefeld. Danach vier Käse zum Probieren. Höchstens 15 Personen."
     },
     {
-      "titel": "Erntedank am Hof",
-      "datum": "4. Oktober 2026",
       "zeit": "10:00 – 16:00",
-      "anmeldung": false,
+      "datum": "4. Oktober 2026",
       "preis": "Eintritt frei",
+      "titel": "Erntedank am Hof",
+      "anmeldung": false,
       "beschreibung": "Erntedankaltar, Kürbisverkauf, Kinderprogramm mit Strohburg."
     },
     {
-      "titel": "Adventsmarkt",
-      "datum": "5. – 6. Dezember 2026",
       "zeit": "14:00 – 20:00",
-      "anmeldung": false,
+      "datum": "5. – 6. Dezember 2026",
       "preis": "Eintritt frei",
+      "titel": "Adventsmarkt",
+      "anmeldung": false,
       "beschreibung": "Kleiner Markt im Hof mit sechs Ständen, Glühwein aus eigenem Apfelsaft."
     }
-  ]
+  ],
+  "ueberschrift": "Was bei uns los ist"
 }

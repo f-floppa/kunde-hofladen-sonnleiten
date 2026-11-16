@@ -1,29 +1,29 @@
 {
-  "ueberschrift": "Zertifikate & Partner",
   "eintraege": [
     {
+      "logo": {
+        "alt": "Siegel Naturhof zertifiziert",
+        "pfad": "assets/logo/siegel-naturhof.svg"
+      },
       "name": "Naturhof zertifiziert",
-      "untertitel": "Ökologischer Landbau, Kontrollstelle DE-ÖKO-999",
-      "logo": {
-        "pfad": "assets/logo/siegel-naturhof.svg",
-        "alt": "Siegel Naturhof zertifiziert"
-      }
+      "untertitel": "Ökologischer Landbau, Kontrollstelle DE-ÖKO-999"
     },
     {
+      "logo": {
+        "alt": "Siegel Regional Garantiert",
+        "pfad": "assets/logo/siegel-regional.svg"
+      },
       "name": "Regional Garantiert",
-      "untertitel": "Erzeugung und Verarbeitung im Umkreis von 30 km",
-      "logo": {
-        "pfad": "assets/logo/siegel-regional.svg",
-        "alt": "Siegel Regional Garantiert"
-      }
+      "untertitel": "Erzeugung und Verarbeitung im Umkreis von 30 km"
     },
     {
-      "name": "Käserei Aigner",
-      "untertitel": "Reifekeller-Partnerschaft seit 2020",
       "logo": {
-        "pfad": "assets/logo/partner-aigner.svg",
-        "alt": "Logo Käserei Aigner"
-      }
+        "alt": "Logo Käserei Aigner",
+        "pfad": "assets/logo/partner-aigner.svg"
+      },
+      "name": "Käserei Aigner",
+      "untertitel": "Reifekeller-Partnerschaft seit 2020"
     }
-  ]
+  ],
+  "ueberschrift": "Zertifikate & Partner"
 }

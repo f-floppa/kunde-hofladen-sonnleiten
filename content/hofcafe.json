@@ -1,41 +1,41 @@
 {
-  "ueberschrift": "Hofcafé",
-  "einleitung": "Von Mai bis Oktober, auf der Terrasse hinterm Laden. Kuchen backt Yusuf morgens, meist sind es vier Sorten. Was aus ist, ist aus.",
   "bild": {
-    "pfad": "assets/fotos/cafe-terrasse.jpg",
     "alt": "Terrasse des Hofcafés mit Holztischen und Blick ins Tal",
-    "breite": 1600,
-    "hoehe": 1067
+    "pfad": "assets/fotos/cafe-terrasse.jpg",
+    "hoehe": 1067,
+    "breite": 1600
   },
   "karte": [
     {
-      "position": "Kuchen, Stück",
-      "preis": "4,20 €"
+      "preis": "4,20 €",
+      "position": "Kuchen, Stück"
     },
     {
-      "position": "Kuchen mit Sahne",
-      "preis": "5,20 €"
+      "preis": "5,20 €",
+      "position": "Kuchen mit Sahne"
     },
     {
-      "position": "Brotzeitbrett für zwei",
-      "preis": "16,50 €"
+      "preis": "16,50 €",
+      "position": "Brotzeitbrett für zwei"
     },
     {
-      "position": "Kaffee",
-      "preis": "3,10 €"
+      "preis": "3,10 €",
+      "position": "Kaffee"
     },
     {
-      "position": "Milchkaffee",
-      "preis": "3,80 €"
+      "preis": "3,80 €",
+      "position": "Milchkaffee"
     },
     {
-      "position": "Apfelsaftschorle, 0,3 l",
-      "preis": "3,40 €"
+      "preis": "3,40 €",
+      "position": "Apfelsaftschorle, 0,3 l"
     },
     {
-      "position": "Hausgemachte Limonade, 0,3 l",
-      "preis": "3,60 €"
+      "preis": "3,60 €",
+      "position": "Hausgemachte Limonade, 0,3 l"
     }
   ],
-  "hinweis": "Wir nehmen keine Reservierungen an. Bei Regen bleibt die Terrasse zu."
+  "hinweis": "Wir nehmen keine Reservierungen an. Bei Regen bleibt die Terrasse zu.",
+  "einleitung": "Von Mai bis Oktober, auf der Terrasse hinterm Laden. Kuchen backt Yusuf morgens, meist sind es vier Sorten. Was aus ist, ist aus.",
+  "ueberschrift": "Hofcafé"
 }

@@ -1,5 +1,4 @@
 {
-  "ueberschrift": "Häufige Fragen",
   "fragen": [
     {
       "frage": "Kann ich vorbestellen?",
@@ -25,5 +24,6 @@
       "frage": "Ist alles bio?",
       "antwort": "Alles, was wir selbst erzeugen, ja — seit 2018 zertifiziert. Bei zugekauften Produkten steht die Herkunft am Regal."
     }
-  ]
+  ],
+  "ueberschrift": "Häufige Fragen"
 }

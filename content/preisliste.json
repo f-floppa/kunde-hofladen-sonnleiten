@@ -1,40 +1,38 @@
 {
-  "ueberschrift": "Tagespreise",
   "stand": "16. August 2026",
-  "fussnote": "Preise können sich je nach Ernte kurzfristig ändern. Es gilt der Aushang im Laden.",
   "gruppen": [
     {
       "titel": "Gemüse",
       "zeilen": [
         {
+          "preis": "16,40 €",
           "artikel": "Spargel weiß, Klasse I",
-          "einheit": "kg",
-          "preis": "16,40 €"
+          "einheit": "kg"
         },
         {
+          "preis": "8,50 €",
           "artikel": "Spargel Bruch",
-          "einheit": "kg",
-          "preis": "8,50 €"
+          "einheit": "kg"
         },
         {
+          "preis": "2,80 €",
           "artikel": "Kartoffeln, festkochend",
-          "einheit": "kg",
-          "preis": "2,80 €"
+          "einheit": "kg"
         },
         {
+          "preis": "1,90 €",
           "artikel": "Zwiebeln",
-          "einheit": "kg",
-          "preis": "1,90 €"
+          "einheit": "kg"
         },
         {
+          "preis": "6,40 €",
           "artikel": "Tomaten, bunt gemischt",
-          "einheit": "kg",
-          "preis": "6,40 €"
+          "einheit": "kg"
         },
         {
+          "preis": "1,60 €",
           "artikel": "Salat, Kopf",
-          "einheit": "Stück",
-          "preis": "1,60 €"
+          "einheit": "Stück"
         }
       ]
     },
@@ -42,19 +40,19 @@
       "titel": "Obst",
       "zeilen": [
         {
+          "preis": "6,90 €",
           "artikel": "Erdbeeren",
-          "einheit": "Schale 500 g",
-          "preis": "6,90 €"
+          "einheit": "Schale 500 g"
         },
         {
+          "preis": "3,20 €",
           "artikel": "Äpfel Boskoop",
-          "einheit": "kg",
-          "preis": "3,20 €"
+          "einheit": "kg"
         },
         {
+          "preis": "12,50 €",
           "artikel": "Apfelsaft naturtrüb",
-          "einheit": "5-l-Box",
-          "preis": "12,50 €"
+          "einheit": "5-l-Box"
         }
       ]
     },
@@ -62,29 +60,29 @@
       "titel": "Hofkäserei",
       "zeilen": [
         {
+          "preis": "2,90 €",
           "artikel": "Bergkäse jung",
-          "einheit": "100 g",
-          "preis": "2,90 €"
+          "einheit": "100 g"
         },
         {
+          "preis": "3,60 €",
           "artikel": "Bergkäse gereift, 8 Monate",
-          "einheit": "100 g",
-          "preis": "3,60 €"
+          "einheit": "100 g"
         },
         {
+          "preis": "3,80 €",
           "artikel": "Frischkäse mit Kräutern",
-          "einheit": "150-g-Glas",
-          "preis": "3,80 €"
+          "einheit": "150-g-Glas"
         },
         {
+          "preis": "2,40 €",
           "artikel": "Naturjoghurt",
-          "einheit": "500-g-Glas",
-          "preis": "2,40 €"
+          "einheit": "500-g-Glas"
         },
         {
+          "preis": "4,50 €",
           "artikel": "Eier aus Freilandhaltung",
-          "einheit": "10 Stück",
-          "preis": "4,50 €"
+          "einheit": "10 Stück"
         }
       ]
     },
@@ -92,16 +90,18 @@
       "titel": "Fleisch — nur auf Vorbestellung",
       "zeilen": [
         {
+          "preis": "89,00 €",
           "artikel": "Rindfleischpaket gemischt",
-          "einheit": "5 kg",
-          "preis": "89,00 €"
+          "einheit": "5 kg"
         },
         {
+          "preis": "169,00 €",
           "artikel": "Rindfleischpaket gemischt",
-          "einheit": "10 kg",
-          "preis": "169,00 €"
+          "einheit": "10 kg"
         }
       ]
     }
-  ]
+  ],
+  "fussnote": "Preise können sich je nach Ernte kurzfristig ändern. Es gilt der Aushang im Laden.",
+  "ueberschrift": "Tagespreise"
 }

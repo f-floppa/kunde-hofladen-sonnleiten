@@ -1,5 +1,4 @@
 {
-  "ueberschrift": "Was Kunden sagen",
   "zitate": [
     {
       "text": "Seit fünf Jahren kaufe ich hier mein Gemüse. Der Unterschied zum Supermarkt ist nicht der Preis, sondern dass ich weiß, wo es herkommt.",
@@ -13,5 +12,6 @@
       "text": "Ich hole das Rindfleischpaket zweimal im Jahr. Vorbestellen, abholen, fertig — und die Qualität stimmt jedes Mal.",
       "quelle": "Andreas P., Landshut"
     }
-  ]
+  ],
+  "ueberschrift": "Was Kunden sagen"
 }
