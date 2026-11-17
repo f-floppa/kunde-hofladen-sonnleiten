@@ -690,798 +690,99 @@ function AbschnittKopf({
   ] });
 }
 
-// src/render/texte.ts
-var MARKE = {
-  ueberUns: "\xDCber uns",
-  sortiment: "Angebot",
-  preisliste: "Preise",
-  hofcafe: "Hofcaf\xE9",
-  kursplan: "Kursplan",
-  oeffnungszeiten: "\xD6ffnungszeiten",
-  maerkte: "Unterwegs",
-  veranstaltungen: "Termine",
-  aktuelles: "Aktuelles",
-  team: "Team",
-  galerie: "Bilder",
-  siegel: "Gepr\xFCft",
-  stimmen: "Stimmen",
-  faq: "H\xE4ufig gefragt",
-  kontakt: "Kontakt"
-};
-var LABEL = {
-  abweichendeZeiten: "Abweichende Zeiten",
-  /** Ueber den Eintraegen mit Ablaufdatum bei den Oeffnungszeiten. */
-  sonderzeiten: "Betriebsferien und Sonderzeiten",
-  /** Der Eintrag gilt heute. */
-  laufend: "Gerade jetzt",
-  /** Der Eintrag beginnt in den naechsten Tagen. */
-  bald: "Bald",
-  geschlossen: "geschlossen",
-  /** Vor dem Titel im Linktext: "Mehr zu <Titel>". */
-  mehrZu: "Mehr zu",
-  anmeldungNoetig: "Anmeldung n\xF6tig",
-  stand: "Stand:",
-  /** Kurzform fuer Minuten im Kursplan: "60 Min". */
-  minuten: "Min",
-  /** Steht an einem Wochentag ohne Eintrag. */
-  keinKurs: "\u2014",
-  einzugsgebiet: "Einzugsgebiet:",
-  googleMaps: "Auf Google Maps ansehen",
-  googleBewerten: "Auf Google bewerten"
-};
-function aufzaehlung(punkte) {
-  if (punkte.length <= 1) return punkte[0] ?? "";
-  return `${punkte.slice(0, -1).join(", ")} und ${punkte[punkte.length - 1]}`;
-}
-var WOCHENTAGE = [
-  "Montag",
-  "Dienstag",
-  "Mittwoch",
-  "Donnerstag",
-  "Freitag",
-  "Samstag",
-  "Sonntag"
-];
-var FORMULAR = {
-  ueberschrift: "Schreiben Sie uns",
-  name: "Ihr Name",
-  kontakt: "E-Mail-Adresse oder Telefonnummer",
-  kontaktHinweis: "Damit wir Ihnen antworten k\xF6nnen.",
-  nachricht: "Ihre Nachricht",
-  datenschutzLink: "Datenschutzerkl\xE4rung",
-  absenden: "Nachricht senden",
-  /** Fuer Besucher mit Screenreader; sichtbar ist das Feld nie. */
-  falle: "Dieses Feld bitte leer lassen",
-  dankeTitel: "Vielen Dank",
-  dankeText: "Ihre Nachricht ist bei uns angekommen. Wir melden uns bei Ihnen.",
-  fehlerTitel: "Die Nachricht wurde nicht gesendet",
-  fehlerText: "Bitte pr\xFCfen Sie Ihre Angaben: Name, E-Mail-Adresse oder Telefonnummer und eine Nachricht (ohne Internetadressen) werden gebraucht, und das H\xE4kchen zur Datenschutzerkl\xE4rung muss gesetzt sein. M\xF6glicherweise haben auch gerade sehr viele Nachrichten uns erreicht \u2014 dann versuchen Sie es sp\xE4ter noch einmal oder schreiben Sie uns direkt.",
-  zurueck: "Zur\xFCck zur Seite"
-};
-var DATENSCHUTZ_FORMULAR = {
-  titel: "Kontaktformular",
-  text: "Wenn Sie uns \xFCber das Kontaktformular schreiben, verarbeiten wir Ihren Namen, Ihre E-Mail-Adresse oder Telefonnummer und Ihre Nachricht, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b und f DSGVO). Die Angaben werden \xFCber den technischen Dienstleister dieser Website (Floppa3D GbR, Neufarn bei Freising) an unser E-Mail-Postfach weitergeleitet. Er speichert den Inhalt der Nachricht nicht; zur Abwehr von Missbrauch merkt er sich lediglich, wie viele Nachrichten f\xFCr diese Website in den letzten Stunden eingegangen sind, ohne Namen, Inhalte oder Adressen. Bei der \xDCbermittlung wird technisch bedingt kurzzeitig Ihre IP-Adresse verarbeitet. Es werden keine Cookies gesetzt und keine Dienste Dritter eingebunden. Wir l\xF6schen Ihre Angaben, sobald Ihre Anfrage erledigt ist und keine gesetzlichen Aufbewahrungspflichten bestehen. Die Angabe ist freiwillig; ohne sie k\xF6nnen wir Ihre Anfrage nicht \xFCber das Formular beantworten. Sie erreichen uns auch per E-Mail oder Telefon."
-};
-
-// src/render/modules/basis.tsx
-function HeroModul({ daten }) {
-  const { ziel } = x3(LageKontext);
-  return /* @__PURE__ */ u4("section", { id: "start", class: "hero", children: [
-    /* @__PURE__ */ u4("div", { class: "hero-bild", "aria-hidden": "true", children: /* @__PURE__ */ u4(Bildchen, { bild: daten.bild, sofort: true }) }),
-    /* @__PURE__ */ u4("div", { class: "huelle", children: /* @__PURE__ */ u4("div", { class: "hero-innen", children: [
-      daten.dachzeile ? /* @__PURE__ */ u4("span", { class: "hero-dach", children: daten.dachzeile }) : null,
-      /* @__PURE__ */ u4("h1", { children: daten.ueberschrift }),
-      /* @__PURE__ */ u4("p", { children: daten.text }),
-      daten.aktionen.length > 0 ? /* @__PURE__ */ u4("div", { class: "hero-aktionen", children: daten.aktionen.map((a4, i4) => /* @__PURE__ */ u4("a", { href: ziel(a4.ziel), class: i4 === 0 ? "knopf knopf-voll" : "knopf knopf-leer", children: a4.label }, a4.ziel)) }) : null
-    ] }) })
-  ] });
-}
-function HinweisbandModul({ daten }) {
-  if (!daten.aktiv) return null;
-  if (daten.text.trim() === "") return null;
-  return /* @__PURE__ */ u4("aside", { class: "hinweisband", children: /* @__PURE__ */ u4("div", { class: "huelle", children: daten.text }) });
-}
-function UeberUnsModul({ daten }) {
-  const { kurzfassung } = x3(LageKontext);
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "ueber-uns",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.ueberUns, titel: daten.ueberschrift, einleitung: kurzfassung }),
-        /* @__PURE__ */ u4("div", { class: daten.bild ? "zweispalt" : void 0, children: [
-          /* @__PURE__ */ u4("div", { class: "fliess", children: daten.absaetze.map((absatz, i4) => /* @__PURE__ */ u4("p", { style: i4 > 0 ? "margin-top:1.1rem" : void 0, children: absatz }, i4)) }),
-          daten.bild ? /* @__PURE__ */ u4(Bildchen, { bild: daten.bild }) : null
-        ] })
-      ] })
-    }
-  );
-}
-
-// src/render/modules/angebot.tsx
-function SortimentModul({ daten }) {
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "sortiment",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.sortiment, titel: daten.ueberschrift, einleitung: daten.einleitung }),
-        /* @__PURE__ */ u4("div", { class: "karten", children: daten.kategorien.map((k4) => /* @__PURE__ */ u4("article", { class: "karte", children: [
-          /* @__PURE__ */ u4(Bildchen, { bild: k4.bild }),
-          /* @__PURE__ */ u4("div", { class: "karte-text", children: [
-            /* @__PURE__ */ u4("h3", { children: k4.titel }),
-            /* @__PURE__ */ u4("p", { children: k4.text })
-          ] })
-        ] }, k4.titel)) })
-      ] })
-    }
-  );
-}
-function PreislisteModul({ daten }) {
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "preise",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(
-          AbschnittKopf,
-          {
-            marke: daten.marke ?? MARKE.preisliste,
-            titel: daten.ueberschrift,
-            zusatz: daten.stand ? /* @__PURE__ */ u4("p", { class: "stand", children: [
-              LABEL.stand,
-              " ",
-              daten.stand
-            ] }) : void 0
-          }
-        ),
-        /* @__PURE__ */ u4("div", { class: "preisgruppen", children: daten.gruppen.map((g3) => /* @__PURE__ */ u4("div", { class: "preisgruppe", children: [
-          /* @__PURE__ */ u4("h3", { children: g3.titel }),
-          /* @__PURE__ */ u4("div", { class: "tabelle-rahmen", children: /* @__PURE__ */ u4("table", { children: [
-            /* @__PURE__ */ u4("caption", { class: "sr-only", style: "position:absolute;left:-9999px", children: g3.titel }),
-            /* @__PURE__ */ u4("tbody", { children: g3.zeilen.map((z5) => /* @__PURE__ */ u4("tr", { children: [
-              /* @__PURE__ */ u4("td", { children: [
-                z5.artikel,
-                z5.einheit ? /* @__PURE__ */ u4("span", { class: "einheit", children: [
-                  " \xB7 ",
-                  z5.einheit
-                ] }) : null
-              ] }),
-              /* @__PURE__ */ u4("td", { class: "zahl", children: z5.preis })
-            ] }, z5.artikel + z5.einheit)) })
-          ] }) })
-        ] }, g3.titel)) }),
-        daten.fussnote ? /* @__PURE__ */ u4("p", { class: "fussnote", children: daten.fussnote }) : null
-      ] })
-    }
-  );
-}
-function HofcafeModul({ daten }) {
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "hofcafe",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.hofcafe, titel: daten.ueberschrift, einleitung: daten.einleitung }),
-        /* @__PURE__ */ u4("div", { class: "zweispalt", children: [
-          /* @__PURE__ */ u4(Bildchen, { bild: daten.bild }),
-          /* @__PURE__ */ u4("div", { class: "karte-liste", children: [
-            /* @__PURE__ */ u4("dl", { children: daten.karte.map((p4) => [
-              /* @__PURE__ */ u4("dt", { children: p4.position }, p4.position + "-t"),
-              /* @__PURE__ */ u4("dd", { children: p4.preis }, p4.position + "-d")
-            ]) }),
-            daten.hinweis ? /* @__PURE__ */ u4("p", { class: "fussnote", children: daten.hinweis }) : null
-          ] })
-        ] })
-      ] })
-    }
-  );
-}
-
-// src/render/datum.ts
-var ZEITZONE = "Europe/Berlin";
-var MONATE = [
-  "Januar",
-  "Februar",
-  "M\xE4rz",
-  "April",
-  "Mai",
-  "Juni",
-  "Juli",
-  "August",
-  "September",
-  "Oktober",
-  "November",
-  "Dezember"
-];
-function istTag(wert) {
-  const treffer = /^(\d{4})-(\d{2})-(\d{2})$/.exec(wert);
-  if (!treffer) return false;
-  const [j3, m4, t3] = [Number(treffer[1]), Number(treffer[2]), Number(treffer[3])];
-  const d3 = new Date(Date.UTC(j3, m4 - 1, t3));
-  return d3.getUTCFullYear() === j3 && d3.getUTCMonth() === m4 - 1 && d3.getUTCDate() === t3;
-}
-function heuteBerlin(jetzt = /* @__PURE__ */ new Date()) {
-  const teile = new Intl.DateTimeFormat("en-US", {
-    timeZone: ZEITZONE,
-    year: "numeric",
-    month: "2-digit",
-    day: "2-digit"
-  }).formatToParts(jetzt);
-  const wert = (art) => teile.find((t3) => t3.type === art)?.value ?? "";
-  return `${wert("year")}-${wert("month")}-${wert("day")}`;
-}
-function tagPlus(tag, n2) {
-  const [j3, m4, t3] = tag.split("-").map(Number);
-  return new Date(Date.UTC(j3, m4 - 1, t3 + n2)).toISOString().slice(0, 10);
-}
-function versatzMinuten(zeitpunkt) {
+// src/render/auszeichnung.ts
+var ZIEL_MAX = 300;
+var ANKER = /^#[a-z0-9][a-z0-9-]{0,39}$/;
+var EIGENE_SEITE = /^\/(?:[a-z0-9][a-z0-9-]{0,39}\/?)?(?:#[a-z0-9][a-z0-9-]{0,39})?$/;
+var MAIL = /^mailto:[^\s@<>"'()[\]\\,;:]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
+var TELEFON = /^tel:\+?[0-9][0-9 ()/-]{2,29}$/;
+function zielErlaubt(ziel) {
+  if (ziel.length === 0 || ziel.length > ZIEL_MAX) return false;
+  if (/[\s\u0000-\u001f\u007f-\u009f<>"'`\\]/.test(ziel)) return false;
+  if (ANKER.test(ziel) || EIGENE_SEITE.test(ziel)) return true;
+  if (MAIL.test(ziel) || TELEFON.test(ziel)) return true;
+  if (!/^https?:\/\//i.test(ziel)) return false;
   try {
-    const name = new Intl.DateTimeFormat("en-US", { timeZone: ZEITZONE, timeZoneName: "longOffset" }).formatToParts(new Date(zeitpunkt)).find((t3) => t3.type === "timeZoneName")?.value;
-    if (name === "GMT") return 0;
-    const treffer = /^GMT([+-])(\d{2}):(\d{2})$/.exec(name ?? "");
-    if (!treffer) return void 0;
-    return (treffer[1] === "-" ? -1 : 1) * (Number(treffer[2]) * 60 + Number(treffer[3]));
+    const url2 = new URL(ziel);
+    if (url2.protocol !== "https:" && url2.protocol !== "http:") return false;
+    if (url2.username !== "" || url2.password !== "") return false;
+    return /^[a-z0-9.-]+\.[a-z][a-z0-9-]+$/i.test(url2.hostname);
   } catch {
-    return void 0;
+    return false;
   }
 }
-function versatzBerlin(tag, uhrzeit2) {
-  const [j3, m4, t3] = tag.split("-").map(Number);
-  const [h3, min] = uhrzeit2.split(":").map(Number);
-  const lokal = Date.UTC(j3, m4 - 1, t3, h3, min);
-  const erster = versatzMinuten(lokal);
-  if (erster === void 0) return void 0;
-  const zweiter = versatzMinuten(lokal - erster * 6e4) ?? erster;
-  const betrag = Math.abs(zweiter);
-  const vorzeichen = zweiter < 0 ? "-" : "+";
-  return `${vorzeichen}${String(Math.floor(betrag / 60)).padStart(2, "0")}:${String(betrag % 60).padStart(2, "0")}`;
-}
-function tagText(tag, ohneJahr = false) {
-  const [j3, m4, t3] = tag.split("-").map(Number);
-  return `${t3}. ${MONATE[m4 - 1]}${ohneJahr ? "" : ` ${j3}`}`;
-}
-var uhrzeitNormal = (z5) => z5.length === 4 ? `0${z5}` : z5;
-
-// src/render/modules/zeitraum.tsx
-function Zeitraum({
-  von,
-  bis,
-  uhrzeit: uhrzeit2
-}) {
-  if (!bis || bis === von) {
-    return /* @__PURE__ */ u4("time", { datetime: uhrzeit2 ? `${von}T${uhrzeitNormal(uhrzeit2)}` : von, children: [
-      tagText(von),
-      uhrzeit2 ? `, ${uhrzeit2} Uhr` : ""
-    ] });
+var INLINE = /\*\*([^*\n]+?)\*\*|\*([^*\n]+?)\*|\[([^\]\n]{1,200})\]\(([^()\s]{1,300})\)/g;
+function zeileLesen(zeile, links) {
+  const teile = [];
+  let rest = 0;
+  for (const treffer of zeile.matchAll(INLINE)) {
+    const stelle = treffer.index ?? 0;
+    if (stelle > rest) teile.push({ art: "text", text: zeile.slice(rest, stelle) });
+    const [ganz, fett, kursiv, linkText, ziel] = treffer;
+    if (fett !== void 0) teile.push({ art: "fett", text: fett });
+    else if (kursiv !== void 0) teile.push({ art: "kursiv", text: kursiv });
+    else if (linkText !== void 0 && ziel !== void 0) {
+      links.push(ziel);
+      teile.push(zielErlaubt(ziel) ? { art: "link", text: linkText, ziel } : { art: "text", text: linkText });
+    } else teile.push({ art: "text", text: ganz });
+    rest = stelle + ganz.length;
   }
-  const gleichesJahr = von.slice(0, 4) === bis.slice(0, 4);
-  return /* @__PURE__ */ u4(S, { children: [
-    /* @__PURE__ */ u4("time", { datetime: uhrzeit2 ? `${von}T${uhrzeitNormal(uhrzeit2)}` : von, children: tagText(von, gleichesJahr) }),
-    " \u2013 ",
-    /* @__PURE__ */ u4("time", { datetime: bis, children: tagText(bis) }),
-    uhrzeit2 ? ` \xB7 ${uhrzeit2} Uhr` : ""
-  ] });
+  if (rest < zeile.length) teile.push({ art: "text", text: zeile.slice(rest) });
+  return teile;
 }
-
-// src/render/oeffnung.ts
-var zeitNormal = (z5) => z5.length === 4 ? `0${z5}` : z5;
-function tageText(tage) {
-  const index = [...new Set(tage.map((t3) => WOCHENTAGE.indexOf(t3)))].sort((a4, b3) => a4 - b3);
-  const namen = index.map((i4) => WOCHENTAGE[i4]);
-  const lueckenlos = index.every((wert, i4) => i4 === 0 || wert === index[i4 - 1] + 1);
-  if (namen.length >= 3 && lueckenlos) return `${namen[0]} \u2013 ${namen[namen.length - 1]}`;
-  if (namen.length === 1) return namen[0];
-  return `${namen.slice(0, -1).join(", ")} und ${namen[namen.length - 1]}`;
+function zeilenLesen(zeilen, links) {
+  return zeilen.flatMap((z5, i4) => [...i4 > 0 ? [{ art: "umbruch" }] : [], ...zeileLesen(z5, links)]);
 }
-var tagAnzeige = (z5) => z5.tag || (z5.tage ? tageText(z5.tage) : "");
-function zeitAnzeige(z5) {
-  if (z5.zeit) return z5.zeit;
-  if (z5.geschlossen) return "geschlossen";
-  return z5.von && z5.bis ? `${z5.von} \u2013 ${z5.bis} Uhr` : "";
-}
-var TAG_URL = {
-  Montag: "https://schema.org/Monday",
-  Dienstag: "https://schema.org/Tuesday",
-  Mittwoch: "https://schema.org/Wednesday",
-  Donnerstag: "https://schema.org/Thursday",
-  Freitag: "https://schema.org/Friday",
-  Samstag: "https://schema.org/Saturday",
-  Sonntag: "https://schema.org/Sunday"
-};
-function oeffnungsSpezifikation(zeilen) {
-  const raus = [];
-  for (const z5 of zeilen) {
-    if (z5.geschlossen || !z5.tage?.length || !z5.von || !z5.bis) continue;
-    raus.push({
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: [...new Set(z5.tage)].sort((a4, b3) => WOCHENTAGE.indexOf(a4) - WOCHENTAGE.indexOf(b3)).map((t3) => TAG_URL[t3]),
-      opens: zeitNormal(z5.von),
-      closes: zeitNormal(z5.bis)
-    });
+var PUNKT = /^\s*[-*]\s+(.*)$/;
+var NUMMER = /^\s*\d{1,3}[.)]\s+(.*)$/;
+var ZWISCHEN = /^\s*#{2,3}\s+(.*)$/;
+function lesen(text2) {
+  const links = [];
+  const gliederung = [];
+  const bloecke = text2.replace(/\r\n?/g, "\n").split(/\n\s*\n/);
+  for (const block of bloecke) {
+    const zeilen = block.split("\n").filter((z5) => z5.trim() !== "");
+    let absatz = [];
+    let liste;
+    const absatzAbschliessen = () => {
+      if (absatz.length > 0) gliederung.push({ art: "absatz", teile: zeilenLesen(absatz.map((z5) => z5.trim()), links) });
+      absatz = [];
+    };
+    const listeAbschliessen = () => {
+      if (liste) gliederung.push({ art: "liste", ...liste });
+      liste = void 0;
+    };
+    for (const zeile of zeilen) {
+      const zw = ZWISCHEN.exec(zeile);
+      const pk = PUNKT.exec(zeile);
+      const nr = NUMMER.exec(zeile);
+      if (zw) {
+        absatzAbschliessen();
+        listeAbschliessen();
+        gliederung.push({ art: "zwischentitel", teile: zeileLesen(zw[1].trim(), links) });
+      } else if (pk || nr) {
+        absatzAbschliessen();
+        const nummeriert = nr !== null && pk === null;
+        if (liste && liste.nummeriert !== nummeriert) listeAbschliessen();
+        liste ??= { nummeriert, punkte: [] };
+        liste.punkte.push(zeileLesen((pk ?? nr)[1].trim(), links));
+      } else {
+        listeAbschliessen();
+        absatz.push(zeile);
+      }
+    }
+    absatzAbschliessen();
+    listeAbschliessen();
   }
-  return raus;
+  return { gliederung, links };
 }
-function sonderzeitSpezifikation(liste) {
-  return liste.map((z5) => ({
-    "@type": "OpeningHoursSpecification",
-    validFrom: z5.vonDatum,
-    validThrough: z5.bisDatum ?? z5.vonDatum,
-    opens: z5.geschlossen ? "00:00" : zeitNormal(z5.von ?? "00:00"),
-    closes: z5.geschlossen ? "00:00" : zeitNormal(z5.bis ?? "00:00")
-  }));
+function auszeichnungLesen(text2) {
+  return lesen(text2).gliederung;
 }
-
-// src/render/aktuell.ts
-var VORLAUF_TAGE = 14;
-var letzterTag = (z5) => z5.bisDatum ?? z5.vonDatum;
-function abgelaufen(z5, stichtag) {
-  const ende = letzterTag(z5);
-  return ende !== void 0 && ende < stichtag;
-}
-function standVon(z5, stichtag) {
-  if (!z5.vonDatum) return "ohneDatum";
-  if (z5.vonDatum <= stichtag) return "laufend";
-  return z5.vonDatum <= tagPlus(stichtag, VORLAUF_TAGE) ? "bald" : "spaeter";
-}
-var geltende = (liste, stichtag) => liste.filter((e3) => !abgelaufen(e3, stichtag));
-function nachBeginn(liste) {
-  return liste.map((e3, i4) => ({ e: e3, i: i4 })).sort((a4, b3) => {
-    const x4 = a4.e.vonDatum;
-    const y3 = b3.e.vonDatum;
-    if (x4 === y3) return a4.i - b3.i;
-    if (x4 === void 0) return 1;
-    if (y3 === void 0) return -1;
-    return x4 < y3 ? -1 : 1;
-  }).map((p4) => p4.e);
-}
-function wechseltage(z5, stichtag) {
-  const ende = letzterTag(z5);
-  if (ende === void 0 || ende < stichtag) return [];
-  const tage = [tagPlus(ende, 1)];
-  if (z5.vonDatum) tage.push(z5.vonDatum, tagPlus(z5.vonDatum, -VORLAUF_TAGE));
-  return tage.filter((t3) => t3 > stichtag);
-}
-function naechsterAblauf(site, stichtag) {
-  const kandidaten = [];
-  for (const s4 of site.inhalte.oeffnungszeiten?.sonderzeiten ?? []) {
-    kandidaten.push(...wechseltage(s4, stichtag));
-  }
-  for (const e3 of site.inhalte.aktuelles?.eintraege ?? []) {
-    kandidaten.push(...wechseltage(e3, stichtag));
-  }
-  return kandidaten.length === 0 ? null : kandidaten.sort()[0];
-}
-
-// src/render/modules/zeiten.tsx
-function istGeschlossen(zeit) {
-  return zeit.trim().toLowerCase() === "geschlossen";
-}
-function OeffnungszeitenModul({ daten }) {
-  const { stichtag = heuteBerlin() } = x3(LageKontext);
-  const sonderzeiten = nachBeginn(geltende(daten.sonderzeiten, stichtag));
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "oeffnungszeiten",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.oeffnungszeiten, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u4("div", { class: "zeit-sets", children: daten.sets.map((s4) => /* @__PURE__ */ u4("div", { class: "zeit-set", children: [
-          /* @__PURE__ */ u4("h3", { children: s4.titel }),
-          s4.zusatz ? /* @__PURE__ */ u4("p", { class: "zusatz", children: s4.zusatz }) : null,
-          /* @__PURE__ */ u4("dl", { children: s4.zeilen.map((z5, i4) => [
-            /* @__PURE__ */ u4("dt", { children: tagAnzeige(z5) }, `${i4}-t`),
-            /* @__PURE__ */ u4("dd", { class: z5.geschlossen || istGeschlossen(zeitAnzeige(z5)) ? "zu" : void 0, children: zeitAnzeige(z5) }, `${i4}-d`)
-          ]) })
-        ] }, s4.titel)) }),
-        sonderzeiten.length > 0 ? /* @__PURE__ */ u4("div", { class: "ausnahmen sonderzeiten", children: [
-          /* @__PURE__ */ u4("h3", { children: daten.sonderzeitenTitel ?? LABEL.sonderzeiten }),
-          /* @__PURE__ */ u4("dl", { children: sonderzeiten.map((z5, i4) => {
-            const stand = standVon(z5, stichtag);
-            return /* @__PURE__ */ u4("div", { class: stand === "laufend" || stand === "bald" ? stand : void 0, children: [
-              /* @__PURE__ */ u4("dt", { children: /* @__PURE__ */ u4(Zeitraum, { von: z5.vonDatum, bis: z5.bisDatum }) }),
-              /* @__PURE__ */ u4("dd", { children: [
-                z5.geschlossen ? LABEL.geschlossen : `${z5.von} \u2013 ${z5.bis} Uhr`,
-                z5.hinweis ? ` \xB7 ${z5.hinweis}` : "",
-                stand === "laufend" ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.laufend }) : null,
-                stand === "bald" ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.bald }) : null
-              ] })
-            ] }, i4);
-          }) })
-        ] }) : null,
-        daten.ausnahmen.length > 0 ? /* @__PURE__ */ u4("div", { class: "ausnahmen", children: [
-          /* @__PURE__ */ u4("h3", { children: daten.ausnahmenTitel ?? LABEL.abweichendeZeiten }),
-          /* @__PURE__ */ u4("dl", { children: daten.ausnahmen.map((a4) => [
-            /* @__PURE__ */ u4("dt", { children: a4.datum }, a4.datum + "-t"),
-            /* @__PURE__ */ u4("dd", { children: a4.was }, a4.datum + "-d")
-          ]) })
-        ] }) : null
-      ] })
-    }
+function auszeichnungPruefen(text2) {
+  return lesen(text2).links.filter((z5) => !zielErlaubt(z5)).map(
+    (z5) => `Der Link \u201E${z5.length > 60 ? `${z5.slice(0, 57)}\u2026` : z5}\u201C ist nicht m\xF6glich. Erlaubt sind Adressen mit https://, E-Mail (mailto:), Telefon (tel:) und Seiten Ihrer Website (/kurse/).`
   );
-}
-function MaerkteModul({ daten }) {
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "maerkte",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.maerkte, titel: daten.ueberschrift, einleitung: daten.einleitung }),
-        /* @__PURE__ */ u4("div", { class: "liste", children: daten.staende.map((s4) => /* @__PURE__ */ u4("article", { class: "eintrag", children: [
-          /* @__PURE__ */ u4("h3", { children: s4.ort }),
-          /* @__PURE__ */ u4("p", { class: "wann", children: [
-            s4.tag,
-            " \xB7 ",
-            s4.zeit
-          ] }),
-          /* @__PURE__ */ u4("p", { class: "wo", children: s4.platz })
-        ] }, s4.ort)) }),
-        daten.hinweis ? /* @__PURE__ */ u4("p", { class: "fussnote", children: daten.hinweis }) : null
-      ] })
-    }
-  );
-}
-function VeranstaltungenModul({ daten }) {
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "termine",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.veranstaltungen, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u4("div", { class: "liste", children: daten.termine.map((t3) => /* @__PURE__ */ u4("article", { class: "eintrag", children: [
-          /* @__PURE__ */ u4("h3", { children: [
-            t3.titel,
-            t3.anmeldung ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.anmeldungNoetig }) : null
-          ] }),
-          /* @__PURE__ */ u4("p", { class: "wann", children: [
-            t3.datum,
-            t3.zeit ? ` \xB7 ${t3.zeit}` : "",
-            t3.preis ? ` \xB7 ${t3.preis}` : ""
-          ] }),
-          /* @__PURE__ */ u4("p", { class: "was", children: t3.beschreibung })
-        ] }, t3.titel)) })
-      ] })
-    }
-  );
-}
-
-// src/render/modules/kurse.tsx
-function KursplanModul({ daten }) {
-  const nachTag = WOCHENTAGE.map((tag) => ({
-    tag,
-    kurse: daten.kurse.filter((k4) => k4.tag === tag)
-  }));
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "kursplan",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(
-          AbschnittKopf,
-          {
-            marke: daten.marke ?? MARKE.kursplan,
-            titel: daten.ueberschrift,
-            einleitung: daten.einleitung
-          }
-        ),
-        /* @__PURE__ */ u4("div", { class: "woche", children: nachTag.map(({ tag, kurse }) => /* @__PURE__ */ u4("div", { class: kurse.length ? "wochentag" : "wochentag leer", children: [
-          /* @__PURE__ */ u4("h3", { children: tag }),
-          kurse.length ? kurse.map((k4, i4) => /* @__PURE__ */ u4("div", { class: "kurs", children: [
-            /* @__PURE__ */ u4("span", { class: "kurs-zeit", children: [
-              k4.zeit,
-              k4.dauer ? ` \xB7 ${k4.dauer} ${LABEL.minuten}` : ""
-            ] }),
-            /* @__PURE__ */ u4("span", { class: "kurs-titel", children: k4.titel }),
-            k4.ort ? /* @__PURE__ */ u4("span", { class: "kurs-ort", children: k4.ort }) : null,
-            k4.hinweis ? /* @__PURE__ */ u4("span", { class: "kurs-hinweis", children: k4.hinweis }) : null
-          ] }, `${k4.titel}-${k4.zeit}-${i4}`)) : /* @__PURE__ */ u4("p", { class: "kurs-keiner", "aria-label": "kein Kurs", children: LABEL.keinKurs })
-        ] }, tag)) }),
-        daten.hinweis ? /* @__PURE__ */ u4("p", { class: "fussnote", children: daten.hinweis }) : null
-      ] })
-    }
-  );
-}
-
-// src/render/modules/aktuelles.tsx
-var sichererLink = (link) => link && /^https?:\/\//i.test(link) ? link : void 0;
-function AktuellesModul({ daten }) {
-  const { stichtag = heuteBerlin() } = x3(LageKontext);
-  const eintraege = nachBeginn(geltende(daten.eintraege, stichtag));
-  if (eintraege.length === 0) return null;
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "aktuelles",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.aktuelles, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u4("div", { class: "liste", children: eintraege.map((e3, i4) => {
-          const stand = standVon(e3, stichtag);
-          const link = sichererLink(e3.link);
-          return /* @__PURE__ */ u4("article", { class: stand === "laufend" || stand === "bald" ? `eintrag ${stand}` : "eintrag", children: [
-            /* @__PURE__ */ u4("h3", { children: [
-              e3.titel,
-              stand === "laufend" ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.laufend }) : null,
-              stand === "bald" ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.bald }) : null
-            ] }),
-            e3.vonDatum ? /* @__PURE__ */ u4("p", { class: "wann", children: /* @__PURE__ */ u4(Zeitraum, { von: e3.vonDatum, bis: e3.bisDatum, uhrzeit: e3.uhrzeit }) }) : null,
-            e3.ort || e3.text || link ? /* @__PURE__ */ u4("div", { class: "was", children: [
-              e3.ort ? /* @__PURE__ */ u4("p", { class: "ort", children: e3.ort }) : null,
-              e3.text ? /* @__PURE__ */ u4("p", { children: e3.text }) : null,
-              link ? /* @__PURE__ */ u4("p", { children: /* @__PURE__ */ u4("a", { href: link, rel: "noopener", children: [
-                LABEL.mehrZu,
-                " \u201E",
-                e3.titel,
-                "\u201C"
-              ] }) }) : null
-            ] }) : null
-          ] }, i4);
-        }) })
-      ] })
-    }
-  );
-}
-
-// src/render/modules/leute.tsx
-function TeamModul({ daten }) {
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "team",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.team, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u4("div", { class: "personen", children: daten.personen.map((p4) => /* @__PURE__ */ u4("article", { class: "person", children: [
-          /* @__PURE__ */ u4(Bildchen, { bild: p4.bild }),
-          /* @__PURE__ */ u4("h3", { children: p4.name }),
-          p4.rolle ? /* @__PURE__ */ u4("span", { class: "rolle", children: p4.rolle }) : null,
-          p4.satz ? /* @__PURE__ */ u4("p", { children: p4.satz }) : null
-        ] }, p4.name)) })
-      ] })
-    }
-  );
-}
-function StimmenModul({ daten }) {
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "stimmen",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.stimmen, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u4("div", { class: "stimmen", children: daten.zitate.map((z5, i4) => /* @__PURE__ */ u4("figure", { class: "stimme", children: [
-          /* @__PURE__ */ u4("blockquote", { children: z5.text }),
-          z5.quelle ? /* @__PURE__ */ u4("figcaption", { children: z5.quelle }) : null
-        ] }, i4)) })
-      ] })
-    }
-  );
-}
-function FaqModul({ daten }) {
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "faq",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.faq, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u4("div", { class: "faq", children: daten.fragen.map((f5) => /* @__PURE__ */ u4("details", { children: [
-          /* @__PURE__ */ u4("summary", { children: f5.frage }),
-          /* @__PURE__ */ u4("p", { children: f5.antwort })
-        ] }, f5.frage)) })
-      ] })
-    }
-  );
-}
-
-// src/render/modules/medien.tsx
-function GalerieModul({ daten }) {
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "galerie",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.galerie, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u4("div", { class: "galerie", children: daten.bilder.map((b3) => /* @__PURE__ */ u4(Bildchen, { bild: b3 }, b3.pfad)) })
-      ] })
-    }
-  );
-}
-function SiegelModul({ daten }) {
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "siegel",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.siegel, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u4("div", { class: "siegel", children: daten.eintraege.map((e3) => /* @__PURE__ */ u4("div", { class: "siegel-eintrag", children: [
-          /* @__PURE__ */ u4(Bildchen, { bild: e3.logo }),
-          /* @__PURE__ */ u4("div", { children: [
-            /* @__PURE__ */ u4("div", { class: "name", children: e3.name }),
-            e3.untertitel ? /* @__PURE__ */ u4("div", { class: "unter", children: e3.untertitel }) : null
-          ] })
-        ] }, e3.name)) })
-      ] })
-    }
-  );
-}
-
-// src/render/modules/rechtliches.tsx
-function KontaktFormular({ lage }) {
-  return /* @__PURE__ */ u4("form", { class: "formular", method: "post", action: lage.adresse, "accept-charset": "utf-8", children: [
-    /* @__PURE__ */ u4("h3", { children: FORMULAR.ueberschrift }),
-    /* @__PURE__ */ u4("input", { type: "hidden", name: "kunde", value: lage.kunde }),
-    /* @__PURE__ */ u4("div", { class: "formular-falle", "aria-hidden": "true", children: [
-      /* @__PURE__ */ u4("label", { for: "f-homepage", children: FORMULAR.falle }),
-      /* @__PURE__ */ u4("input", { id: "f-homepage", type: "text", name: "homepage", tabindex: -1, autocomplete: "off" })
-    ] }),
-    /* @__PURE__ */ u4("p", { children: [
-      /* @__PURE__ */ u4("label", { for: "f-name", children: FORMULAR.name }),
-      /* @__PURE__ */ u4("input", { id: "f-name", type: "text", name: "name", required: true, maxlength: 80, autocomplete: "name" })
-    ] }),
-    /* @__PURE__ */ u4("p", { children: [
-      /* @__PURE__ */ u4("label", { for: "f-kontakt", children: FORMULAR.kontakt }),
-      /* @__PURE__ */ u4("input", { id: "f-kontakt", type: "text", name: "kontakt", required: true, maxlength: 120, "aria-describedby": "f-kontakt-hilfe" }),
-      /* @__PURE__ */ u4("span", { id: "f-kontakt-hilfe", class: "formular-hilfe", children: FORMULAR.kontaktHinweis })
-    ] }),
-    /* @__PURE__ */ u4("p", { children: [
-      /* @__PURE__ */ u4("label", { for: "f-nachricht", children: FORMULAR.nachricht }),
-      /* @__PURE__ */ u4("textarea", { id: "f-nachricht", name: "nachricht", required: true, minlength: 10, maxlength: 2e3, rows: 6 })
-    ] }),
-    /* @__PURE__ */ u4("p", { class: "formular-haken", children: [
-      /* @__PURE__ */ u4("input", { id: "f-datenschutz", type: "checkbox", name: "datenschutz", value: "ja", required: true }),
-      /* @__PURE__ */ u4("label", { for: "f-datenschutz", children: [
-        "Ich habe die ",
-        /* @__PURE__ */ u4("a", { href: lage.datenschutz, children: FORMULAR.datenschutzLink }),
-        " gelesen und bin einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verwendet werden."
-      ] })
-    ] }),
-    /* @__PURE__ */ u4("button", { class: "knopf knopf-voll", type: "submit", children: FORMULAR.absenden })
-  ] });
-}
-function KontaktModul({ daten }) {
-  const { formular } = x3(LageKontext);
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "kontakt",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.kontakt, titel: daten.ueberschrift }),
-        /* @__PURE__ */ u4("div", { class: "kontakt", children: [
-          /* @__PURE__ */ u4("div", { children: [
-            /* @__PURE__ */ u4("address", { children: [
-              /* @__PURE__ */ u4("strong", { children: daten.betrieb }),
-              daten.strasse,
-              /* @__PURE__ */ u4("br", {}),
-              daten.ort,
-              /* @__PURE__ */ u4("br", {}),
-              daten.telefon ? /* @__PURE__ */ u4(S, { children: [
-                /* @__PURE__ */ u4("a", { href: `tel:${daten.telefon.replace(/[^+0-9]/g, "")}`, children: daten.telefon }),
-                /* @__PURE__ */ u4("br", {})
-              ] }) : null,
-              daten.email ? /* @__PURE__ */ u4("a", { href: `mailto:${daten.email}`, children: daten.email }) : null
-            ] }),
-            daten.gebiet.length > 0 ? /* @__PURE__ */ u4("p", { class: "fussnote", children: [
-              LABEL.einzugsgebiet,
-              " ",
-              aufzaehlung(daten.gebiet),
-              "."
-            ] }) : null,
-            daten.profile?.googleMaps || daten.profile?.bewerten ? /* @__PURE__ */ u4("p", { class: "fussnote", children: [
-              daten.profile.googleMaps ? /* @__PURE__ */ u4("a", { href: daten.profile.googleMaps, rel: "noopener", children: LABEL.googleMaps }) : null,
-              daten.profile.googleMaps && daten.profile.bewerten ? /* @__PURE__ */ u4("br", {}) : null,
-              daten.profile.bewerten ? /* @__PURE__ */ u4("a", { href: daten.profile.bewerten, rel: "noopener", children: LABEL.googleBewerten }) : null
-            ] }) : null
-          ] }),
-          /* @__PURE__ */ u4("div", { class: "kontakt-hinweise", children: daten.hinweise.map((h3) => /* @__PURE__ */ u4("div", { class: "kontakt-hinweis", children: [
-            /* @__PURE__ */ u4("h3", { children: h3.titel }),
-            /* @__PURE__ */ u4("p", { children: h3.text })
-          ] }, h3.titel)) }),
-          daten.karte ? /* @__PURE__ */ u4(Bildchen, { bild: daten.karte }) : null
-        ] }),
-        daten.formular && formular ? /* @__PURE__ */ u4(KontaktFormular, { lage: formular }) : null
-      ] })
-    }
-  );
-}
-function ImpressumModul({ daten }) {
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "impressum",
-      klasse: "rechtliches",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { titel: daten.ueberschrift }),
-        /* @__PURE__ */ u4("dl", { children: daten.felder.map((f5) => [
-          /* @__PURE__ */ u4("dt", { children: f5.bezeichnung }, f5.bezeichnung + "-t"),
-          /* @__PURE__ */ u4("dd", { children: f5.wert }, f5.bezeichnung + "-d")
-        ]) })
-      ] })
-    }
-  );
-}
-function DatenschutzModul({ daten }) {
-  const { formular } = x3(LageKontext);
-  return /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "datenschutz",
-      klasse: "rechtliches",
-      kinder: /* @__PURE__ */ u4(S, { children: [
-        /* @__PURE__ */ u4(AbschnittKopf, { titel: daten.ueberschrift }),
-        daten.absaetze.map((a4, i4) => /* @__PURE__ */ u4("div", { class: "absatz", children: [
-          a4.titel ? /* @__PURE__ */ u4("h3", { children: a4.titel }) : null,
-          /* @__PURE__ */ u4("p", { children: a4.text })
-        ] }, i4)),
-        formular ? /* @__PURE__ */ u4("div", { class: "absatz", id: "datenschutz-formular", children: [
-          /* @__PURE__ */ u4("h3", { children: DATENSCHUTZ_FORMULAR.titel }),
-          /* @__PURE__ */ u4("p", { children: DATENSCHUTZ_FORMULAR.text })
-        ] }) : null
-      ] })
-    }
-  );
-}
-
-// src/render/anker.ts
-var ANKER = {
-  hero: "start",
-  hinweisband: null,
-  ueberUns: "ueber-uns",
-  sortiment: "sortiment",
-  preisliste: "preise",
-  hofcafe: "hofcafe",
-  oeffnungszeiten: "oeffnungszeiten",
-  maerkte: "maerkte",
-  kursplan: "kursplan",
-  veranstaltungen: "termine",
-  aktuelles: "aktuelles",
-  team: "team",
-  galerie: "galerie",
-  siegel: "siegel",
-  stimmen: "stimmen",
-  faq: "faq",
-  kontakt: "kontakt",
-  impressum: "impressum",
-  datenschutz: "datenschutz"
-};
-
-// src/render/modules/registry.tsx
-var REGISTRY = {
-  hero: HeroModul,
-  hinweisband: HinweisbandModul,
-  ueberUns: UeberUnsModul,
-  sortiment: SortimentModul,
-  preisliste: PreislisteModul,
-  hofcafe: HofcafeModul,
-  oeffnungszeiten: OeffnungszeitenModul,
-  maerkte: MaerkteModul,
-  kursplan: KursplanModul,
-  veranstaltungen: VeranstaltungenModul,
-  aktuelles: AktuellesModul,
-  team: TeamModul,
-  galerie: GalerieModul,
-  siegel: SiegelModul,
-  stimmen: StimmenModul,
-  faq: FaqModul,
-  kontakt: KontaktModul,
-  impressum: ImpressumModul,
-  datenschutz: DatenschutzModul
-};
-function Modul({ typ, daten }) {
-  if (daten === void 0 || daten === null) return null;
-  const Komponente = REGISTRY[typ];
-  return /* @__PURE__ */ u4(Komponente, { daten });
-}
-
-// src/render/modules/seitentext.tsx
-var absaetze = (text2) => text2.split(/\r?\n\s*\r?\n/).map((a4) => a4.trim()).filter((a4) => a4 !== "");
-function SeitentextAbschnitt({ text: text2 }) {
-  return /* @__PURE__ */ u4("section", { id: "seitentext", class: "abschnitt seitentext", children: /* @__PURE__ */ u4("div", { class: "huelle", children: [
-    /* @__PURE__ */ u4("div", { class: "abschnitt-kopf", children: /* @__PURE__ */ u4("h1", { children: text2.ueberschrift }) }),
-    text2.abschnitte.map((abschnitt, i4) => /* @__PURE__ */ u4("div", { class: abschnitt.bild ? "seitentext-block zweispalt" : "seitentext-block", children: [
-      /* @__PURE__ */ u4("div", { class: "fliess", children: [
-        abschnitt.titel ? /* @__PURE__ */ u4("h2", { class: "seitentext-titel", children: abschnitt.titel }) : null,
-        absaetze(abschnitt.text).map((absatz, j3) => /* @__PURE__ */ u4("p", { children: absatz }, j3))
-      ] }),
-      abschnitt.bild ? /* @__PURE__ */ u4(Bildchen, { bild: abschnitt.bild }) : null
-    ] }, i4))
-  ] }) });
 }
 
 // ../softflop/node_modules/zod/v4/classic/external.js
@@ -15998,6 +15299,79 @@ function date4(params) {
 // ../softflop/node_modules/zod/v4/classic/external.js
 config(en_default());
 
+// src/render/texte.ts
+var MARKE = {
+  ueberUns: "\xDCber uns",
+  sortiment: "Angebot",
+  preisliste: "Preise",
+  hofcafe: "Hofcaf\xE9",
+  kursplan: "Kursplan",
+  oeffnungszeiten: "\xD6ffnungszeiten",
+  maerkte: "Unterwegs",
+  veranstaltungen: "Termine",
+  aktuelles: "Aktuelles",
+  team: "Team",
+  galerie: "Bilder",
+  siegel: "Gepr\xFCft",
+  stimmen: "Stimmen",
+  faq: "H\xE4ufig gefragt",
+  kontakt: "Kontakt"
+};
+var LABEL = {
+  abweichendeZeiten: "Abweichende Zeiten",
+  /** Ueber den Eintraegen mit Ablaufdatum bei den Oeffnungszeiten. */
+  sonderzeiten: "Betriebsferien und Sonderzeiten",
+  /** Der Eintrag gilt heute. */
+  laufend: "Gerade jetzt",
+  /** Der Eintrag beginnt in den naechsten Tagen. */
+  bald: "Bald",
+  geschlossen: "geschlossen",
+  /** Vor dem Titel im Linktext: "Mehr zu <Titel>". */
+  mehrZu: "Mehr zu",
+  anmeldungNoetig: "Anmeldung n\xF6tig",
+  stand: "Stand:",
+  /** Kurzform fuer Minuten im Kursplan: "60 Min". */
+  minuten: "Min",
+  /** Steht an einem Wochentag ohne Eintrag. */
+  keinKurs: "\u2014",
+  einzugsgebiet: "Einzugsgebiet:",
+  googleMaps: "Auf Google Maps ansehen",
+  googleBewerten: "Auf Google bewerten"
+};
+function aufzaehlung(punkte) {
+  if (punkte.length <= 1) return punkte[0] ?? "";
+  return `${punkte.slice(0, -1).join(", ")} und ${punkte[punkte.length - 1]}`;
+}
+var WOCHENTAGE = [
+  "Montag",
+  "Dienstag",
+  "Mittwoch",
+  "Donnerstag",
+  "Freitag",
+  "Samstag",
+  "Sonntag"
+];
+var FORMULAR = {
+  ueberschrift: "Schreiben Sie uns",
+  name: "Ihr Name",
+  kontakt: "E-Mail-Adresse oder Telefonnummer",
+  kontaktHinweis: "Damit wir Ihnen antworten k\xF6nnen.",
+  nachricht: "Ihre Nachricht",
+  datenschutzLink: "Datenschutzerkl\xE4rung",
+  absenden: "Nachricht senden",
+  /** Fuer Besucher mit Screenreader; sichtbar ist das Feld nie. */
+  falle: "Dieses Feld bitte leer lassen",
+  dankeTitel: "Vielen Dank",
+  dankeText: "Ihre Nachricht ist bei uns angekommen. Wir melden uns bei Ihnen.",
+  fehlerTitel: "Die Nachricht wurde nicht gesendet",
+  fehlerText: "Bitte pr\xFCfen Sie Ihre Angaben: Name, E-Mail-Adresse oder Telefonnummer und eine Nachricht (ohne Internetadressen) werden gebraucht, und das H\xE4kchen zur Datenschutzerkl\xE4rung muss gesetzt sein. M\xF6glicherweise haben auch gerade sehr viele Nachrichten uns erreicht \u2014 dann versuchen Sie es sp\xE4ter noch einmal oder schreiben Sie uns direkt.",
+  zurueck: "Zur\xFCck zur Seite"
+};
+var DATENSCHUTZ_FORMULAR = {
+  titel: "Kontaktformular",
+  text: "Wenn Sie uns \xFCber das Kontaktformular schreiben, verarbeiten wir Ihren Namen, Ihre E-Mail-Adresse oder Telefonnummer und Ihre Nachricht, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b und f DSGVO). Die Angaben werden \xFCber den technischen Dienstleister dieser Website (Floppa3D GbR, Neufarn bei Freising) an unser E-Mail-Postfach weitergeleitet. Er speichert den Inhalt der Nachricht nicht; zur Abwehr von Missbrauch merkt er sich lediglich, wie viele Nachrichten f\xFCr diese Website in den letzten Stunden eingegangen sind, ohne Namen, Inhalte oder Adressen. Bei der \xDCbermittlung wird technisch bedingt kurzzeitig Ihre IP-Adresse verarbeitet. Es werden keine Cookies gesetzt und keine Dienste Dritter eingebunden. Wir l\xF6schen Ihre Angaben, sobald Ihre Anfrage erledigt ist und keine gesetzlichen Aufbewahrungspflichten bestehen. Die Angabe ist freiwillig; ohne sie k\xF6nnen wir Ihre Anfrage nicht \xFCber das Formular beantworten. Sie erreichen uns auch per E-Mail oder Telefon."
+};
+
 // src/render/betriebsart.ts
 var BETRIEBSARTEN = [
   { name: "Hofladen", typ: "GroceryStore", ladenartig: true },
@@ -16015,6 +15389,71 @@ var BETRIEBSART_NAMEN = BETRIEBSARTEN.map((a4) => a4.name);
 function betriebsartVon(name) {
   return BETRIEBSARTEN.find((a4) => a4.name === name);
 }
+
+// src/render/datum.ts
+var ZEITZONE = "Europe/Berlin";
+var MONATE = [
+  "Januar",
+  "Februar",
+  "M\xE4rz",
+  "April",
+  "Mai",
+  "Juni",
+  "Juli",
+  "August",
+  "September",
+  "Oktober",
+  "November",
+  "Dezember"
+];
+function istTag(wert) {
+  const treffer = /^(\d{4})-(\d{2})-(\d{2})$/.exec(wert);
+  if (!treffer) return false;
+  const [j3, m4, t3] = [Number(treffer[1]), Number(treffer[2]), Number(treffer[3])];
+  const d3 = new Date(Date.UTC(j3, m4 - 1, t3));
+  return d3.getUTCFullYear() === j3 && d3.getUTCMonth() === m4 - 1 && d3.getUTCDate() === t3;
+}
+function heuteBerlin(jetzt = /* @__PURE__ */ new Date()) {
+  const teile = new Intl.DateTimeFormat("en-US", {
+    timeZone: ZEITZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(jetzt);
+  const wert = (art) => teile.find((t3) => t3.type === art)?.value ?? "";
+  return `${wert("year")}-${wert("month")}-${wert("day")}`;
+}
+function tagPlus(tag, n2) {
+  const [j3, m4, t3] = tag.split("-").map(Number);
+  return new Date(Date.UTC(j3, m4 - 1, t3 + n2)).toISOString().slice(0, 10);
+}
+function versatzMinuten(zeitpunkt) {
+  try {
+    const name = new Intl.DateTimeFormat("en-US", { timeZone: ZEITZONE, timeZoneName: "longOffset" }).formatToParts(new Date(zeitpunkt)).find((t3) => t3.type === "timeZoneName")?.value;
+    if (name === "GMT") return 0;
+    const treffer = /^GMT([+-])(\d{2}):(\d{2})$/.exec(name ?? "");
+    if (!treffer) return void 0;
+    return (treffer[1] === "-" ? -1 : 1) * (Number(treffer[2]) * 60 + Number(treffer[3]));
+  } catch {
+    return void 0;
+  }
+}
+function versatzBerlin(tag, uhrzeit2) {
+  const [j3, m4, t3] = tag.split("-").map(Number);
+  const [h3, min] = uhrzeit2.split(":").map(Number);
+  const lokal = Date.UTC(j3, m4 - 1, t3, h3, min);
+  const erster = versatzMinuten(lokal);
+  if (erster === void 0) return void 0;
+  const zweiter = versatzMinuten(lokal - erster * 6e4) ?? erster;
+  const betrag = Math.abs(zweiter);
+  const vorzeichen = zweiter < 0 ? "-" : "+";
+  return `${vorzeichen}${String(Math.floor(betrag / 60)).padStart(2, "0")}:${String(betrag % 60).padStart(2, "0")}`;
+}
+function tagText(tag, ohneJahr = false) {
+  const [j3, m4, t3] = tag.split("-").map(Number);
+  return `${t3}. ${MONATE[m4 - 1]}${ohneJahr ? "" : ` ${j3}`}`;
+}
+var uhrzeitNormal = (z5) => z5.length === 4 ? `0${z5}` : z5;
 
 // src/render/schemas.ts
 var BildSchema = external_exports.object({
@@ -16545,6 +15984,910 @@ var SiteMetaSchema = external_exports.object({
   seiten: external_exports.array(SeiteSchema).default([])
 });
 
+// src/render/bloecke.ts
+var BLOCK_GRENZEN = {
+  bloecke: 60,
+  ueberschrift: 90,
+  inhalt: 4e3,
+  unterschrift: 200,
+  alt: 200,
+  galerieBilder: 24,
+  zitat: 600,
+  zitatWer: 120,
+  knopfText: 40,
+  dokumentZeichen: 2e5
+};
+var BLOCK_KENNUNG_MUSTER = /^b[a-z0-9]{7}$/;
+var BILDPFAD_MUSTER = /^assets\/(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9_-][A-Za-z0-9_.-]*\.(?:jpe?g|png|webp|avif|svg)$/;
+var auszeichnung = (max = BLOCK_GRENZEN.inhalt) => text(max).min(1, "Bitte schreiben Sie einen Text.").superRefine((t3, ctx) => {
+  for (const message of auszeichnungPruefen(t3)) ctx.addIssue({ code: "custom", message });
+});
+var ueberschrift = () => kurz(BLOCK_GRENZEN.ueberschrift).optional();
+var BlockBildSchema = BildSchema.extend({
+  pfad: external_exports.string().regex(BILDPFAD_MUSTER, "Dieses Bild ist nicht m\xF6glich."),
+  alt: external_exports.string().trim().min(1, "Bitte beschreiben Sie das Bild in wenigen Worten (Alt-Text). So verstehen es auch Menschen, die es nicht sehen.").max(BLOCK_GRENZEN.alt)
+});
+var kennung = external_exports.string().regex(BLOCK_KENNUNG_MUSTER);
+var TextBlockSchema = external_exports.object({
+  kennung,
+  art: external_exports.literal("text"),
+  ueberschrift: ueberschrift(),
+  inhalt: auszeichnung()
+});
+var BildBlockSchema = external_exports.object({
+  kennung,
+  art: external_exports.literal("bild"),
+  bild: BlockBildSchema,
+  unterschrift: kurz(BLOCK_GRENZEN.unterschrift).optional(),
+  /** Ueber die ganze Breite der Seite statt in der Textspalte. */
+  breit: external_exports.boolean().default(false)
+});
+var TextBildBlockSchema = external_exports.object({
+  kennung,
+  art: external_exports.literal("textBild"),
+  ueberschrift: ueberschrift(),
+  inhalt: auszeichnung(),
+  bild: BlockBildSchema,
+  bildSeite: external_exports.enum(["links", "rechts"]).default("rechts")
+});
+var GalerieBlockSchema = external_exports.object({
+  kennung,
+  art: external_exports.literal("galerie"),
+  ueberschrift: ueberschrift(),
+  bilder: external_exports.array(external_exports.object({ bild: BlockBildSchema, unterschrift: kurz(BLOCK_GRENZEN.unterschrift).optional() })).min(1, "Eine Galerie braucht mindestens ein Bild.").max(BLOCK_GRENZEN.galerieBilder)
+});
+var KnopfBlockSchema = external_exports.object({
+  kennung,
+  art: external_exports.literal("knopf"),
+  beschriftung: kurz(BLOCK_GRENZEN.knopfText).min(1, "Bitte schreiben Sie, was auf dem Knopf steht."),
+  ziel: external_exports.string().trim().refine(zielErlaubt, "Dieses Ziel ist nicht m\xF6glich. Erlaubt sind Adressen mit https://, E-Mail (mailto:), Telefon (tel:) und Seiten Ihrer Website (/kurse/).")
+});
+var ZitatBlockSchema = external_exports.object({
+  kennung,
+  art: external_exports.literal("zitat"),
+  text: text(BLOCK_GRENZEN.zitat).min(1, "Bitte schreiben Sie das Zitat."),
+  wer: kurz(BLOCK_GRENZEN.zitatWer).optional()
+});
+var ZweiSpaltenBlockSchema = external_exports.object({
+  kennung,
+  art: external_exports.literal("zweiSpalten"),
+  ueberschrift: ueberschrift(),
+  links: auszeichnung(),
+  rechts: auszeichnung()
+});
+var TrennerBlockSchema = external_exports.object({ kennung, art: external_exports.literal("trenner") });
+var BlockSchema = external_exports.discriminatedUnion("art", [
+  TextBlockSchema,
+  BildBlockSchema,
+  TextBildBlockSchema,
+  GalerieBlockSchema,
+  KnopfBlockSchema,
+  ZitatBlockSchema,
+  ZweiSpaltenBlockSchema,
+  TrennerBlockSchema
+]);
+var BloeckeSchema = external_exports.object({
+  fassung: external_exports.literal(1),
+  bloecke: external_exports.array(BlockSchema).max(BLOCK_GRENZEN.bloecke, `Mehr als ${BLOCK_GRENZEN.bloecke} Bl\xF6cke sind nicht m\xF6glich.`)
+}).superRefine((d3, ctx) => {
+  const gesehen = /* @__PURE__ */ new Set();
+  d3.bloecke.forEach((b3, i4) => {
+    if (gesehen.has(b3.kennung)) ctx.addIssue({ code: "custom", path: ["bloecke", i4, "kennung"], message: `Den Block "${b3.kennung}" gibt es zweimal.` });
+    gesehen.add(b3.kennung);
+  });
+  if (JSON.stringify(d3).length > BLOCK_GRENZEN.dokumentZeichen) {
+    ctx.addIssue({ code: "custom", path: ["bloecke"], message: "Ihre Bl\xF6cke sind zusammen zu lang. K\xFCrzen Sie Texte, oder verteilen Sie Inhalte auf weniger Bl\xF6cke." });
+  }
+});
+var BlockVerweisSchema = external_exports.strictObject({
+  block: external_exports.string().regex(BLOCK_KENNUNG_MUSTER),
+  // Nur fuer die Typen: Code, der `eintrag.modul` liest, bekommt bei einem Block `undefined` statt eines Typfehlers.
+  // In JSON kann es diese Felder nicht geben (undefined), jeder andere Wert scheitert.
+  modul: external_exports.never().optional(),
+  menue: external_exports.never().optional()
+});
+var istBlockVerweis = (e3) => "block" in e3 && typeof e3.block === "string";
+function bloeckeLesen(roh) {
+  const ergebnis = BloeckeSchema.safeParse(roh ?? { fassung: 1, bloecke: [] });
+  return new Map(ergebnis.success ? ergebnis.data.bloecke.map((b3) => [b3.kennung, b3]) : []);
+}
+var blockAnker = (kennung2) => `block-${kennung2}`;
+function bilderVonBlock(b3) {
+  switch (b3.art) {
+    case "bild":
+    case "textBild":
+      return [b3.bild.pfad];
+    case "galerie":
+      return b3.bilder.map((g3) => g3.bild.pfad);
+    default:
+      return [];
+  }
+}
+var ZEICHEN = "abcdefghijklmnopqrstuvwxyz0123456789";
+var OBERGRENZE = 256 - 256 % ZEICHEN.length;
+
+// src/render/modules/bloecke.tsx
+function zielVon(ziel, intern) {
+  return ziel.startsWith("/") || ziel.startsWith("#") ? intern(ziel) : ziel;
+}
+function Teile({ teile }) {
+  const { ziel } = x3(LageKontext);
+  return /* @__PURE__ */ u4(S, { children: teile.map((t3, i4) => {
+    switch (t3.art) {
+      case "text":
+        return t3.text;
+      case "fett":
+        return /* @__PURE__ */ u4("strong", { children: t3.text }, i4);
+      case "kursiv":
+        return /* @__PURE__ */ u4("em", { children: t3.text }, i4);
+      case "link":
+        return /* @__PURE__ */ u4("a", { href: zielVon(t3.ziel, ziel), children: t3.text }, i4);
+      case "umbruch":
+        return /* @__PURE__ */ u4("br", {}, i4);
+    }
+  }) });
+}
+function Ueberschrift({ ebene, klasse, children }) {
+  if (ebene === 1) return /* @__PURE__ */ u4("h1", { class: klasse, children });
+  if (ebene === 2) return /* @__PURE__ */ u4("h2", { class: klasse, children });
+  return /* @__PURE__ */ u4("h3", { class: klasse, children });
+}
+function Fliesstext({ text: text2, ebene }) {
+  const gliederung = auszeichnungLesen(text2);
+  return /* @__PURE__ */ u4("div", { class: "fliess", children: gliederung.map((g3, i4) => {
+    if (g3.art === "absatz") {
+      return /* @__PURE__ */ u4("p", { children: /* @__PURE__ */ u4(Teile, { teile: g3.teile }) }, i4);
+    }
+    if (g3.art === "zwischentitel") {
+      return /* @__PURE__ */ u4(Ueberschrift, { ebene, klasse: "block-zwischentitel", children: /* @__PURE__ */ u4(Teile, { teile: g3.teile }) }, i4);
+    }
+    const punkte = g3.punkte.map((p4, j3) => /* @__PURE__ */ u4("li", { children: /* @__PURE__ */ u4(Teile, { teile: p4 }) }, j3));
+    return g3.nummeriert ? /* @__PURE__ */ u4("ol", { children: punkte }, i4) : /* @__PURE__ */ u4("ul", { children: punkte }, i4);
+  }) });
+}
+function Kopf({ titel, h1 }) {
+  return titel ? /* @__PURE__ */ u4("div", { class: "abschnitt-kopf", children: /* @__PURE__ */ u4(Ueberschrift, { ebene: h1 ? 1 : 2, children: titel }) }) : null;
+}
+var zwischenEbene = (hatTitel, h1) => hatTitel && !h1 ? 3 : 2;
+function TextBlock({ block, h1 }) {
+  return /* @__PURE__ */ u4(S, { children: [
+    /* @__PURE__ */ u4(Kopf, { titel: block.ueberschrift, h1 }),
+    /* @__PURE__ */ u4(Fliesstext, { text: block.inhalt, ebene: zwischenEbene(Boolean(block.ueberschrift), h1) })
+  ] });
+}
+function BildBlock({ block }) {
+  return /* @__PURE__ */ u4("figure", { class: block.breit ? "block-figur block-figur-breit" : "block-figur", children: [
+    /* @__PURE__ */ u4(Bildchen, { bild: block.bild }),
+    block.unterschrift ? /* @__PURE__ */ u4("figcaption", { children: block.unterschrift }) : null
+  ] });
+}
+function TextBildBlock({ block, h1 }) {
+  return /* @__PURE__ */ u4(S, { children: [
+    /* @__PURE__ */ u4(Kopf, { titel: block.ueberschrift, h1 }),
+    /* @__PURE__ */ u4("div", { class: `block-textbild block-bild-${block.bildSeite}`, children: [
+      /* @__PURE__ */ u4("div", { class: "block-textbild-bild", children: /* @__PURE__ */ u4(Bildchen, { bild: block.bild }) }),
+      /* @__PURE__ */ u4(Fliesstext, { text: block.inhalt, ebene: zwischenEbene(Boolean(block.ueberschrift), h1) })
+    ] })
+  ] });
+}
+function GalerieBlock({ block, h1 }) {
+  return /* @__PURE__ */ u4(S, { children: [
+    /* @__PURE__ */ u4(Kopf, { titel: block.ueberschrift, h1 }),
+    /* @__PURE__ */ u4("div", { class: `block-raster block-raster-${Math.min(block.bilder.length, 4)}`, children: block.bilder.map((g3, i4) => /* @__PURE__ */ u4("figure", { children: [
+      /* @__PURE__ */ u4(Bildchen, { bild: g3.bild }),
+      g3.unterschrift ? /* @__PURE__ */ u4("figcaption", { children: g3.unterschrift }) : null
+    ] }, i4)) })
+  ] });
+}
+function KnopfBlock({ block }) {
+  const { ziel } = x3(LageKontext);
+  return /* @__PURE__ */ u4("p", { class: "block-knopf-zeile", children: /* @__PURE__ */ u4("a", { class: "knopf knopf-voll", href: zielVon(block.ziel, ziel), children: block.beschriftung }) });
+}
+function ZitatBlock({ block }) {
+  return /* @__PURE__ */ u4("blockquote", { class: "block-zitat-text", children: [
+    /* @__PURE__ */ u4("p", { children: block.text }),
+    block.wer ? /* @__PURE__ */ u4("cite", { children: block.wer }) : null
+  ] });
+}
+function ZweiSpaltenBlock({ block, h1 }) {
+  const ebene = zwischenEbene(Boolean(block.ueberschrift), h1);
+  return /* @__PURE__ */ u4(S, { children: [
+    /* @__PURE__ */ u4(Kopf, { titel: block.ueberschrift, h1 }),
+    /* @__PURE__ */ u4("div", { class: "block-spalten", children: [
+      /* @__PURE__ */ u4(Fliesstext, { text: block.links, ebene }),
+      /* @__PURE__ */ u4(Fliesstext, { text: block.rechts, ebene })
+    ] })
+  ] });
+}
+var blockHatUeberschrift = (b3) => (b3.art === "text" || b3.art === "textBild" || b3.art === "galerie" || b3.art === "zweiSpalten") && Boolean(b3.ueberschrift);
+function BlockAbschnitt({ block, h1 = false }) {
+  const traegt = h1 && blockHatUeberschrift(block);
+  let inhalt;
+  switch (block.art) {
+    case "text":
+      inhalt = /* @__PURE__ */ u4(TextBlock, { block, h1: traegt });
+      break;
+    case "bild":
+      inhalt = /* @__PURE__ */ u4(BildBlock, { block });
+      break;
+    case "textBild":
+      inhalt = /* @__PURE__ */ u4(TextBildBlock, { block, h1: traegt });
+      break;
+    case "galerie":
+      inhalt = /* @__PURE__ */ u4(GalerieBlock, { block, h1: traegt });
+      break;
+    case "knopf":
+      inhalt = /* @__PURE__ */ u4(KnopfBlock, { block });
+      break;
+    case "zitat":
+      inhalt = /* @__PURE__ */ u4(ZitatBlock, { block });
+      break;
+    case "zweiSpalten":
+      inhalt = /* @__PURE__ */ u4(ZweiSpaltenBlock, { block, h1: traegt });
+      break;
+    case "trenner":
+      inhalt = /* @__PURE__ */ u4("hr", { class: "block-trennlinie" });
+      break;
+  }
+  return /* @__PURE__ */ u4("section", { id: blockAnker(block.kennung), class: `abschnitt block block-${block.art}`, children: /* @__PURE__ */ u4("div", { class: "huelle", children: inhalt }) });
+}
+
+// src/render/modules/basis.tsx
+function HeroModul({ daten }) {
+  const { ziel } = x3(LageKontext);
+  return /* @__PURE__ */ u4("section", { id: "start", class: "hero", children: [
+    /* @__PURE__ */ u4("div", { class: "hero-bild", "aria-hidden": "true", children: /* @__PURE__ */ u4(Bildchen, { bild: daten.bild, sofort: true }) }),
+    /* @__PURE__ */ u4("div", { class: "huelle", children: /* @__PURE__ */ u4("div", { class: "hero-innen", children: [
+      daten.dachzeile ? /* @__PURE__ */ u4("span", { class: "hero-dach", children: daten.dachzeile }) : null,
+      /* @__PURE__ */ u4("h1", { children: daten.ueberschrift }),
+      /* @__PURE__ */ u4("p", { children: daten.text }),
+      daten.aktionen.length > 0 ? /* @__PURE__ */ u4("div", { class: "hero-aktionen", children: daten.aktionen.map((a4, i4) => /* @__PURE__ */ u4("a", { href: ziel(a4.ziel), class: i4 === 0 ? "knopf knopf-voll" : "knopf knopf-leer", children: a4.label }, a4.ziel)) }) : null
+    ] }) })
+  ] });
+}
+function HinweisbandModul({ daten }) {
+  if (!daten.aktiv) return null;
+  if (daten.text.trim() === "") return null;
+  return /* @__PURE__ */ u4("aside", { class: "hinweisband", children: /* @__PURE__ */ u4("div", { class: "huelle", children: daten.text }) });
+}
+function UeberUnsModul({ daten }) {
+  const { kurzfassung } = x3(LageKontext);
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "ueber-uns",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.ueberUns, titel: daten.ueberschrift, einleitung: kurzfassung }),
+        /* @__PURE__ */ u4("div", { class: daten.bild ? "zweispalt" : void 0, children: [
+          /* @__PURE__ */ u4("div", { class: "fliess", children: daten.absaetze.map((absatz, i4) => /* @__PURE__ */ u4("p", { style: i4 > 0 ? "margin-top:1.1rem" : void 0, children: absatz }, i4)) }),
+          daten.bild ? /* @__PURE__ */ u4(Bildchen, { bild: daten.bild }) : null
+        ] })
+      ] })
+    }
+  );
+}
+
+// src/render/modules/angebot.tsx
+function SortimentModul({ daten }) {
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "sortiment",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.sortiment, titel: daten.ueberschrift, einleitung: daten.einleitung }),
+        /* @__PURE__ */ u4("div", { class: "karten", children: daten.kategorien.map((k4) => /* @__PURE__ */ u4("article", { class: "karte", children: [
+          /* @__PURE__ */ u4(Bildchen, { bild: k4.bild }),
+          /* @__PURE__ */ u4("div", { class: "karte-text", children: [
+            /* @__PURE__ */ u4("h3", { children: k4.titel }),
+            /* @__PURE__ */ u4("p", { children: k4.text })
+          ] })
+        ] }, k4.titel)) })
+      ] })
+    }
+  );
+}
+function PreislisteModul({ daten }) {
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "preise",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(
+          AbschnittKopf,
+          {
+            marke: daten.marke ?? MARKE.preisliste,
+            titel: daten.ueberschrift,
+            zusatz: daten.stand ? /* @__PURE__ */ u4("p", { class: "stand", children: [
+              LABEL.stand,
+              " ",
+              daten.stand
+            ] }) : void 0
+          }
+        ),
+        /* @__PURE__ */ u4("div", { class: "preisgruppen", children: daten.gruppen.map((g3) => /* @__PURE__ */ u4("div", { class: "preisgruppe", children: [
+          /* @__PURE__ */ u4("h3", { children: g3.titel }),
+          /* @__PURE__ */ u4("div", { class: "tabelle-rahmen", children: /* @__PURE__ */ u4("table", { children: [
+            /* @__PURE__ */ u4("caption", { class: "sr-only", style: "position:absolute;left:-9999px", children: g3.titel }),
+            /* @__PURE__ */ u4("tbody", { children: g3.zeilen.map((z5) => /* @__PURE__ */ u4("tr", { children: [
+              /* @__PURE__ */ u4("td", { children: [
+                z5.artikel,
+                z5.einheit ? /* @__PURE__ */ u4("span", { class: "einheit", children: [
+                  " \xB7 ",
+                  z5.einheit
+                ] }) : null
+              ] }),
+              /* @__PURE__ */ u4("td", { class: "zahl", children: z5.preis })
+            ] }, z5.artikel + z5.einheit)) })
+          ] }) })
+        ] }, g3.titel)) }),
+        daten.fussnote ? /* @__PURE__ */ u4("p", { class: "fussnote", children: daten.fussnote }) : null
+      ] })
+    }
+  );
+}
+function HofcafeModul({ daten }) {
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "hofcafe",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.hofcafe, titel: daten.ueberschrift, einleitung: daten.einleitung }),
+        /* @__PURE__ */ u4("div", { class: "zweispalt", children: [
+          /* @__PURE__ */ u4(Bildchen, { bild: daten.bild }),
+          /* @__PURE__ */ u4("div", { class: "karte-liste", children: [
+            /* @__PURE__ */ u4("dl", { children: daten.karte.map((p4) => [
+              /* @__PURE__ */ u4("dt", { children: p4.position }, p4.position + "-t"),
+              /* @__PURE__ */ u4("dd", { children: p4.preis }, p4.position + "-d")
+            ]) }),
+            daten.hinweis ? /* @__PURE__ */ u4("p", { class: "fussnote", children: daten.hinweis }) : null
+          ] })
+        ] })
+      ] })
+    }
+  );
+}
+
+// src/render/modules/zeitraum.tsx
+function Zeitraum({
+  von,
+  bis,
+  uhrzeit: uhrzeit2
+}) {
+  if (!bis || bis === von) {
+    return /* @__PURE__ */ u4("time", { datetime: uhrzeit2 ? `${von}T${uhrzeitNormal(uhrzeit2)}` : von, children: [
+      tagText(von),
+      uhrzeit2 ? `, ${uhrzeit2} Uhr` : ""
+    ] });
+  }
+  const gleichesJahr = von.slice(0, 4) === bis.slice(0, 4);
+  return /* @__PURE__ */ u4(S, { children: [
+    /* @__PURE__ */ u4("time", { datetime: uhrzeit2 ? `${von}T${uhrzeitNormal(uhrzeit2)}` : von, children: tagText(von, gleichesJahr) }),
+    " \u2013 ",
+    /* @__PURE__ */ u4("time", { datetime: bis, children: tagText(bis) }),
+    uhrzeit2 ? ` \xB7 ${uhrzeit2} Uhr` : ""
+  ] });
+}
+
+// src/render/oeffnung.ts
+var zeitNormal = (z5) => z5.length === 4 ? `0${z5}` : z5;
+function tageText(tage) {
+  const index = [...new Set(tage.map((t3) => WOCHENTAGE.indexOf(t3)))].sort((a4, b3) => a4 - b3);
+  const namen = index.map((i4) => WOCHENTAGE[i4]);
+  const lueckenlos = index.every((wert, i4) => i4 === 0 || wert === index[i4 - 1] + 1);
+  if (namen.length >= 3 && lueckenlos) return `${namen[0]} \u2013 ${namen[namen.length - 1]}`;
+  if (namen.length === 1) return namen[0];
+  return `${namen.slice(0, -1).join(", ")} und ${namen[namen.length - 1]}`;
+}
+var tagAnzeige = (z5) => z5.tag || (z5.tage ? tageText(z5.tage) : "");
+function zeitAnzeige(z5) {
+  if (z5.zeit) return z5.zeit;
+  if (z5.geschlossen) return "geschlossen";
+  return z5.von && z5.bis ? `${z5.von} \u2013 ${z5.bis} Uhr` : "";
+}
+var TAG_URL = {
+  Montag: "https://schema.org/Monday",
+  Dienstag: "https://schema.org/Tuesday",
+  Mittwoch: "https://schema.org/Wednesday",
+  Donnerstag: "https://schema.org/Thursday",
+  Freitag: "https://schema.org/Friday",
+  Samstag: "https://schema.org/Saturday",
+  Sonntag: "https://schema.org/Sunday"
+};
+function oeffnungsSpezifikation(zeilen) {
+  const raus = [];
+  for (const z5 of zeilen) {
+    if (z5.geschlossen || !z5.tage?.length || !z5.von || !z5.bis) continue;
+    raus.push({
+      "@type": "OpeningHoursSpecification",
+      dayOfWeek: [...new Set(z5.tage)].sort((a4, b3) => WOCHENTAGE.indexOf(a4) - WOCHENTAGE.indexOf(b3)).map((t3) => TAG_URL[t3]),
+      opens: zeitNormal(z5.von),
+      closes: zeitNormal(z5.bis)
+    });
+  }
+  return raus;
+}
+function sonderzeitSpezifikation(liste) {
+  return liste.map((z5) => ({
+    "@type": "OpeningHoursSpecification",
+    validFrom: z5.vonDatum,
+    validThrough: z5.bisDatum ?? z5.vonDatum,
+    opens: z5.geschlossen ? "00:00" : zeitNormal(z5.von ?? "00:00"),
+    closes: z5.geschlossen ? "00:00" : zeitNormal(z5.bis ?? "00:00")
+  }));
+}
+
+// src/render/aktuell.ts
+var VORLAUF_TAGE = 14;
+var letzterTag = (z5) => z5.bisDatum ?? z5.vonDatum;
+function abgelaufen(z5, stichtag) {
+  const ende = letzterTag(z5);
+  return ende !== void 0 && ende < stichtag;
+}
+function standVon(z5, stichtag) {
+  if (!z5.vonDatum) return "ohneDatum";
+  if (z5.vonDatum <= stichtag) return "laufend";
+  return z5.vonDatum <= tagPlus(stichtag, VORLAUF_TAGE) ? "bald" : "spaeter";
+}
+var geltende = (liste, stichtag) => liste.filter((e3) => !abgelaufen(e3, stichtag));
+function nachBeginn(liste) {
+  return liste.map((e3, i4) => ({ e: e3, i: i4 })).sort((a4, b3) => {
+    const x4 = a4.e.vonDatum;
+    const y3 = b3.e.vonDatum;
+    if (x4 === y3) return a4.i - b3.i;
+    if (x4 === void 0) return 1;
+    if (y3 === void 0) return -1;
+    return x4 < y3 ? -1 : 1;
+  }).map((p4) => p4.e);
+}
+function wechseltage(z5, stichtag) {
+  const ende = letzterTag(z5);
+  if (ende === void 0 || ende < stichtag) return [];
+  const tage = [tagPlus(ende, 1)];
+  if (z5.vonDatum) tage.push(z5.vonDatum, tagPlus(z5.vonDatum, -VORLAUF_TAGE));
+  return tage.filter((t3) => t3 > stichtag);
+}
+function naechsterAblauf(site, stichtag) {
+  const kandidaten = [];
+  for (const s4 of site.inhalte.oeffnungszeiten?.sonderzeiten ?? []) {
+    kandidaten.push(...wechseltage(s4, stichtag));
+  }
+  for (const e3 of site.inhalte.aktuelles?.eintraege ?? []) {
+    kandidaten.push(...wechseltage(e3, stichtag));
+  }
+  return kandidaten.length === 0 ? null : kandidaten.sort()[0];
+}
+
+// src/render/modules/zeiten.tsx
+function istGeschlossen(zeit) {
+  return zeit.trim().toLowerCase() === "geschlossen";
+}
+function OeffnungszeitenModul({ daten }) {
+  const { stichtag = heuteBerlin() } = x3(LageKontext);
+  const sonderzeiten = nachBeginn(geltende(daten.sonderzeiten, stichtag));
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "oeffnungszeiten",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.oeffnungszeiten, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "zeit-sets", children: daten.sets.map((s4) => /* @__PURE__ */ u4("div", { class: "zeit-set", children: [
+          /* @__PURE__ */ u4("h3", { children: s4.titel }),
+          s4.zusatz ? /* @__PURE__ */ u4("p", { class: "zusatz", children: s4.zusatz }) : null,
+          /* @__PURE__ */ u4("dl", { children: s4.zeilen.map((z5, i4) => [
+            /* @__PURE__ */ u4("dt", { children: tagAnzeige(z5) }, `${i4}-t`),
+            /* @__PURE__ */ u4("dd", { class: z5.geschlossen || istGeschlossen(zeitAnzeige(z5)) ? "zu" : void 0, children: zeitAnzeige(z5) }, `${i4}-d`)
+          ]) })
+        ] }, s4.titel)) }),
+        sonderzeiten.length > 0 ? /* @__PURE__ */ u4("div", { class: "ausnahmen sonderzeiten", children: [
+          /* @__PURE__ */ u4("h3", { children: daten.sonderzeitenTitel ?? LABEL.sonderzeiten }),
+          /* @__PURE__ */ u4("dl", { children: sonderzeiten.map((z5, i4) => {
+            const stand = standVon(z5, stichtag);
+            return /* @__PURE__ */ u4("div", { class: stand === "laufend" || stand === "bald" ? stand : void 0, children: [
+              /* @__PURE__ */ u4("dt", { children: /* @__PURE__ */ u4(Zeitraum, { von: z5.vonDatum, bis: z5.bisDatum }) }),
+              /* @__PURE__ */ u4("dd", { children: [
+                z5.geschlossen ? LABEL.geschlossen : `${z5.von} \u2013 ${z5.bis} Uhr`,
+                z5.hinweis ? ` \xB7 ${z5.hinweis}` : "",
+                stand === "laufend" ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.laufend }) : null,
+                stand === "bald" ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.bald }) : null
+              ] })
+            ] }, i4);
+          }) })
+        ] }) : null,
+        daten.ausnahmen.length > 0 ? /* @__PURE__ */ u4("div", { class: "ausnahmen", children: [
+          /* @__PURE__ */ u4("h3", { children: daten.ausnahmenTitel ?? LABEL.abweichendeZeiten }),
+          /* @__PURE__ */ u4("dl", { children: daten.ausnahmen.map((a4) => [
+            /* @__PURE__ */ u4("dt", { children: a4.datum }, a4.datum + "-t"),
+            /* @__PURE__ */ u4("dd", { children: a4.was }, a4.datum + "-d")
+          ]) })
+        ] }) : null
+      ] })
+    }
+  );
+}
+function MaerkteModul({ daten }) {
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "maerkte",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.maerkte, titel: daten.ueberschrift, einleitung: daten.einleitung }),
+        /* @__PURE__ */ u4("div", { class: "liste", children: daten.staende.map((s4) => /* @__PURE__ */ u4("article", { class: "eintrag", children: [
+          /* @__PURE__ */ u4("h3", { children: s4.ort }),
+          /* @__PURE__ */ u4("p", { class: "wann", children: [
+            s4.tag,
+            " \xB7 ",
+            s4.zeit
+          ] }),
+          /* @__PURE__ */ u4("p", { class: "wo", children: s4.platz })
+        ] }, s4.ort)) }),
+        daten.hinweis ? /* @__PURE__ */ u4("p", { class: "fussnote", children: daten.hinweis }) : null
+      ] })
+    }
+  );
+}
+function VeranstaltungenModul({ daten }) {
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "termine",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.veranstaltungen, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "liste", children: daten.termine.map((t3) => /* @__PURE__ */ u4("article", { class: "eintrag", children: [
+          /* @__PURE__ */ u4("h3", { children: [
+            t3.titel,
+            t3.anmeldung ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.anmeldungNoetig }) : null
+          ] }),
+          /* @__PURE__ */ u4("p", { class: "wann", children: [
+            t3.datum,
+            t3.zeit ? ` \xB7 ${t3.zeit}` : "",
+            t3.preis ? ` \xB7 ${t3.preis}` : ""
+          ] }),
+          /* @__PURE__ */ u4("p", { class: "was", children: t3.beschreibung })
+        ] }, t3.titel)) })
+      ] })
+    }
+  );
+}
+
+// src/render/modules/kurse.tsx
+function KursplanModul({ daten }) {
+  const nachTag = WOCHENTAGE.map((tag) => ({
+    tag,
+    kurse: daten.kurse.filter((k4) => k4.tag === tag)
+  }));
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "kursplan",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(
+          AbschnittKopf,
+          {
+            marke: daten.marke ?? MARKE.kursplan,
+            titel: daten.ueberschrift,
+            einleitung: daten.einleitung
+          }
+        ),
+        /* @__PURE__ */ u4("div", { class: "woche", children: nachTag.map(({ tag, kurse }) => /* @__PURE__ */ u4("div", { class: kurse.length ? "wochentag" : "wochentag leer", children: [
+          /* @__PURE__ */ u4("h3", { children: tag }),
+          kurse.length ? kurse.map((k4, i4) => /* @__PURE__ */ u4("div", { class: "kurs", children: [
+            /* @__PURE__ */ u4("span", { class: "kurs-zeit", children: [
+              k4.zeit,
+              k4.dauer ? ` \xB7 ${k4.dauer} ${LABEL.minuten}` : ""
+            ] }),
+            /* @__PURE__ */ u4("span", { class: "kurs-titel", children: k4.titel }),
+            k4.ort ? /* @__PURE__ */ u4("span", { class: "kurs-ort", children: k4.ort }) : null,
+            k4.hinweis ? /* @__PURE__ */ u4("span", { class: "kurs-hinweis", children: k4.hinweis }) : null
+          ] }, `${k4.titel}-${k4.zeit}-${i4}`)) : /* @__PURE__ */ u4("p", { class: "kurs-keiner", "aria-label": "kein Kurs", children: LABEL.keinKurs })
+        ] }, tag)) }),
+        daten.hinweis ? /* @__PURE__ */ u4("p", { class: "fussnote", children: daten.hinweis }) : null
+      ] })
+    }
+  );
+}
+
+// src/render/modules/aktuelles.tsx
+var sichererLink = (link) => link && /^https?:\/\//i.test(link) ? link : void 0;
+function AktuellesModul({ daten }) {
+  const { stichtag = heuteBerlin() } = x3(LageKontext);
+  const eintraege = nachBeginn(geltende(daten.eintraege, stichtag));
+  if (eintraege.length === 0) return null;
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "aktuelles",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.aktuelles, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "liste", children: eintraege.map((e3, i4) => {
+          const stand = standVon(e3, stichtag);
+          const link = sichererLink(e3.link);
+          return /* @__PURE__ */ u4("article", { class: stand === "laufend" || stand === "bald" ? `eintrag ${stand}` : "eintrag", children: [
+            /* @__PURE__ */ u4("h3", { children: [
+              e3.titel,
+              stand === "laufend" ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.laufend }) : null,
+              stand === "bald" ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.bald }) : null
+            ] }),
+            e3.vonDatum ? /* @__PURE__ */ u4("p", { class: "wann", children: /* @__PURE__ */ u4(Zeitraum, { von: e3.vonDatum, bis: e3.bisDatum, uhrzeit: e3.uhrzeit }) }) : null,
+            e3.ort || e3.text || link ? /* @__PURE__ */ u4("div", { class: "was", children: [
+              e3.ort ? /* @__PURE__ */ u4("p", { class: "ort", children: e3.ort }) : null,
+              e3.text ? /* @__PURE__ */ u4("p", { children: e3.text }) : null,
+              link ? /* @__PURE__ */ u4("p", { children: /* @__PURE__ */ u4("a", { href: link, rel: "noopener", children: [
+                LABEL.mehrZu,
+                " \u201E",
+                e3.titel,
+                "\u201C"
+              ] }) }) : null
+            ] }) : null
+          ] }, i4);
+        }) })
+      ] })
+    }
+  );
+}
+
+// src/render/modules/leute.tsx
+function TeamModul({ daten }) {
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "team",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.team, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "personen", children: daten.personen.map((p4) => /* @__PURE__ */ u4("article", { class: "person", children: [
+          /* @__PURE__ */ u4(Bildchen, { bild: p4.bild }),
+          /* @__PURE__ */ u4("h3", { children: p4.name }),
+          p4.rolle ? /* @__PURE__ */ u4("span", { class: "rolle", children: p4.rolle }) : null,
+          p4.satz ? /* @__PURE__ */ u4("p", { children: p4.satz }) : null
+        ] }, p4.name)) })
+      ] })
+    }
+  );
+}
+function StimmenModul({ daten }) {
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "stimmen",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.stimmen, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "stimmen", children: daten.zitate.map((z5, i4) => /* @__PURE__ */ u4("figure", { class: "stimme", children: [
+          /* @__PURE__ */ u4("blockquote", { children: z5.text }),
+          z5.quelle ? /* @__PURE__ */ u4("figcaption", { children: z5.quelle }) : null
+        ] }, i4)) })
+      ] })
+    }
+  );
+}
+function FaqModul({ daten }) {
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "faq",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.faq, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "faq", children: daten.fragen.map((f5) => /* @__PURE__ */ u4("details", { children: [
+          /* @__PURE__ */ u4("summary", { children: f5.frage }),
+          /* @__PURE__ */ u4("p", { children: f5.antwort })
+        ] }, f5.frage)) })
+      ] })
+    }
+  );
+}
+
+// src/render/modules/medien.tsx
+function GalerieModul({ daten }) {
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "galerie",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.galerie, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "galerie", children: daten.bilder.map((b3) => /* @__PURE__ */ u4(Bildchen, { bild: b3 }, b3.pfad)) })
+      ] })
+    }
+  );
+}
+function SiegelModul({ daten }) {
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "siegel",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.siegel, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "siegel", children: daten.eintraege.map((e3) => /* @__PURE__ */ u4("div", { class: "siegel-eintrag", children: [
+          /* @__PURE__ */ u4(Bildchen, { bild: e3.logo }),
+          /* @__PURE__ */ u4("div", { children: [
+            /* @__PURE__ */ u4("div", { class: "name", children: e3.name }),
+            e3.untertitel ? /* @__PURE__ */ u4("div", { class: "unter", children: e3.untertitel }) : null
+          ] })
+        ] }, e3.name)) })
+      ] })
+    }
+  );
+}
+
+// src/render/modules/rechtliches.tsx
+function KontaktFormular({ lage }) {
+  return /* @__PURE__ */ u4("form", { class: "formular", method: "post", action: lage.adresse, "accept-charset": "utf-8", children: [
+    /* @__PURE__ */ u4("h3", { children: FORMULAR.ueberschrift }),
+    /* @__PURE__ */ u4("input", { type: "hidden", name: "kunde", value: lage.kunde }),
+    /* @__PURE__ */ u4("div", { class: "formular-falle", "aria-hidden": "true", children: [
+      /* @__PURE__ */ u4("label", { for: "f-homepage", children: FORMULAR.falle }),
+      /* @__PURE__ */ u4("input", { id: "f-homepage", type: "text", name: "homepage", tabindex: -1, autocomplete: "off" })
+    ] }),
+    /* @__PURE__ */ u4("p", { children: [
+      /* @__PURE__ */ u4("label", { for: "f-name", children: FORMULAR.name }),
+      /* @__PURE__ */ u4("input", { id: "f-name", type: "text", name: "name", required: true, maxlength: 80, autocomplete: "name" })
+    ] }),
+    /* @__PURE__ */ u4("p", { children: [
+      /* @__PURE__ */ u4("label", { for: "f-kontakt", children: FORMULAR.kontakt }),
+      /* @__PURE__ */ u4("input", { id: "f-kontakt", type: "text", name: "kontakt", required: true, maxlength: 120, "aria-describedby": "f-kontakt-hilfe" }),
+      /* @__PURE__ */ u4("span", { id: "f-kontakt-hilfe", class: "formular-hilfe", children: FORMULAR.kontaktHinweis })
+    ] }),
+    /* @__PURE__ */ u4("p", { children: [
+      /* @__PURE__ */ u4("label", { for: "f-nachricht", children: FORMULAR.nachricht }),
+      /* @__PURE__ */ u4("textarea", { id: "f-nachricht", name: "nachricht", required: true, minlength: 10, maxlength: 2e3, rows: 6 })
+    ] }),
+    /* @__PURE__ */ u4("p", { class: "formular-haken", children: [
+      /* @__PURE__ */ u4("input", { id: "f-datenschutz", type: "checkbox", name: "datenschutz", value: "ja", required: true }),
+      /* @__PURE__ */ u4("label", { for: "f-datenschutz", children: [
+        "Ich habe die ",
+        /* @__PURE__ */ u4("a", { href: lage.datenschutz, children: FORMULAR.datenschutzLink }),
+        " gelesen und bin einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verwendet werden."
+      ] })
+    ] }),
+    /* @__PURE__ */ u4("button", { class: "knopf knopf-voll", type: "submit", children: FORMULAR.absenden })
+  ] });
+}
+function KontaktModul({ daten }) {
+  const { formular } = x3(LageKontext);
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "kontakt",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.kontakt, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "kontakt", children: [
+          /* @__PURE__ */ u4("div", { children: [
+            /* @__PURE__ */ u4("address", { children: [
+              /* @__PURE__ */ u4("strong", { children: daten.betrieb }),
+              daten.strasse,
+              /* @__PURE__ */ u4("br", {}),
+              daten.ort,
+              /* @__PURE__ */ u4("br", {}),
+              daten.telefon ? /* @__PURE__ */ u4(S, { children: [
+                /* @__PURE__ */ u4("a", { href: `tel:${daten.telefon.replace(/[^+0-9]/g, "")}`, children: daten.telefon }),
+                /* @__PURE__ */ u4("br", {})
+              ] }) : null,
+              daten.email ? /* @__PURE__ */ u4("a", { href: `mailto:${daten.email}`, children: daten.email }) : null
+            ] }),
+            daten.gebiet.length > 0 ? /* @__PURE__ */ u4("p", { class: "fussnote", children: [
+              LABEL.einzugsgebiet,
+              " ",
+              aufzaehlung(daten.gebiet),
+              "."
+            ] }) : null,
+            daten.profile?.googleMaps || daten.profile?.bewerten ? /* @__PURE__ */ u4("p", { class: "fussnote", children: [
+              daten.profile.googleMaps ? /* @__PURE__ */ u4("a", { href: daten.profile.googleMaps, rel: "noopener", children: LABEL.googleMaps }) : null,
+              daten.profile.googleMaps && daten.profile.bewerten ? /* @__PURE__ */ u4("br", {}) : null,
+              daten.profile.bewerten ? /* @__PURE__ */ u4("a", { href: daten.profile.bewerten, rel: "noopener", children: LABEL.googleBewerten }) : null
+            ] }) : null
+          ] }),
+          /* @__PURE__ */ u4("div", { class: "kontakt-hinweise", children: daten.hinweise.map((h3) => /* @__PURE__ */ u4("div", { class: "kontakt-hinweis", children: [
+            /* @__PURE__ */ u4("h3", { children: h3.titel }),
+            /* @__PURE__ */ u4("p", { children: h3.text })
+          ] }, h3.titel)) }),
+          daten.karte ? /* @__PURE__ */ u4(Bildchen, { bild: daten.karte }) : null
+        ] }),
+        daten.formular && formular ? /* @__PURE__ */ u4(KontaktFormular, { lage: formular }) : null
+      ] })
+    }
+  );
+}
+function ImpressumModul({ daten }) {
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "impressum",
+      klasse: "rechtliches",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("dl", { children: daten.felder.map((f5) => [
+          /* @__PURE__ */ u4("dt", { children: f5.bezeichnung }, f5.bezeichnung + "-t"),
+          /* @__PURE__ */ u4("dd", { children: f5.wert }, f5.bezeichnung + "-d")
+        ]) })
+      ] })
+    }
+  );
+}
+function DatenschutzModul({ daten }) {
+  const { formular } = x3(LageKontext);
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "datenschutz",
+      klasse: "rechtliches",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { titel: daten.ueberschrift }),
+        daten.absaetze.map((a4, i4) => /* @__PURE__ */ u4("div", { class: "absatz", children: [
+          a4.titel ? /* @__PURE__ */ u4("h3", { children: a4.titel }) : null,
+          /* @__PURE__ */ u4("p", { children: a4.text })
+        ] }, i4)),
+        formular ? /* @__PURE__ */ u4("div", { class: "absatz", id: "datenschutz-formular", children: [
+          /* @__PURE__ */ u4("h3", { children: DATENSCHUTZ_FORMULAR.titel }),
+          /* @__PURE__ */ u4("p", { children: DATENSCHUTZ_FORMULAR.text })
+        ] }) : null
+      ] })
+    }
+  );
+}
+
+// src/render/anker.ts
+var ANKER2 = {
+  hero: "start",
+  hinweisband: null,
+  ueberUns: "ueber-uns",
+  sortiment: "sortiment",
+  preisliste: "preise",
+  hofcafe: "hofcafe",
+  oeffnungszeiten: "oeffnungszeiten",
+  maerkte: "maerkte",
+  kursplan: "kursplan",
+  veranstaltungen: "termine",
+  aktuelles: "aktuelles",
+  team: "team",
+  galerie: "galerie",
+  siegel: "siegel",
+  stimmen: "stimmen",
+  faq: "faq",
+  kontakt: "kontakt",
+  impressum: "impressum",
+  datenschutz: "datenschutz"
+};
+
+// src/render/modules/registry.tsx
+var REGISTRY = {
+  hero: HeroModul,
+  hinweisband: HinweisbandModul,
+  ueberUns: UeberUnsModul,
+  sortiment: SortimentModul,
+  preisliste: PreislisteModul,
+  hofcafe: HofcafeModul,
+  oeffnungszeiten: OeffnungszeitenModul,
+  maerkte: MaerkteModul,
+  kursplan: KursplanModul,
+  veranstaltungen: VeranstaltungenModul,
+  aktuelles: AktuellesModul,
+  team: TeamModul,
+  galerie: GalerieModul,
+  siegel: SiegelModul,
+  stimmen: StimmenModul,
+  faq: FaqModul,
+  kontakt: KontaktModul,
+  impressum: ImpressumModul,
+  datenschutz: DatenschutzModul
+};
+function Modul({ typ, daten }) {
+  if (daten === void 0 || daten === null) return null;
+  const Komponente = REGISTRY[typ];
+  return /* @__PURE__ */ u4(Komponente, { daten });
+}
+
+// src/render/modules/seitentext.tsx
+var absaetze = (text2) => text2.split(/\r?\n\s*\r?\n/).map((a4) => a4.trim()).filter((a4) => a4 !== "");
+function SeitentextAbschnitt({ text: text2 }) {
+  return /* @__PURE__ */ u4("section", { id: "seitentext", class: "abschnitt seitentext", children: /* @__PURE__ */ u4("div", { class: "huelle", children: [
+    /* @__PURE__ */ u4("div", { class: "abschnitt-kopf", children: /* @__PURE__ */ u4("h1", { children: text2.ueberschrift }) }),
+    text2.abschnitte.map((abschnitt, i4) => /* @__PURE__ */ u4("div", { class: abschnitt.bild ? "seitentext-block zweispalt" : "seitentext-block", children: [
+      /* @__PURE__ */ u4("div", { class: "fliess", children: [
+        abschnitt.titel ? /* @__PURE__ */ u4("h2", { class: "seitentext-titel", children: abschnitt.titel }) : null,
+        absaetze(abschnitt.text).map((absatz, j3) => /* @__PURE__ */ u4("p", { children: absatz }, j3))
+      ] }),
+      abschnitt.bild ? /* @__PURE__ */ u4(Bildchen, { bild: abschnitt.bild }) : null
+    ] }, i4))
+  ] }) });
+}
+
 // src/render/aufbau.ts
 var FESTE_SEITEN = { start: "start", impressum: "impressum", datenschutz: "datenschutz" };
 var NUR_STARTSEITE = ["hero", "hinweisband"];
@@ -16561,14 +16904,15 @@ var AUFBAU_GRENZEN = {
 };
 var PFAD_MUSTER = /^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/;
 var KENNUNG_MUSTER = /^(?:start|impressum|datenschutz|s[a-z0-9]{7})$/;
-var BILDPFAD_MUSTER = /^assets\/(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9_-][A-Za-z0-9_.-]*\.(?:jpe?g|png|webp|avif|svg)$/;
-var INHALT_ZUSATZ = ["aufbau", "seitentexte"];
+var INHALT_ZUSATZ = ["aufbau", "seitentexte", "bloecke"];
 var INHALT_TYPEN = [...MODUL_TYPEN, ...INHALT_ZUSATZ];
 var BereichSchema = external_exports.object({
   modul: external_exports.enum(MODUL_TYPEN),
   /** Name im Menue. Fehlt er, fuehrt kein Menuepunkt zu diesem Bereich. */
   menue: kurz(AUFBAU_GRENZEN.menuename).min(1).optional()
 });
+var EintragSchema = external_exports.union([BlockVerweisSchema, BereichSchema]);
+var nurBereiche = (eintraege) => eintraege.filter((e3) => !istBlockVerweis(e3));
 var AufbauSeiteSchema = external_exports.object({
   kennung: external_exports.string().regex(KENNUNG_MUSTER),
   /** "" nur fuer `start`; sonst `PFAD_MUSTER` und nicht reserviert (Regel R3). */
@@ -16579,7 +16923,8 @@ var AufbauSeiteSchema = external_exports.object({
   /** Nicht fuer `start`: Dort gilt `meta.beschreibung`. */
   beschreibung: kurz(AUFBAU_GRENZEN.beschreibung).optional(),
   imMenue: external_exports.boolean(),
-  bereiche: external_exports.array(BereichSchema).max(MODUL_TYPEN.length)
+  /** Bereiche und Bloecke in der Reihenfolge der Seite. */
+  bereiche: external_exports.array(EintragSchema).max(MODUL_TYPEN.length + BLOCK_GRENZEN.bloecke)
 });
 var WeiterleitungSchema = external_exports.object({
   /** Die alte Adresse. Nie ein heutiger Seitenpfad (Regel R7). */
@@ -16628,25 +16973,33 @@ function aufbauRegeln(aufbau, ctx) {
       fehler(["seiten"], `Die Seite "${recht}" fehlt. Sie ist gesetzlich vorgeschrieben und kann nicht entfernt werden.`);
       continue;
     }
-    const nurDasModul = s4.bereiche.length === 1 && s4.bereiche[0]?.modul === recht && s4.bereiche[0].menue === void 0;
+    const erster = s4.bereiche[0];
+    const nurDasModul = s4.bereiche.length === 1 && erster !== void 0 && !istBlockVerweis(erster) && erster.modul === recht && erster.menue === void 0;
     if (s4.pfad !== recht || !nurDasModul) {
       fehler(["seiten", i4], `Die Seite "${recht}" hat den festen Pfad "${recht}" und genau den Bereich "${recht}".`);
     }
     seiten.forEach((andere, j3) => {
-      if (andere !== s4 && andere.bereiche.some((b3) => b3.modul === recht)) {
+      if (andere !== s4 && nurBereiche(andere.bereiche).some((b3) => b3.modul === recht)) {
         fehler(["seiten", j3, "bereiche"], `Der Bereich "${recht}" gehoert auf seine eigene Seite.`);
       }
     });
   }
   const platziert = /* @__PURE__ */ new Set();
+  const bloeckeGesehen = /* @__PURE__ */ new Set();
   seiten.forEach(
     (s4, i4) => s4.bereiche.forEach((b3, j3) => {
+      if (istBlockVerweis(b3)) {
+        if (bloeckeGesehen.has(b3.block)) fehler(["seiten", i4, "bereiche", j3, "block"], `Der Block "${b3.block}" steht mehr als einmal.`);
+        bloeckeGesehen.add(b3.block);
+        return;
+      }
       if (platziert.has(b3.modul)) fehler(["seiten", i4, "bereiche", j3], `Der Bereich "${b3.modul}" steht mehr als einmal.`);
       platziert.add(b3.modul);
     })
   );
   seiten.forEach(
     (s4, i4) => s4.bereiche.forEach((b3, j3) => {
+      if (istBlockVerweis(b3)) return;
       if (i4 !== 0 && NUR_STARTSEITE.includes(b3.modul)) {
         fehler(["seiten", i4, "bereiche", j3], `Der Bereich "${b3.modul}" gehoert auf die Startseite.`);
       }
@@ -16697,7 +17050,8 @@ var SeitentexteSchema = external_exports.object({ seiten: external_exports.array
 var inhaltSchemas = {
   ...modulSchemas,
   aufbau: AufbauSchema,
-  seitentexte: SeitentexteSchema
+  seitentexte: SeitentexteSchema,
+  bloecke: BloeckeSchema
 };
 function gebuchteBereiche(meta3) {
   const alle = [...meta3.module, ...meta3.seiten.flatMap((s4) => s4.module), ...PFLICHTMODULE];
@@ -16711,7 +17065,7 @@ function strukturAusMeta(meta3) {
     if (!startModule.includes(pflicht) && !aufUnterseiten.includes(pflicht)) startModule.push(pflicht);
   }
   const menuenameVon = (modul) => {
-    const anker = ANKER[modul];
+    const anker = ANKER2[modul];
     return anker === null ? void 0 : meta3.navigation.find((n2) => n2.ziel === `#${anker}`)?.label;
   };
   const bereich = (modul) => {
@@ -16724,7 +17078,8 @@ function strukturAusMeta(meta3) {
     pfad: "",
     menuename: "Start",
     imMenue: false,
-    bereiche: startModule.map(bereich)
+    bereiche: startModule.map(bereich),
+    folge: startModule.map(bereich)
   };
   const unterseiten = meta3.seiten.map((s4) => {
     const recht = s4.module.find((m4) => RECHTSMODULE.includes(m4));
@@ -16738,7 +17093,8 @@ function strukturAusMeta(meta3) {
       ...s4.titel !== void 0 ? { titel: s4.titel } : {},
       ...s4.beschreibung !== void 0 ? { beschreibung: s4.beschreibung } : {},
       imMenue: menuePunkt !== void 0,
-      bereiche: s4.module.map(bereich)
+      bereiche: s4.module.map(bereich),
+      folge: s4.module.map(bereich)
     };
   });
   return { quelle: "site.json", seiten: [start, ...unterseiten], weiterleitungen: [] };
@@ -16747,7 +17103,8 @@ function seitentexteLesen(roh) {
   const ergebnis = SeitentexteSchema.safeParse(roh);
   return new Map(ergebnis.success ? ergebnis.data.seiten.map((t3) => [t3.kennung, t3]) : []);
 }
-function strukturAusAufbau(aufbau, texte) {
+var bereichKopie = (b3) => b3.menue === void 0 ? { modul: b3.modul } : { modul: b3.modul, menue: b3.menue };
+function strukturAusAufbau(aufbau, texte, bloecke) {
   const pfadVonKennung = new Map(aufbau.seiten.map((s4) => [s4.kennung, s4.pfad]));
   const seiten = aufbau.seiten.map((s4) => {
     const art = s4.kennung === FESTE_SEITEN.start ? "start" : RECHTSMODULE.includes(s4.kennung) ? "recht" : "frei";
@@ -16760,7 +17117,12 @@ function strukturAusAufbau(aufbau, texte) {
       ...s4.titel !== void 0 ? { titel: s4.titel } : {},
       ...s4.beschreibung !== void 0 ? { beschreibung: s4.beschreibung } : {},
       imMenue: s4.imMenue,
-      bereiche: s4.bereiche.map((b3) => b3.menue === void 0 ? { modul: b3.modul } : { modul: b3.modul, menue: b3.menue }),
+      bereiche: nurBereiche(s4.bereiche).map(bereichKopie),
+      folge: s4.bereiche.flatMap((e3) => {
+        if (!istBlockVerweis(e3)) return [bereichKopie(e3)];
+        const block = bloecke.get(e3.block);
+        return block ? [{ block }] : [];
+      }),
       ...text2 ? { seitentext: text2 } : {}
     };
   });
@@ -16774,14 +17136,16 @@ function strukturAusAufbau(aufbau, texte) {
 function strukturVon(meta3, inhalte) {
   if (meta3.seitenverwaltung) {
     const aufbau = AufbauSchema.safeParse(inhalte["aufbau"]);
-    if (aufbau.success) return strukturAusAufbau(aufbau.data, seitentexteLesen(inhalte["seitentexte"]));
+    if (aufbau.success) {
+      return strukturAusAufbau(aufbau.data, seitentexteLesen(inhalte["seitentexte"]), bloeckeLesen(inhalte["bloecke"]));
+    }
   }
   return strukturAusMeta(meta3);
 }
 var sichtbar = (name) => name.normalize("NFKC").trim().replace(/\s+/g, " ").toLocaleLowerCase("de");
 function menuepunkteVon(seiten) {
   const rohe = seiten.flatMap((seite) => {
-    const benannt = seite.bereiche.filter((b3) => b3.menue);
+    const benannt = nurBereiche(seite.bereiche).filter((b3) => b3.menue);
     const seiteSelbst = seite.pfad !== "" && seite.imMenue && benannt.length === 1;
     return [
       ...seite.imMenue ? [{ art: "seite", kennung: seite.kennung, label: seite.menuename }] : [],
@@ -16813,7 +17177,7 @@ function aufbauPruefen(aufbau, gebucht) {
   const fehler = [];
   const platziert = /* @__PURE__ */ new Set();
   for (const seite of aufbau.seiten) {
-    for (const b3 of seite.bereiche) {
+    for (const b3 of nurBereiche(seite.bereiche)) {
       platziert.add(b3.modul);
       if (!gebucht.includes(b3.modul)) {
         fehler.push(`Der Bereich "${b3.modul}" auf der Seite "${seite.menuename}" ist nicht mehr gebucht. Nehmen Sie ihn von der Seite, oder melden Sie sich bei uns.`);
@@ -16874,13 +17238,13 @@ function formActionZusatz(site) {
 // src/render/seiten.ts
 var strukturVonSite = (site) => site.struktur ?? strukturVon(site.meta, {});
 var unterAufbau = (site) => strukturVonSite(site).quelle === "aufbau";
-function titelBauen(site, module, seitentext) {
+function titelBauen(site, module, seitentext, blockUeberschrift) {
   const erstes = module[0];
   const daten = erstes ? site.inhalte[erstes] : void 0;
-  const ueberschrift = (seitentext?.ueberschrift ?? daten?.ueberschrift)?.trim();
-  if (!ueberschrift) return site.meta.name;
-  const mitMarke = `${ueberschrift} \u2013 ${site.meta.name}`;
-  return mitMarke.length <= 60 ? mitMarke : ueberschrift;
+  const ueberschrift2 = (seitentext?.ueberschrift ?? blockUeberschrift ?? daten?.ueberschrift)?.trim();
+  if (!ueberschrift2) return site.meta.name;
+  const mitMarke = `${ueberschrift2} \u2013 ${site.meta.name}`;
+  return mitMarke.length <= 60 ? mitMarke : ueberschrift2;
 }
 function routen(site) {
   const { meta: meta3 } = site;
@@ -16888,15 +17252,18 @@ function routen(site) {
     return strukturVonSite(site).seiten.map((seite) => {
       const modulListe = seite.bereiche.map((b3) => b3.modul);
       const start2 = seite.art === "start";
+      const ersterEintrag = seite.folge[0];
+      const blockUeberschrift = ersterEintrag && "block" in ersterEintrag && "ueberschrift" in ersterEintrag.block ? ersterEintrag.block.ueberschrift : void 0;
       return {
         pfad: seite.pfad,
         module: modulListe,
-        titel: start2 ? meta3.titel ?? meta3.name : seite.titel ?? titelBauen(site, modulListe, seite.seitentext),
+        titel: start2 ? meta3.titel ?? meta3.name : seite.titel ?? titelBauen(site, modulListe, seite.seitentext, blockUeberschrift),
         beschreibung: start2 ? meta3.beschreibung : seite.beschreibung ?? meta3.beschreibung,
         istStart: start2,
         wurzelbezogen: !start2,
         fehlerseite: false,
-        ...seite.seitentext ? { seitentext: seite.seitentext } : {}
+        ...seite.seitentext ? { seitentext: seite.seitentext } : {},
+        folge: seite.folge
       };
     });
   }
@@ -16927,22 +17294,22 @@ function verweis(site, von, typ) {
   if (unterAufbau(site)) {
     const seite = seiteMitModul(site, typ);
     if (seite && seite.pfad !== "") {
-      const anker2 = seite.bereiche[0]?.modul === typ ? "" : `#${ANKER[typ] ?? ""}`;
+      const anker2 = seite.bereiche[0]?.modul === typ ? "" : `#${ANKER2[typ] ?? ""}`;
       return `${pfadVon(seite.pfad)}${anker2}`;
     }
   } else {
     const eigene = site.meta.seiten.find((s4) => s4.module.includes(typ));
     if (eigene) {
-      const anker2 = eigene.module[0] === typ ? "" : `#${ANKER[typ] ?? ""}`;
+      const anker2 = eigene.module[0] === typ ? "" : `#${ANKER2[typ] ?? ""}`;
       return `${pfadVon(eigene.pfad)}${anker2}`;
     }
   }
-  const anker = ANKER[typ];
+  const anker = ANKER2[typ];
   if (!anker) return von.wurzelbezogen ? "/" : "#";
   return von.wurzelbezogen ? `/#${anker}` : `#${anker}`;
 }
 var seiteMitModul = (site, typ) => strukturVonSite(site).seiten.find((s4) => s4.bereiche.some((b3) => b3.modul === typ));
-var modulVonAnker = (anker) => Object.keys(ANKER).find((m4) => ANKER[m4] === anker);
+var modulVonAnker = (anker) => Object.keys(ANKER2).find((m4) => ANKER2[m4] === anker);
 function zielFuerSeite(site, ziel, von) {
   if (!unterAufbau(site)) {
     if (ziel.startsWith("#")) return von.wurzelbezogen ? `/${ziel}` : ziel;
@@ -17021,7 +17388,7 @@ function Kopfbereich({ site, route }) {
     /* @__PURE__ */ u4("meta", { name: "twitter:card", content: "summary_large_image" })
   ] });
 }
-function Kopf({ site, route }) {
+function Kopf2({ site, route }) {
   const { meta: meta3 } = site;
   const basis = basisVon(route);
   const menue = menueVon(site, route);
@@ -17081,16 +17448,34 @@ function Koerper({ site, route, stichtag }) {
   ) : null;
   const zeigtHinweisband = route.module.includes("hinweisband");
   const imMain = route.module.filter((t3) => t3 !== "hinweisband");
+  const folge = route.folge?.some((e3) => "block" in e3) ? route.folge.filter((e3) => !("modul" in e3) || e3.modul !== "hinweisband") : void 0;
   const h1Traeger = route.istStart || route.module.includes("hero") || route.seitentext ? null : imMain[0];
+  let h1Block;
+  let h1Bereich = h1Traeger;
+  if (folge && !route.istStart && !route.module.includes("hero") && !route.seitentext) {
+    const erster = folge[0];
+    if (erster && "block" in erster && blockHatUeberschrift(erster.block)) {
+      h1Block = erster.block.kennung;
+      h1Bereich = null;
+    } else if (!folge.some((e3) => "modul" in e3)) {
+      const traeger = folge.find((e3) => "block" in e3 && blockHatUeberschrift(e3.block));
+      if (traeger && "block" in traeger) h1Block = traeger.block.kennung;
+    }
+  }
   return /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: false, ziel, kurzfassung, stichtag, formular }, children: [
     /* @__PURE__ */ u4("a", { class: "sprung", href: "#inhalt", children: "Zum Inhalt springen" }),
-    /* @__PURE__ */ u4(Kopf, { site, route }),
+    /* @__PURE__ */ u4(Kopf2, { site, route }),
     zeigtHinweisband ? /* @__PURE__ */ u4(Modul, { typ: "hinweisband", daten: inhalte.hinweisband }) : null,
     /* @__PURE__ */ u4("main", { id: "inhalt", children: [
       route.antwort ? /* @__PURE__ */ u4(Antwort, { site, route }) : null,
       route.seitentext ? /* @__PURE__ */ u4(SeitentextAbschnitt, { text: route.seitentext }) : null,
       imMain.includes("hero") ? null : kurzfassungBlock,
-      imMain.map((typ) => /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: typ === h1Traeger, ziel, kurzfassung, stichtag, formular }, children: [
+      folge ? folge.map(
+        (e3) => "block" in e3 ? /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: false, ziel, kurzfassung, stichtag, formular }, children: /* @__PURE__ */ u4(BlockAbschnitt, { block: e3.block, h1: e3.block.kennung === h1Block }) }, e3.block.kennung) : /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: e3.modul === h1Bereich, ziel, kurzfassung, stichtag, formular }, children: [
+          /* @__PURE__ */ u4(Modul, { typ: e3.modul, daten: inhalte[e3.modul] }),
+          e3.modul === "hero" ? kurzfassungBlock : null
+        ] }, e3.modul)
+      ) : imMain.map((typ) => /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: typ === h1Traeger, ziel, kurzfassung, stichtag, formular }, children: [
         /* @__PURE__ */ u4(Modul, { typ, daten: inhalte[typ] }),
         typ === "hero" ? kurzfassungBlock : null
       ] }, typ))
@@ -17208,12 +17593,12 @@ function strukturdaten(site, route, stichtag = heuteBerlin()) {
   if (kursplan) {
     const ortId = /* @__PURE__ */ new Map();
     for (const ort of kursplan.orte) {
-      const kennung = id(`ort-${ort.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`);
-      ortId.set(ort.name, kennung);
+      const kennung2 = id(`ort-${ort.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`);
+      ortId.set(ort.name, kennung2);
       knoten.push(
         sauber({
           "@type": "SportsActivityLocation",
-          "@id": kennung,
+          "@id": kennung2,
           name: ort.name,
           url: ort.url,
           address: {
@@ -17360,7 +17745,53 @@ var SEITENTEXT = `
 .seitentext .fliess p + p { margin-top: 1.1rem; }
 .abschnitt-kopf + .seitentext-block > .fliess > p:first-child { font-size: 1.1rem; }
 `;
-function stylesheet(f5, mitSeitentext = false) {
+var BLOECKE = `
+/* ---------- Bl\xF6cke ---------- */
+.block { padding-block: clamp(1.6rem, 4.5vw, 2.8rem); overflow-wrap: break-word; }
+.block + .block { border-top: 0; }
+.block .abschnitt-kopf { margin-bottom: 1.4rem; }
+.block a { overflow-wrap: anywhere; }
+.block .fliess { max-width: 62ch; }
+.block .fliess > * + * { margin-top: 1.1rem; }
+.block .fliess ul, .block .fliess ol { padding-left: 1.4rem; }
+.block .fliess li + li { margin-top: 0.35rem; }
+.block .fliess > .block-zwischentitel { font-size: clamp(1.25rem, 3vw, 1.6rem); margin-top: 1.8rem; }
+.block .fliess > .block-zwischentitel:first-child { margin-top: 0; }
+.block figure { margin: 0; }
+.block figcaption { margin-top: 0.55rem; font-size: 0.85rem; color: var(--gedaempft); max-width: 62ch; }
+.block-figur { max-width: 62ch; }
+.block-figur-breit { max-width: none; }
+.block-figur img { width: 100%; }
+.block-textbild { display: grid; gap: 1.6rem 2.4rem; grid-template-columns: minmax(0, 1fr); align-items: start; }
+.block-textbild-bild img { width: 100%; }
+.block-raster { display: grid; gap: 0.9rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.block-raster img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+.block-spalten { display: grid; gap: 1.6rem 2.4rem; grid-template-columns: minmax(0, 1fr); }
+.block-knopf-zeile { display: flex; }
+.block-knopf-zeile .knopf { max-width: 100%; overflow-wrap: anywhere; }
+.block-zitat-text { margin: 0; max-width: 46rem; padding-left: 1.3rem; border-left: 4px solid var(--akzent); }
+.block-zitat-text p { font-family: var(--serif); font-size: clamp(1.15rem, 2.8vw, 1.45rem); line-height: 1.45; color: var(--primaer); white-space: pre-line; }
+.block-zitat-text cite { display: block; margin-top: 0.7rem; font-style: normal; font-size: 0.9rem; color: var(--gedaempft); }
+.block-zitat-text cite::before { content: "\\2013\\00a0"; }
+.block-trenner { padding-block: clamp(0.8rem, 2.5vw, 1.4rem); }
+.block-trennlinie { border: 0; border-top: 1px solid var(--linie); margin: 0; }
+.block-trenner, .abschnitt + .block-trenner, .block-trenner + .abschnitt { border-top: 0; }
+@media (min-width: 40rem) {
+  .block-raster { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .block-raster-1, .block-raster-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 48rem) {
+  .block-textbild, .block-spalten { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .block-bild-rechts .block-textbild-bild { order: 2; }
+}
+@media (min-width: 64rem) {
+  .block-raster { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .block-raster-1, .block-raster-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .block-raster-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+`;
+function stylesheet(f5, optionen = false) {
+  const { seitentext: mitSeitentext = false, bloecke: mitBloecken = false } = typeof optionen === "boolean" ? { seitentext: optionen } : optionen;
   return `
 :root {
   --primaer: ${f5.primaer};
@@ -17735,7 +18166,8 @@ td.zahl, th.zahl { text-align: right; white-space: nowrap; }
   body { background: #fff; }
 }
 `.trim() + (mitSeitentext ? `
-${SEITENTEXT.trim()}` : "");
+${SEITENTEXT.trim()}` : "") + (mitBloecken ? `
+${BLOECKE.trim()}` : "");
 }
 
 // src/render/rendern.tsx
@@ -17762,7 +18194,11 @@ function strukturdatenText(site, route, stichtag) {
   return text2;
 }
 function seiteRendern(site, route = routen(site)[0], stichtag = heuteBerlin()) {
-  const css = stylesheet(site.meta.farben, site.struktur?.seiten.some((seite) => seite.seitentext !== void 0) ?? false);
+  const css = stylesheet(site.meta.farben, {
+    seitentext: site.struktur?.seiten.some((seite) => seite.seitentext !== void 0) ?? false,
+    // Die Regeln fuer Bloecke kommen mit, sobald IRGENDEINE Seite der Site einen hat: auf allen Seiten gleich.
+    bloecke: site.struktur?.seiten.some((seite) => seite.folge.some((e3) => "block" in e3)) ?? false
+  });
   cssPruefen(css);
   const kopf = K2(/* @__PURE__ */ u4(Kopfbereich, { site, route }));
   const koerper = K2(/* @__PURE__ */ u4(Koerper, { site, route, stichtag }));
@@ -17905,6 +18341,26 @@ function siteValidieren(rohMeta, rohInhalte) {
       for (const meldung2 of geprueft.fehler) fehler.push({ wo: "aufbau", feld: "seiten", meldung: meldung2 });
       ergaenzt = geprueft.ergaenzt;
       roheMitAufbau = { ...rohInhalte, aufbau: geprueft.aufbau };
+      const bloeckeRoh = rohInhalte["bloecke"];
+      const bloecke = bloeckeRoh === void 0 ? void 0 : BloeckeSchema.safeParse(bloeckeRoh);
+      if (bloecke && !bloecke.success) {
+        for (const problem of bloecke.error.issues) {
+          fehler.push({ wo: "bloecke", feld: problem.path.join("."), meldung: problem.message });
+        }
+      } else {
+        const da = new Set((bloecke?.data.bloecke ?? []).map((b3) => b3.kennung));
+        aufbau.data.seiten.forEach(
+          (s4, i4) => s4.bereiche.forEach((e3, j3) => {
+            if (istBlockVerweis(e3) && !da.has(e3.block)) {
+              fehler.push({
+                wo: "aufbau",
+                feld: `seiten.${i4}.bereiche.${j3}.block`,
+                meldung: `Auf der Seite "${s4.menuename}" steht ein Block, dessen Inhalt fehlt. Entfernen Sie ihn von der Seite, oder melden Sie sich bei uns.`
+              });
+            }
+          })
+        );
+      }
       if (rohInhalte["seitentexte"] !== void 0) {
         const texte = SeitentexteSchema.safeParse(rohInhalte["seitentexte"]);
         if (!texte.success) {
@@ -18003,7 +18459,7 @@ function warnungen(site, stichtag = heuteBerlin()) {
           bezug: seite.menuename
         });
       }
-      if (seite.bereiche.length === 0 && (seite.seitentext?.abschnitte.length ?? 0) === 0) {
+      if (seite.folge.length === 0 && (seite.seitentext?.abschnitte.length ?? 0) === 0) {
         raus.push({
           code: "seite-ohne-inhalt",
           text: `Auf der Seite "${seite.menuename}" steht bisher nur eine Ueberschrift.`,
@@ -18020,10 +18476,10 @@ function standKennung(umgebung = process.env) {
   const roh = umgebung.WORKERS_CI_COMMIT_SHA ?? umgebung.CF_PAGES_COMMIT_SHA;
   return roh && /^[0-9a-f]{40}$/i.test(roh) ? roh.toLowerCase() : void 0;
 }
-function mitStandKennung(html, kennung) {
-  if (!kennung) return html;
+function mitStandKennung(html, kennung2) {
+  if (!kennung2) return html;
   return html.replace("<head>", `<head>
-<meta name="softflop-stand" content="${kennung}">`);
+<meta name="softflop-stand" content="${kennung2}">`);
 }
 
 // portal/app/src/zod-deutsch.ts
@@ -18111,18 +18567,28 @@ ${fehlerFormatieren(ergebnis.fehler)}`
       }
     }
   }
+  for (const seite of ergebnis.site.struktur?.seiten ?? []) {
+    for (const eintrag of seite.folge) {
+      if (!("block" in eintrag)) continue;
+      for (const pfad of bilderVonBlock(eintrag.block)) {
+        if (!existsSync(join(siteVerzeichnis2, pfad))) {
+          throw new Error(`Das Bild "${pfad}" im Block "${eintrag.block.kennung}" auf der Seite "${seite.menuename}" gibt es nicht \u2014 es wurde nichts gebaut.`);
+        }
+      }
+    }
+  }
   const seiten = seitenRendern(ergebnis.site, stichtag);
   const start = seiten[0];
-  const kennung = standKennung();
+  const kennung2 = standKennung();
   rmSync(zielVerzeichnis2, { recursive: true, force: true });
   mkdirSync(zielVerzeichnis2, { recursive: true });
   for (const seite of seiten) {
     if (seite.pfad === "") {
-      writeFileSync(join(zielVerzeichnis2, "index.html"), mitStandKennung(seite.html, kennung), "utf8");
+      writeFileSync(join(zielVerzeichnis2, "index.html"), mitStandKennung(seite.html, kennung2), "utf8");
       continue;
     }
     mkdirSync(join(zielVerzeichnis2, seite.pfad), { recursive: true });
-    writeFileSync(join(zielVerzeichnis2, seite.pfad, "index.html"), mitStandKennung(seite.html, kennung), "utf8");
+    writeFileSync(join(zielVerzeichnis2, seite.pfad, "index.html"), mitStandKennung(seite.html, kennung2), "utf8");
   }
   writeFileSync(join(zielVerzeichnis2, "404.html"), fehlerseiteRendern(ergebnis.site, stichtag), "utf8");
   const assets = join(siteVerzeichnis2, "assets");
