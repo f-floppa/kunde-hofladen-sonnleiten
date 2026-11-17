@@ -1,0 +1,88 @@
+{
+  "fassung": 1,
+  "seiten": [
+    {
+      "kennung": "start",
+      "pfad": "",
+      "menuename": "Start",
+      "imMenue": false,
+      "bereiche": [
+        {
+          "modul": "hero"
+        },
+        {
+          "modul": "hinweisband"
+        },
+        {
+          "modul": "ueberUns"
+        },
+        {
+          "modul": "sortiment",
+          "menue": "Sortiment"
+        },
+        {
+          "modul": "preisliste",
+          "menue": "Preise"
+        },
+        {
+          "modul": "hofcafe",
+          "menue": "Hofcafé"
+        },
+        {
+          "modul": "oeffnungszeiten",
+          "menue": "Öffnungszeiten"
+        },
+        {
+          "modul": "maerkte",
+          "menue": "Märkte"
+        },
+        {
+          "modul": "veranstaltungen",
+          "menue": "Termine"
+        },
+        {
+          "modul": "team"
+        },
+        {
+          "modul": "galerie"
+        },
+        {
+          "modul": "siegel"
+        },
+        {
+          "modul": "stimmen"
+        },
+        {
+          "modul": "faq"
+        },
+        {
+          "modul": "kontakt",
+          "menue": "Kontakt"
+        }
+      ]
+    },
+    {
+      "kennung": "impressum",
+      "pfad": "impressum",
+      "menuename": "Impressum",
+      "imMenue": false,
+      "bereiche": [
+        {
+          "modul": "impressum"
+        }
+      ]
+    },
+    {
+      "kennung": "datenschutz",
+      "pfad": "datenschutz",
+      "menuename": "Datenschutz",
+      "imMenue": false,
+      "bereiche": [
+        {
+          "modul": "datenschutz"
+        }
+      ]
+    }
+  ],
+  "weiterleitungen": []
+}

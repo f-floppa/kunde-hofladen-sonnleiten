@@ -45,5 +45,6 @@
   "seiten": [
     { "pfad": "impressum", "module": ["impressum"] },
     { "pfad": "datenschutz", "module": ["datenschutz"] }
-  ]
+  ],
+  "seitenverwaltung": true
 }

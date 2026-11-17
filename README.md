@@ -26,3 +26,10 @@ Die Dateien unter `content/` schreibt die Veröffentlichungs-Pipeline.
 Änderungen von Hand werden bei der nächsten Veröffentlichung überschrieben.
 
 `tools/build.mjs` ist erzeugt — die Quelle liegt im SoftFlop-Hauptrepo.
+
+## Seitenverwaltung
+
+Diese Website wird ueber die Seitenverwaltung im SoftFlop-Portal aufgebaut: Welche Seiten es gibt, ihre
+Adressen, das Menue und die Reihenfolge der Bereiche stehen in `content/aufbau.json`.
+`site.json` bestimmt ab jetzt nur noch, was gebucht ist (`module`, `seiten`, `navigation` als Buchung) --
+wer dort Seiten oder das Menue umbaut, sieht auf der Website keine Wirkung. Umbauen geht im Portal.

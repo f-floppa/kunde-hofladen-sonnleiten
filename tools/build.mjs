@@ -9,7 +9,7 @@ import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync, rmSync
 import { execFileSync } from "node:child_process";
 import { join, basename, extname, resolve } from "node:path";
 
-// node_modules/preact/dist/preact.mjs
+// ../softflop/node_modules/preact/dist/preact.mjs
 var n;
 var l;
 var u;
@@ -285,7 +285,7 @@ n = w.slice, l = { __e: function(n2, l4, u5, t3) {
   return n2.__v.__b - l4.__v.__b;
 }, H.__r = 0, f = Math.random().toString(8), c = "__d" + f, a = "__a" + f, s = /(PointerCapture)$|Capture$/i, h = 0, p = V(false), v = V(true), y = 0;
 
-// node_modules/preact-render-to-string/dist/index.mjs
+// ../softflop/node_modules/preact-render-to-string/dist/index.mjs
 var r2 = "diffed";
 var o2 = "__c";
 var i2 = "__s";
@@ -550,7 +550,7 @@ function J2(e3) {
 // src/render/kontext.ts
 var LageKontext = X({ basis: "", h1: false, ziel: (ziel) => ziel });
 
-// node_modules/preact/hooks/dist/hooks.mjs
+// ../softflop/node_modules/preact/hooks/dist/hooks.mjs
 var t2;
 var r3;
 var u3;
@@ -638,7 +638,7 @@ function B3(n2) {
   n2.__c = n2.__(), r3 = t3;
 }
 
-// node_modules/preact/jsx-runtime/dist/jsxRuntime.mjs
+// ../softflop/node_modules/preact/jsx-runtime/dist/jsxRuntime.mjs
 var f4 = 0;
 function u4(e3, t3, n2, o4, i4, u5) {
   t3 || (t3 = {});
@@ -700,6 +700,7 @@ var MARKE = {
   oeffnungszeiten: "\xD6ffnungszeiten",
   maerkte: "Unterwegs",
   veranstaltungen: "Termine",
+  aktuelles: "Aktuelles",
   team: "Team",
   galerie: "Bilder",
   siegel: "Gepr\xFCft",
@@ -709,6 +710,15 @@ var MARKE = {
 };
 var LABEL = {
   abweichendeZeiten: "Abweichende Zeiten",
+  /** Ueber den Eintraegen mit Ablaufdatum bei den Oeffnungszeiten. */
+  sonderzeiten: "Betriebsferien und Sonderzeiten",
+  /** Der Eintrag gilt heute. */
+  laufend: "Gerade jetzt",
+  /** Der Eintrag beginnt in den naechsten Tagen. */
+  bald: "Bald",
+  geschlossen: "geschlossen",
+  /** Vor dem Titel im Linktext: "Mehr zu <Titel>". */
+  mehrZu: "Mehr zu",
   anmeldungNoetig: "Anmeldung n\xF6tig",
   stand: "Stand:",
   /** Kurzform fuer Minuten im Kursplan: "60 Min". */
@@ -732,6 +742,26 @@ var WOCHENTAGE = [
   "Samstag",
   "Sonntag"
 ];
+var FORMULAR = {
+  ueberschrift: "Schreiben Sie uns",
+  name: "Ihr Name",
+  kontakt: "E-Mail-Adresse oder Telefonnummer",
+  kontaktHinweis: "Damit wir Ihnen antworten k\xF6nnen.",
+  nachricht: "Ihre Nachricht",
+  datenschutzLink: "Datenschutzerkl\xE4rung",
+  absenden: "Nachricht senden",
+  /** Fuer Besucher mit Screenreader; sichtbar ist das Feld nie. */
+  falle: "Dieses Feld bitte leer lassen",
+  dankeTitel: "Vielen Dank",
+  dankeText: "Ihre Nachricht ist bei uns angekommen. Wir melden uns bei Ihnen.",
+  fehlerTitel: "Die Nachricht wurde nicht gesendet",
+  fehlerText: "Bitte pr\xFCfen Sie Ihre Angaben: Name, E-Mail-Adresse oder Telefonnummer und eine Nachricht (ohne Internetadressen) werden gebraucht, und das H\xE4kchen zur Datenschutzerkl\xE4rung muss gesetzt sein. M\xF6glicherweise haben auch gerade sehr viele Nachrichten uns erreicht \u2014 dann versuchen Sie es sp\xE4ter noch einmal oder schreiben Sie uns direkt.",
+  zurueck: "Zur\xFCck zur Seite"
+};
+var DATENSCHUTZ_FORMULAR = {
+  titel: "Kontaktformular",
+  text: "Wenn Sie uns \xFCber das Kontaktformular schreiben, verarbeiten wir Ihren Namen, Ihre E-Mail-Adresse oder Telefonnummer und Ihre Nachricht, um Ihre Anfrage zu beantworten (Art. 6 Abs. 1 lit. b und f DSGVO). Die Angaben werden \xFCber den technischen Dienstleister dieser Website (Floppa3D GbR, Neufarn bei Freising) an unser E-Mail-Postfach weitergeleitet. Er speichert den Inhalt der Nachricht nicht; zur Abwehr von Missbrauch merkt er sich lediglich, wie viele Nachrichten f\xFCr diese Website in den letzten Stunden eingegangen sind, ohne Namen, Inhalte oder Adressen. Bei der \xDCbermittlung wird technisch bedingt kurzzeitig Ihre IP-Adresse verarbeitet. Es werden keine Cookies gesetzt und keine Dienste Dritter eingebunden. Wir l\xF6schen Ihre Angaben, sobald Ihre Anfrage erledigt ist und keine gesetzlichen Aufbewahrungspflichten bestehen. Die Angabe ist freiwillig; ohne sie k\xF6nnen wir Ihre Anfrage nicht \xFCber das Formular beantworten. Sie erreichen uns auch per E-Mail oder Telefon."
+};
 
 // src/render/modules/basis.tsx
 function HeroModul({ daten }) {
@@ -848,6 +878,92 @@ function HofcafeModul({ daten }) {
   );
 }
 
+// src/render/datum.ts
+var ZEITZONE = "Europe/Berlin";
+var MONATE = [
+  "Januar",
+  "Februar",
+  "M\xE4rz",
+  "April",
+  "Mai",
+  "Juni",
+  "Juli",
+  "August",
+  "September",
+  "Oktober",
+  "November",
+  "Dezember"
+];
+function istTag(wert) {
+  const treffer = /^(\d{4})-(\d{2})-(\d{2})$/.exec(wert);
+  if (!treffer) return false;
+  const [j3, m4, t3] = [Number(treffer[1]), Number(treffer[2]), Number(treffer[3])];
+  const d3 = new Date(Date.UTC(j3, m4 - 1, t3));
+  return d3.getUTCFullYear() === j3 && d3.getUTCMonth() === m4 - 1 && d3.getUTCDate() === t3;
+}
+function heuteBerlin(jetzt = /* @__PURE__ */ new Date()) {
+  const teile = new Intl.DateTimeFormat("en-US", {
+    timeZone: ZEITZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(jetzt);
+  const wert = (art) => teile.find((t3) => t3.type === art)?.value ?? "";
+  return `${wert("year")}-${wert("month")}-${wert("day")}`;
+}
+function tagPlus(tag, n2) {
+  const [j3, m4, t3] = tag.split("-").map(Number);
+  return new Date(Date.UTC(j3, m4 - 1, t3 + n2)).toISOString().slice(0, 10);
+}
+function versatzMinuten(zeitpunkt) {
+  try {
+    const name = new Intl.DateTimeFormat("en-US", { timeZone: ZEITZONE, timeZoneName: "longOffset" }).formatToParts(new Date(zeitpunkt)).find((t3) => t3.type === "timeZoneName")?.value;
+    if (name === "GMT") return 0;
+    const treffer = /^GMT([+-])(\d{2}):(\d{2})$/.exec(name ?? "");
+    if (!treffer) return void 0;
+    return (treffer[1] === "-" ? -1 : 1) * (Number(treffer[2]) * 60 + Number(treffer[3]));
+  } catch {
+    return void 0;
+  }
+}
+function versatzBerlin(tag, uhrzeit2) {
+  const [j3, m4, t3] = tag.split("-").map(Number);
+  const [h3, min] = uhrzeit2.split(":").map(Number);
+  const lokal = Date.UTC(j3, m4 - 1, t3, h3, min);
+  const erster = versatzMinuten(lokal);
+  if (erster === void 0) return void 0;
+  const zweiter = versatzMinuten(lokal - erster * 6e4) ?? erster;
+  const betrag = Math.abs(zweiter);
+  const vorzeichen = zweiter < 0 ? "-" : "+";
+  return `${vorzeichen}${String(Math.floor(betrag / 60)).padStart(2, "0")}:${String(betrag % 60).padStart(2, "0")}`;
+}
+function tagText(tag, ohneJahr = false) {
+  const [j3, m4, t3] = tag.split("-").map(Number);
+  return `${t3}. ${MONATE[m4 - 1]}${ohneJahr ? "" : ` ${j3}`}`;
+}
+var uhrzeitNormal = (z5) => z5.length === 4 ? `0${z5}` : z5;
+
+// src/render/modules/zeitraum.tsx
+function Zeitraum({
+  von,
+  bis,
+  uhrzeit: uhrzeit2
+}) {
+  if (!bis || bis === von) {
+    return /* @__PURE__ */ u4("time", { datetime: uhrzeit2 ? `${von}T${uhrzeitNormal(uhrzeit2)}` : von, children: [
+      tagText(von),
+      uhrzeit2 ? `, ${uhrzeit2} Uhr` : ""
+    ] });
+  }
+  const gleichesJahr = von.slice(0, 4) === bis.slice(0, 4);
+  return /* @__PURE__ */ u4(S, { children: [
+    /* @__PURE__ */ u4("time", { datetime: uhrzeit2 ? `${von}T${uhrzeitNormal(uhrzeit2)}` : von, children: tagText(von, gleichesJahr) }),
+    " \u2013 ",
+    /* @__PURE__ */ u4("time", { datetime: bis, children: tagText(bis) }),
+    uhrzeit2 ? ` \xB7 ${uhrzeit2} Uhr` : ""
+  ] });
+}
+
 // src/render/oeffnung.ts
 var zeitNormal = (z5) => z5.length === 4 ? `0${z5}` : z5;
 function tageText(tage) {
@@ -886,12 +1002,64 @@ function oeffnungsSpezifikation(zeilen) {
   }
   return raus;
 }
+function sonderzeitSpezifikation(liste) {
+  return liste.map((z5) => ({
+    "@type": "OpeningHoursSpecification",
+    validFrom: z5.vonDatum,
+    validThrough: z5.bisDatum ?? z5.vonDatum,
+    opens: z5.geschlossen ? "00:00" : zeitNormal(z5.von ?? "00:00"),
+    closes: z5.geschlossen ? "00:00" : zeitNormal(z5.bis ?? "00:00")
+  }));
+}
+
+// src/render/aktuell.ts
+var VORLAUF_TAGE = 14;
+var letzterTag = (z5) => z5.bisDatum ?? z5.vonDatum;
+function abgelaufen(z5, stichtag) {
+  const ende = letzterTag(z5);
+  return ende !== void 0 && ende < stichtag;
+}
+function standVon(z5, stichtag) {
+  if (!z5.vonDatum) return "ohneDatum";
+  if (z5.vonDatum <= stichtag) return "laufend";
+  return z5.vonDatum <= tagPlus(stichtag, VORLAUF_TAGE) ? "bald" : "spaeter";
+}
+var geltende = (liste, stichtag) => liste.filter((e3) => !abgelaufen(e3, stichtag));
+function nachBeginn(liste) {
+  return liste.map((e3, i4) => ({ e: e3, i: i4 })).sort((a4, b3) => {
+    const x4 = a4.e.vonDatum;
+    const y3 = b3.e.vonDatum;
+    if (x4 === y3) return a4.i - b3.i;
+    if (x4 === void 0) return 1;
+    if (y3 === void 0) return -1;
+    return x4 < y3 ? -1 : 1;
+  }).map((p4) => p4.e);
+}
+function wechseltage(z5, stichtag) {
+  const ende = letzterTag(z5);
+  if (ende === void 0 || ende < stichtag) return [];
+  const tage = [tagPlus(ende, 1)];
+  if (z5.vonDatum) tage.push(z5.vonDatum, tagPlus(z5.vonDatum, -VORLAUF_TAGE));
+  return tage.filter((t3) => t3 > stichtag);
+}
+function naechsterAblauf(site, stichtag) {
+  const kandidaten = [];
+  for (const s4 of site.inhalte.oeffnungszeiten?.sonderzeiten ?? []) {
+    kandidaten.push(...wechseltage(s4, stichtag));
+  }
+  for (const e3 of site.inhalte.aktuelles?.eintraege ?? []) {
+    kandidaten.push(...wechseltage(e3, stichtag));
+  }
+  return kandidaten.length === 0 ? null : kandidaten.sort()[0];
+}
 
 // src/render/modules/zeiten.tsx
 function istGeschlossen(zeit) {
   return zeit.trim().toLowerCase() === "geschlossen";
 }
 function OeffnungszeitenModul({ daten }) {
+  const { stichtag = heuteBerlin() } = x3(LageKontext);
+  const sonderzeiten = nachBeginn(geltende(daten.sonderzeiten, stichtag));
   return /* @__PURE__ */ u4(
     Abschnitt,
     {
@@ -906,6 +1074,21 @@ function OeffnungszeitenModul({ daten }) {
             /* @__PURE__ */ u4("dd", { class: z5.geschlossen || istGeschlossen(zeitAnzeige(z5)) ? "zu" : void 0, children: zeitAnzeige(z5) }, `${i4}-d`)
           ]) })
         ] }, s4.titel)) }),
+        sonderzeiten.length > 0 ? /* @__PURE__ */ u4("div", { class: "ausnahmen sonderzeiten", children: [
+          /* @__PURE__ */ u4("h3", { children: daten.sonderzeitenTitel ?? LABEL.sonderzeiten }),
+          /* @__PURE__ */ u4("dl", { children: sonderzeiten.map((z5, i4) => {
+            const stand = standVon(z5, stichtag);
+            return /* @__PURE__ */ u4("div", { class: stand === "laufend" || stand === "bald" ? stand : void 0, children: [
+              /* @__PURE__ */ u4("dt", { children: /* @__PURE__ */ u4(Zeitraum, { von: z5.vonDatum, bis: z5.bisDatum }) }),
+              /* @__PURE__ */ u4("dd", { children: [
+                z5.geschlossen ? LABEL.geschlossen : `${z5.von} \u2013 ${z5.bis} Uhr`,
+                z5.hinweis ? ` \xB7 ${z5.hinweis}` : "",
+                stand === "laufend" ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.laufend }) : null,
+                stand === "bald" ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.bald }) : null
+              ] })
+            ] }, i4);
+          }) })
+        ] }) : null,
         daten.ausnahmen.length > 0 ? /* @__PURE__ */ u4("div", { class: "ausnahmen", children: [
           /* @__PURE__ */ u4("h3", { children: daten.ausnahmenTitel ?? LABEL.abweichendeZeiten }),
           /* @__PURE__ */ u4("dl", { children: daten.ausnahmen.map((a4) => [
@@ -999,6 +1182,45 @@ function KursplanModul({ daten }) {
   );
 }
 
+// src/render/modules/aktuelles.tsx
+var sichererLink = (link) => link && /^https?:\/\//i.test(link) ? link : void 0;
+function AktuellesModul({ daten }) {
+  const { stichtag = heuteBerlin() } = x3(LageKontext);
+  const eintraege = nachBeginn(geltende(daten.eintraege, stichtag));
+  if (eintraege.length === 0) return null;
+  return /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "aktuelles",
+      kinder: /* @__PURE__ */ u4(S, { children: [
+        /* @__PURE__ */ u4(AbschnittKopf, { marke: daten.marke ?? MARKE.aktuelles, titel: daten.ueberschrift }),
+        /* @__PURE__ */ u4("div", { class: "liste", children: eintraege.map((e3, i4) => {
+          const stand = standVon(e3, stichtag);
+          const link = sichererLink(e3.link);
+          return /* @__PURE__ */ u4("article", { class: stand === "laufend" || stand === "bald" ? `eintrag ${stand}` : "eintrag", children: [
+            /* @__PURE__ */ u4("h3", { children: [
+              e3.titel,
+              stand === "laufend" ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.laufend }) : null,
+              stand === "bald" ? /* @__PURE__ */ u4("span", { class: "plakette", children: LABEL.bald }) : null
+            ] }),
+            e3.vonDatum ? /* @__PURE__ */ u4("p", { class: "wann", children: /* @__PURE__ */ u4(Zeitraum, { von: e3.vonDatum, bis: e3.bisDatum, uhrzeit: e3.uhrzeit }) }) : null,
+            e3.ort || e3.text || link ? /* @__PURE__ */ u4("div", { class: "was", children: [
+              e3.ort ? /* @__PURE__ */ u4("p", { class: "ort", children: e3.ort }) : null,
+              e3.text ? /* @__PURE__ */ u4("p", { children: e3.text }) : null,
+              link ? /* @__PURE__ */ u4("p", { children: /* @__PURE__ */ u4("a", { href: link, rel: "noopener", children: [
+                LABEL.mehrZu,
+                " \u201E",
+                e3.titel,
+                "\u201C"
+              ] }) }) : null
+            ] }) : null
+          ] }, i4);
+        }) })
+      ] })
+    }
+  );
+}
+
 // src/render/modules/leute.tsx
 function TeamModul({ daten }) {
   return /* @__PURE__ */ u4(
@@ -1081,7 +1303,40 @@ function SiegelModul({ daten }) {
 }
 
 // src/render/modules/rechtliches.tsx
+function KontaktFormular({ lage }) {
+  return /* @__PURE__ */ u4("form", { class: "formular", method: "post", action: lage.adresse, "accept-charset": "utf-8", children: [
+    /* @__PURE__ */ u4("h3", { children: FORMULAR.ueberschrift }),
+    /* @__PURE__ */ u4("input", { type: "hidden", name: "kunde", value: lage.kunde }),
+    /* @__PURE__ */ u4("div", { class: "formular-falle", "aria-hidden": "true", children: [
+      /* @__PURE__ */ u4("label", { for: "f-homepage", children: FORMULAR.falle }),
+      /* @__PURE__ */ u4("input", { id: "f-homepage", type: "text", name: "homepage", tabindex: -1, autocomplete: "off" })
+    ] }),
+    /* @__PURE__ */ u4("p", { children: [
+      /* @__PURE__ */ u4("label", { for: "f-name", children: FORMULAR.name }),
+      /* @__PURE__ */ u4("input", { id: "f-name", type: "text", name: "name", required: true, maxlength: 80, autocomplete: "name" })
+    ] }),
+    /* @__PURE__ */ u4("p", { children: [
+      /* @__PURE__ */ u4("label", { for: "f-kontakt", children: FORMULAR.kontakt }),
+      /* @__PURE__ */ u4("input", { id: "f-kontakt", type: "text", name: "kontakt", required: true, maxlength: 120, "aria-describedby": "f-kontakt-hilfe" }),
+      /* @__PURE__ */ u4("span", { id: "f-kontakt-hilfe", class: "formular-hilfe", children: FORMULAR.kontaktHinweis })
+    ] }),
+    /* @__PURE__ */ u4("p", { children: [
+      /* @__PURE__ */ u4("label", { for: "f-nachricht", children: FORMULAR.nachricht }),
+      /* @__PURE__ */ u4("textarea", { id: "f-nachricht", name: "nachricht", required: true, minlength: 10, maxlength: 2e3, rows: 6 })
+    ] }),
+    /* @__PURE__ */ u4("p", { class: "formular-haken", children: [
+      /* @__PURE__ */ u4("input", { id: "f-datenschutz", type: "checkbox", name: "datenschutz", value: "ja", required: true }),
+      /* @__PURE__ */ u4("label", { for: "f-datenschutz", children: [
+        "Ich habe die ",
+        /* @__PURE__ */ u4("a", { href: lage.datenschutz, children: FORMULAR.datenschutzLink }),
+        " gelesen und bin einverstanden, dass meine Angaben zur Beantwortung meiner Anfrage verwendet werden."
+      ] })
+    ] }),
+    /* @__PURE__ */ u4("button", { class: "knopf knopf-voll", type: "submit", children: FORMULAR.absenden })
+  ] });
+}
 function KontaktModul({ daten }) {
+  const { formular } = x3(LageKontext);
   return /* @__PURE__ */ u4(
     Abschnitt,
     {
@@ -1119,7 +1374,8 @@ function KontaktModul({ daten }) {
             /* @__PURE__ */ u4("p", { children: h3.text })
           ] }, h3.titel)) }),
           daten.karte ? /* @__PURE__ */ u4(Bildchen, { bild: daten.karte }) : null
-        ] })
+        ] }),
+        daten.formular && formular ? /* @__PURE__ */ u4(KontaktFormular, { lage: formular }) : null
       ] })
     }
   );
@@ -1141,6 +1397,7 @@ function ImpressumModul({ daten }) {
   );
 }
 function DatenschutzModul({ daten }) {
+  const { formular } = x3(LageKontext);
   return /* @__PURE__ */ u4(
     Abschnitt,
     {
@@ -1151,11 +1408,38 @@ function DatenschutzModul({ daten }) {
         daten.absaetze.map((a4, i4) => /* @__PURE__ */ u4("div", { class: "absatz", children: [
           a4.titel ? /* @__PURE__ */ u4("h3", { children: a4.titel }) : null,
           /* @__PURE__ */ u4("p", { children: a4.text })
-        ] }, i4))
+        ] }, i4)),
+        formular ? /* @__PURE__ */ u4("div", { class: "absatz", id: "datenschutz-formular", children: [
+          /* @__PURE__ */ u4("h3", { children: DATENSCHUTZ_FORMULAR.titel }),
+          /* @__PURE__ */ u4("p", { children: DATENSCHUTZ_FORMULAR.text })
+        ] }) : null
       ] })
     }
   );
 }
+
+// src/render/anker.ts
+var ANKER = {
+  hero: "start",
+  hinweisband: null,
+  ueberUns: "ueber-uns",
+  sortiment: "sortiment",
+  preisliste: "preise",
+  hofcafe: "hofcafe",
+  oeffnungszeiten: "oeffnungszeiten",
+  maerkte: "maerkte",
+  kursplan: "kursplan",
+  veranstaltungen: "termine",
+  aktuelles: "aktuelles",
+  team: "team",
+  galerie: "galerie",
+  siegel: "siegel",
+  stimmen: "stimmen",
+  faq: "faq",
+  kontakt: "kontakt",
+  impressum: "impressum",
+  datenschutz: "datenschutz"
+};
 
 // src/render/modules/registry.tsx
 var REGISTRY = {
@@ -1169,6 +1453,7 @@ var REGISTRY = {
   maerkte: MaerkteModul,
   kursplan: KursplanModul,
   veranstaltungen: VeranstaltungenModul,
+  aktuelles: AktuellesModul,
   team: TeamModul,
   galerie: GalerieModul,
   siegel: SiegelModul,
@@ -1178,831 +1463,28 @@ var REGISTRY = {
   impressum: ImpressumModul,
   datenschutz: DatenschutzModul
 };
-var ANKER = {
-  hero: "start",
-  hinweisband: null,
-  ueberUns: "ueber-uns",
-  sortiment: "sortiment",
-  preisliste: "preise",
-  hofcafe: "hofcafe",
-  oeffnungszeiten: "oeffnungszeiten",
-  maerkte: "maerkte",
-  kursplan: "kursplan",
-  veranstaltungen: "termine",
-  team: "team",
-  galerie: "galerie",
-  siegel: "siegel",
-  stimmen: "stimmen",
-  faq: "faq",
-  kontakt: "kontakt",
-  impressum: "impressum",
-  datenschutz: "datenschutz"
-};
 function Modul({ typ, daten }) {
   if (daten === void 0 || daten === null) return null;
   const Komponente = REGISTRY[typ];
   return /* @__PURE__ */ u4(Komponente, { daten });
 }
 
-// src/render/seiten.ts
-function titelBauen(site, module) {
-  const erstes = module[0];
-  const daten = erstes ? site.inhalte[erstes] : void 0;
-  const ueberschrift = daten?.ueberschrift?.trim();
-  if (!ueberschrift) return site.meta.name;
-  const mitMarke = `${ueberschrift} \u2013 ${site.meta.name}`;
-  return mitMarke.length <= 60 ? mitMarke : ueberschrift;
-}
-function routen(site) {
-  const { meta: meta3 } = site;
-  const start = {
-    pfad: "",
-    module: meta3.module,
-    titel: meta3.titel ?? meta3.name,
-    beschreibung: meta3.beschreibung,
-    istStart: true,
-    wurzelbezogen: false,
-    fehlerseite: false
-  };
-  const unterseiten = meta3.seiten.map((s4) => ({
-    pfad: s4.pfad,
-    module: s4.module,
-    titel: s4.titel ?? titelBauen(site, s4.module),
-    beschreibung: s4.beschreibung ?? meta3.beschreibung,
-    istStart: false,
-    wurzelbezogen: true,
-    fehlerseite: false
-  }));
-  return [start, ...unterseiten];
-}
-var fehlerRoute = (start) => ({ ...start, wurzelbezogen: true, fehlerseite: true });
-var adresseVon = (domain2, pfad) => `https://${domain2}/${pfad === "" ? "" : `${pfad}/`}`;
-var pfadVon = (pfad) => pfad === "" ? "/" : `/${pfad}/`;
-var basisVon = (route) => route.wurzelbezogen ? "/" : "";
-function verweis(site, von, typ) {
-  const eigene = site.meta.seiten.find((s4) => s4.module.includes(typ));
-  if (eigene) {
-    const anker2 = eigene.module[0] === typ ? "" : `#${ANKER[typ] ?? ""}`;
-    return `${pfadVon(eigene.pfad)}${anker2}`;
-  }
-  const anker = ANKER[typ];
-  if (!anker) return von.wurzelbezogen ? "/" : "#";
-  return von.wurzelbezogen ? `/#${anker}` : `#${anker}`;
-}
-function zielFuerSeite(site, ziel, von) {
-  if (ziel.startsWith("#")) return von.wurzelbezogen ? `/${ziel}` : ziel;
-  const pfad = /^\/([^/#?]+)(#.*)?$/.exec(ziel);
-  if (pfad && site.meta.seiten.some((s4) => s4.pfad === pfad[1])) {
-    return `${pfadVon(pfad[1])}${pfad[2] ?? ""}`;
-  }
-  return ziel;
-}
-
-// src/render/seite.tsx
-var absolut = (site, pfad) => `https://${site.meta.domain}/${pfad.replace(/^\/+/, "")}`;
-function Kopfbereich({ site, route }) {
-  const { meta: meta3 } = site;
-  const basis = basisVon(route);
-  const hier = adresseVon(meta3.domain, route.pfad);
-  const heroBild = route.module.includes("hero") ? site.inhalte.hero?.bild : void 0;
-  return /* @__PURE__ */ u4(S, { children: [
-    /* @__PURE__ */ u4("meta", { charSet: "utf-8" }),
-    /* @__PURE__ */ u4("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }),
-    route.fehlerseite || !meta3.indexierbar ? /* @__PURE__ */ u4("meta", { name: "robots", content: meta3.indexierbar ? "noindex" : "noindex, nofollow" }) : null,
-    /* @__PURE__ */ u4("title", { children: route.titel }),
-    /* @__PURE__ */ u4("meta", { name: "description", content: route.beschreibung }),
-    route.fehlerseite ? null : /* @__PURE__ */ u4("link", { rel: "canonical", href: hier }),
-    /* @__PURE__ */ u4("link", { rel: "icon", href: basis + meta3.logo }),
-    heroBild ? /* @__PURE__ */ u4("link", { rel: "preload", as: "image", href: basis + heroBild.pfad, fetchpriority: "high" }) : null,
-    /* @__PURE__ */ u4("meta", { property: "og:type", content: "website" }),
-    /* @__PURE__ */ u4("meta", { property: "og:title", content: route.titel }),
-    /* @__PURE__ */ u4("meta", { property: "og:description", content: route.beschreibung }),
-    /* @__PURE__ */ u4("meta", { property: "og:url", content: hier }),
-    /* @__PURE__ */ u4("meta", { property: "og:site_name", content: meta3.name }),
-    /* @__PURE__ */ u4("meta", { property: "og:locale", content: meta3.sprache === "de" ? "de_DE" : meta3.sprache }),
-    meta3.ogBild ? /* @__PURE__ */ u4("meta", { property: "og:image", content: absolut(site, meta3.ogBild) }) : null,
-    meta3.ogBild && heroBild ? /* @__PURE__ */ u4(S, { children: [
-      /* @__PURE__ */ u4("meta", { property: "og:image:alt", content: heroBild.alt }),
-      heroBild.breite ? /* @__PURE__ */ u4("meta", { property: "og:image:width", content: String(heroBild.breite) }) : null,
-      heroBild.hoehe ? /* @__PURE__ */ u4("meta", { property: "og:image:height", content: String(heroBild.hoehe) }) : null
-    ] }) : null,
-    /* @__PURE__ */ u4("meta", { name: "twitter:card", content: "summary_large_image" })
-  ] });
-}
-function Kopf({ site, route }) {
-  const { meta: meta3 } = site;
-  const basis = basisVon(route);
-  return /* @__PURE__ */ u4("header", { class: "kopf", children: /* @__PURE__ */ u4("div", { class: "huelle kopf-innen", children: [
-    /* @__PURE__ */ u4(
-      "a",
-      {
-        class: "kopf-logo",
-        href: route.wurzelbezogen ? "/" : "#start",
-        "aria-label": meta3.name,
-        children: /* @__PURE__ */ u4("img", { src: basis + meta3.logo, alt: meta3.name, width: 44, height: 44 })
-      }
-    ),
-    meta3.navigation.length > 0 ? /* @__PURE__ */ u4("nav", { class: "kopf-nav", "aria-label": "Hauptnavigation", children: /* @__PURE__ */ u4("ul", { children: meta3.navigation.map((n2) => /* @__PURE__ */ u4("li", { children: /* @__PURE__ */ u4("a", { href: zielFuerSeite(site, n2.ziel, route), children: n2.label }) }, n2.ziel)) }) }) : null
+// src/render/modules/seitentext.tsx
+var absaetze = (text2) => text2.split(/\r?\n\s*\r?\n/).map((a4) => a4.trim()).filter((a4) => a4 !== "");
+function SeitentextAbschnitt({ text: text2 }) {
+  return /* @__PURE__ */ u4("section", { id: "seitentext", class: "abschnitt seitentext", children: /* @__PURE__ */ u4("div", { class: "huelle", children: [
+    /* @__PURE__ */ u4("div", { class: "abschnitt-kopf", children: /* @__PURE__ */ u4("h1", { children: text2.ueberschrift }) }),
+    text2.abschnitte.map((abschnitt, i4) => /* @__PURE__ */ u4("div", { class: abschnitt.bild ? "seitentext-block zweispalt" : "seitentext-block", children: [
+      /* @__PURE__ */ u4("div", { class: "fliess", children: [
+        abschnitt.titel ? /* @__PURE__ */ u4("h2", { class: "seitentext-titel", children: abschnitt.titel }) : null,
+        absaetze(abschnitt.text).map((absatz, j3) => /* @__PURE__ */ u4("p", { children: absatz }, j3))
+      ] }),
+      abschnitt.bild ? /* @__PURE__ */ u4(Bildchen, { bild: abschnitt.bild }) : null
+    ] }, i4))
   ] }) });
 }
-function Fuss({ site, route }) {
-  const { meta: meta3 } = site;
-  return /* @__PURE__ */ u4("footer", { class: "fuss", children: /* @__PURE__ */ u4("div", { class: "huelle fuss-innen", children: [
-    /* @__PURE__ */ u4("span", { children: meta3.name }),
-    /* @__PURE__ */ u4("span", { children: [
-      /* @__PURE__ */ u4("a", { href: verweis(site, route, "impressum"), children: "Impressum" }),
-      " \xB7",
-      " ",
-      /* @__PURE__ */ u4("a", { href: verweis(site, route, "datenschutz"), children: "Datenschutz" })
-    ] })
-  ] }) });
-}
-function Koerper({ site, route }) {
-  const { inhalte } = site;
-  const basis = basisVon(route);
-  const ziel = (z5) => zielFuerSeite(site, z5, route);
-  const kurzfassung = route.istStart ? site.meta.kurzfassung : void 0;
-  const kurzfassungEigen = kurzfassung !== void 0 && !route.module.includes("ueberUns");
-  const kurzfassungBlock = kurzfassungEigen ? /* @__PURE__ */ u4(
-    Abschnitt,
-    {
-      id: "kurzfassung",
-      kinder: /* @__PURE__ */ u4("div", { class: "abschnitt-kopf", children: /* @__PURE__ */ u4("p", { children: kurzfassung }) })
-    }
-  ) : null;
-  const zeigtHinweisband = route.module.includes("hinweisband");
-  const imMain = route.module.filter((t3) => t3 !== "hinweisband");
-  const h1Traeger = route.istStart || route.module.includes("hero") ? null : imMain[0];
-  return /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: false, ziel, kurzfassung }, children: [
-    /* @__PURE__ */ u4("a", { class: "sprung", href: "#inhalt", children: "Zum Inhalt springen" }),
-    /* @__PURE__ */ u4(Kopf, { site, route }),
-    zeigtHinweisband ? /* @__PURE__ */ u4(Modul, { typ: "hinweisband", daten: inhalte.hinweisband }) : null,
-    /* @__PURE__ */ u4("main", { id: "inhalt", children: [
-      imMain.includes("hero") ? null : kurzfassungBlock,
-      imMain.map((typ) => /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: typ === h1Traeger, ziel, kurzfassung }, children: [
-        /* @__PURE__ */ u4(Modul, { typ, daten: inhalte[typ] }),
-        typ === "hero" ? kurzfassungBlock : null
-      ] }, typ))
-    ] }),
-    /* @__PURE__ */ u4(Fuss, { site, route })
-  ] });
-}
 
-// src/render/betriebsart.ts
-var BETRIEBSARTEN = [
-  { name: "Hofladen", typ: "GroceryStore", ladenartig: true },
-  { name: "Laden", typ: "Store", ladenartig: true },
-  { name: "Caf\xE9", typ: "CafeOrCoffeeShop", ladenartig: true },
-  { name: "Restaurant", typ: "Restaurant", ladenartig: true },
-  { name: "Sportkurse", typ: "SportsActivityLocation", ladenartig: false },
-  { name: "Fitnessstudio", typ: "ExerciseGym", ladenartig: true },
-  { name: "Handwerksbetrieb", typ: "HomeAndConstructionBusiness", ladenartig: false },
-  { name: "Verein", typ: "Organization", ladenartig: false },
-  { name: "Praxis", typ: "MedicalBusiness", ladenartig: true },
-  { name: "Dienstleistung", typ: "ProfessionalService", ladenartig: false }
-];
-var BETRIEBSART_NAMEN = BETRIEBSARTEN.map((a4) => a4.name);
-function betriebsartVon(name) {
-  return BETRIEBSARTEN.find((a4) => a4.name === name);
-}
-
-// src/render/strukturdaten.ts
-function sauber(knoten) {
-  const raus = {};
-  for (const [schluessel, wert] of Object.entries(knoten)) {
-    if (wert === void 0 || wert === null) continue;
-    if (Array.isArray(wert) && wert.length === 0) continue;
-    raus[schluessel] = wert;
-  }
-  return raus;
-}
-var WOCHENTAG_URL = {
-  Montag: "https://schema.org/Monday",
-  Dienstag: "https://schema.org/Tuesday",
-  Mittwoch: "https://schema.org/Wednesday",
-  Donnerstag: "https://schema.org/Thursday",
-  Freitag: "https://schema.org/Friday",
-  Samstag: "https://schema.org/Saturday",
-  Sonntag: "https://schema.org/Sunday"
-};
-function telefonKompakt(telefon) {
-  const kompakt = telefon.replace(/\s+/g, "");
-  return kompakt === "" ? void 0 : kompakt;
-}
-function endzeit(zeit, minuten) {
-  const treffer = /^(\d{1,2}):(\d{2})$/.exec(zeit);
-  if (!treffer || !Number.isFinite(minuten)) return void 0;
-  const gesamt = Number(treffer[1]) * 60 + Number(treffer[2]) + minuten;
-  const stunde = String(Math.floor(gesamt / 60) % 24).padStart(2, "0");
-  return `${stunde}:${String(gesamt % 60).padStart(2, "0")}`;
-}
-function strukturdaten(site, route) {
-  const { meta: meta3, inhalte } = site;
-  const url2 = (pfad = "") => `https://${meta3.domain}/${pfad.replace(/^\/+/, "")}`;
-  const hier = adresseVon(meta3.domain, route.pfad);
-  const id = (teil) => `${hier}#${teil}`;
-  const WEBSITE = url2("#website");
-  const BETRIEB = url2("#betrieb");
-  const PERSON = url2("#person");
-  const knoten = [];
-  const kontakt = inhalte.kontakt;
-  knoten.push(
-    sauber({
-      "@type": "WebSite",
-      "@id": WEBSITE,
-      url: url2(),
-      name: meta3.name,
-      inLanguage: meta3.sprache,
-      publisher: { "@id": BETRIEB }
-    })
-  );
-  if (kontakt?.person) {
-    knoten.push(
-      sauber({
-        "@type": "Person",
-        "@id": PERSON,
-        name: kontakt.person.name,
-        alternateName: kontakt.person.alternativName,
-        jobTitle: kontakt.person.rolle,
-        worksFor: { "@id": BETRIEB },
-        sameAs: meta3.sameAs
-      })
-    );
-  }
-  if (kontakt) {
-    const plzUndOrt = /^(\S+)\s+(.*)$/.exec(kontakt.ort);
-    knoten.push(
-      sauber({
-        "@type": betriebsartVon(kontakt.art)?.typ ?? "LocalBusiness",
-        "@id": BETRIEB,
-        name: kontakt.betrieb,
-        description: meta3.kurzfassung ?? meta3.beschreibung,
-        url: url2(),
-        logo: url2(meta3.logo),
-        image: meta3.ogBild ? url2(meta3.ogBild) : void 0,
-        telephone: telefonKompakt(kontakt.telefon),
-        email: kontakt.email || void 0,
-        sameAs: [.../* @__PURE__ */ new Set([...meta3.sameAs, ...kontakt.profile?.googleMaps ? [kontakt.profile.googleMaps] : []])],
-        hasMap: kontakt.profile?.googleMaps,
-        openingHoursSpecification: oeffnungsSpezifikation(inhalte.oeffnungszeiten?.sets[0]?.zeilen ?? []),
-        /* Koordinaten sind eine Anschrift auf zehn Meter: nur wo die Anschrift
-           ohnehin oeffentlich ist. */
-        geo: kontakt.lage && kontakt.anschriftOeffentlich ? { "@type": "GeoCoordinates", latitude: kontakt.lage.breite, longitude: kontakt.lage.laenge } : void 0,
-        founder: kontakt.person ? { "@id": PERSON } : void 0,
-        address: kontakt.anschriftOeffentlich && plzUndOrt ? {
-          "@type": "PostalAddress",
-          streetAddress: kontakt.strasse,
-          postalCode: plzUndOrt[1],
-          addressLocality: plzUndOrt[2],
-          addressRegion: kontakt.region,
-          addressCountry: "DE"
-        } : void 0,
-        areaServed: kontakt.gebiet.map((name) => ({ "@type": "Place", name }))
-      })
-    );
-  }
-  const kursplan = route.module.includes("kursplan") ? inhalte.kursplan : void 0;
-  if (kursplan) {
-    const ortId = /* @__PURE__ */ new Map();
-    for (const ort of kursplan.orte) {
-      const kennung = id(`ort-${ort.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`);
-      ortId.set(ort.name, kennung);
-      knoten.push(
-        sauber({
-          "@type": "SportsActivityLocation",
-          "@id": kennung,
-          name: ort.name,
-          url: ort.url,
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: ort.strasse,
-            postalCode: ort.plz,
-            addressLocality: ort.ort,
-            addressRegion: ort.region,
-            addressCountry: "DE"
-          }
-        })
-      );
-    }
-    const nachTitel = /* @__PURE__ */ new Map();
-    for (const kurs of kursplan.kurse) {
-      const liste = nachTitel.get(kurs.titel) ?? [];
-      liste.push(kurs);
-      nachTitel.set(kurs.titel, liste);
-    }
-    for (const [titel, kurse] of nachTitel) {
-      knoten.push(
-        sauber({
-          "@type": "Course",
-          "@id": id(`kurs-${titel.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`),
-          name: titel,
-          description: kursplan.einleitung ?? meta3.beschreibung,
-          inLanguage: meta3.sprache,
-          provider: { "@id": BETRIEB },
-          hasCourseInstance: kurse.map((kurs) => {
-            const minuten = Number.parseInt(kurs.dauer ?? "", 10);
-            const bis = endzeit(kurs.zeit, minuten);
-            const ort = kurs.ort ? ortId.get(kurs.ort) : void 0;
-            return sauber({
-              "@type": "CourseInstance",
-              name: `${titel} \xB7 ${kurs.tag} ${kurs.zeit}`,
-              courseMode: "onsite",
-              instructor: kontakt?.person ? { "@id": PERSON } : void 0,
-              location: ort ? { "@id": ort } : void 0,
-              courseSchedule: sauber({
-                "@type": "Schedule",
-                byDay: WOCHENTAG_URL[kurs.tag],
-                startTime: kurs.zeit,
-                endTime: bis,
-                duration: Number.isFinite(minuten) ? `PT${minuten}M` : void 0,
-                repeatFrequency: "P1W",
-                scheduleTimezone: "Europe/Berlin"
-              })
-            });
-          })
-        })
-      );
-    }
-  }
-  const faq = route.module.includes("faq") ? inhalte.faq : void 0;
-  if (faq) {
-    knoten.push({
-      "@type": "FAQPage",
-      "@id": id("faq"),
-      mainEntity: faq.fragen.map((frage) => ({
-        "@type": "Question",
-        name: frage.frage,
-        acceptedAnswer: { "@type": "Answer", text: frage.antwort }
-      }))
-    });
-  }
-  const team = route.module.includes("team") ? inhalte.team : void 0;
-  if (team) {
-    for (const person of team.personen) {
-      knoten.push(
-        sauber({
-          "@type": "Person",
-          name: person.name,
-          jobTitle: person.rolle || void 0,
-          description: person.satz || void 0,
-          image: url2(person.bild.pfad),
-          worksFor: { "@id": BETRIEB }
-        })
-      );
-    }
-  }
-  const hero = route.module.includes("hero") ? inhalte.hero : void 0;
-  knoten.push(
-    sauber({
-      "@type": "WebPage",
-      "@id": id("seite"),
-      url: hier,
-      name: route.titel,
-      description: route.beschreibung,
-      isPartOf: { "@id": WEBSITE },
-      about: kontakt ? { "@id": BETRIEB } : void 0,
-      inLanguage: meta3.sprache,
-      primaryImageOfPage: hero ? url2(hero.bild.pfad) : void 0
-    })
-  );
-  if (!route.istStart) {
-    knoten.push({
-      "@type": "BreadcrumbList",
-      "@id": id("pfad"),
-      itemListElement: [
-        { "@type": "ListItem", position: 1, name: meta3.name, item: url2() },
-        { "@type": "ListItem", position: 2, name: route.titel, item: hier }
-      ]
-    });
-  }
-  return knoten;
-}
-
-// src/render/styles.ts
-var MISCHUNG = {
-  /** Text-Akzent: zur Tinte auf hellem Grund, zum Grund auf dunklem. */
-  akzentText: 0.45,
-  /** Deckung des gedaempften Tons. */
-  gedaempft: 0.7,
-  /** Deckung der Trennlinien. Rein dekorativ, traegt keinen Text. */
-  linie: 0.14
-};
-var prozent = (anteil) => `${Math.round(anteil * 100)}%`;
-function stylesheet(f5) {
-  return `
-:root {
-  --primaer: ${f5.primaer};
-  --akzent: ${f5.akzent};
-  --grund: ${f5.grund};
-  --tinte: ${f5.tinte};
-  --flaeche: #ffffff;
-  --linie: color-mix(in srgb, var(--tinte) ${prozent(MISCHUNG.linie)}, transparent);
-  /* 70 %, nicht weniger: Darunter faellt der gedaempfte Ton unter 4,5:1 \u2014
-     beim Pilotkunden lag er mit 62 % bei 4,37:1. Er traegt keine Beiwerke,
-     sondern Abschnittseinleitungen, FAQ-Antworten und Kartentexte, also
-     echten Lesetext. 70 % laesst ihn sichtbar zuruecktreten und bleibt bei
-     beiden Kunden ueber der Schwelle. */
-  --gedaempft: color-mix(in srgb, var(--tinte) ${prozent(MISCHUNG.gedaempft)}, transparent);
-  /* Der Akzent traegt zweierlei: Flaechen (Knopf, Hinweisband, Plakette), auf
-     denen Tinte steht, und kleinen Text, der SELBST der Akzent ist. Fuer
-     Flaechen muss er hell sein, fuer Text auf hellem Grund dunkel \u2014 das
-     schliesst einander aus. Rechnerisch: kein Farbwert im gesamten Farbraum
-     schafft beides ueber 2,9:1, WCAG AA verlangt 4,5:1 fuer Kleintext.
-     Deshalb wird der Text-Akzent dorthin gemischt, wo er steht: zur Tinte auf
-     hellem Grund, zum Grund auf dunklem. Die 45 % sind das Verhaeltnis, bei
-     dem beide Richtungen ueber 4,5:1 liegen \u2014 geprueft in tests/
-     kontrast.test.ts, das jede Kundenseite durchrechnet. */
-  --akzent-auf-hell: color-mix(in srgb, var(--akzent) ${prozent(MISCHUNG.akzentText)}, var(--tinte));
-  --akzent-auf-dunkel: color-mix(in srgb, var(--akzent) ${prozent(MISCHUNG.akzentText)}, var(--grund));
-  --serif: "Iowan Old Style", Constantia, Cambria, "Palatino Linotype", Palatino, Georgia, ui-serif, serif;
-  --sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
-  --rand: clamp(1rem, 5vw, 3rem);
-  --spalte: 74rem;
-  /* Hoehe des klebenden Kopfes: Logo 44px plus 2 x 0.85rem Innenabstand plus
-     die Trennlinie. Steht hier, weil zwei Stellen sie brauchen \u2014 der Kopf
-     selbst und der Abzug beim Ankersprung darunter. */
-  --kopf-hoehe: calc(44px + 1.7rem + 1px);
-}
-
-*, *::before, *::after { box-sizing: border-box; }
-/* scroll-padding-top statt scroll-margin an jedem Abschnitt: Der Kopf klebt
-   oben, und ohne diesen Abzug landet jeder Ankersprung UNTER ihm \u2014 die
-   Ueberschrift des angesprungenen Abschnitts verschwindet hinter der Leiste.
-   Am Rollbereich gesetzt gilt es fuer alles: die Navigation der Kundenseite,
-   die Sprungmarken im Text und den Sprung, mit dem das Portal die Vorschau
-   beim geoeffneten Modul aufmacht. */
-html {
-  -webkit-text-size-adjust: 100%;
-  scroll-behavior: smooth;
-  scroll-padding-top: var(--kopf-hoehe);
-}
-body {
-  margin: 0;
-  background: var(--grund);
-  color: var(--tinte);
-  font-family: var(--sans);
-  font-size: 1rem;
-  line-height: 1.65;
-  overflow-x: hidden;
-}
-img { max-width: 100%; height: auto; display: block; }
-a { color: var(--primaer); }
-a:focus-visible, button:focus-visible, summary:focus-visible {
-  outline: 3px solid var(--akzent-auf-hell);
-  outline-offset: 3px;
-}
-/* Hero und Fusszeile stehen auf --primaer; dort traegt die helle Mischung. */
-.hero :focus-visible, .fuss :focus-visible { outline-color: var(--akzent-auf-dunkel); }
-
-h1, h2, h3 {
-  font-family: var(--serif);
-  font-weight: 700;
-  line-height: 1.18;
-  text-wrap: balance;
-  margin: 0;
-  color: var(--primaer);
-}
-p { margin: 0; }
-
-.huelle { max-width: var(--spalte); margin-inline: auto; padding-inline: var(--rand); }
-.fliess { max-width: 62ch; }
-
-/* ---------- Sprungmarke ---------- */
-.sprung {
-  position: absolute; left: -9999px;
-  background: var(--primaer); color: var(--grund);
-  padding: 0.7rem 1.1rem; z-index: 100;
-}
-.sprung:focus { left: 1rem; top: 1rem; }
-
-/* ---------- Kopf ---------- */
-.kopf {
-  position: sticky; top: 0; z-index: 50;
-  background: color-mix(in srgb, var(--grund) 92%, transparent);
-  backdrop-filter: blur(8px);
-  border-bottom: 1px solid var(--linie);
-}
-.kopf-innen {
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 1.5rem; padding-block: 0.85rem;
-}
-.kopf-logo img { height: 44px; width: auto; }
-.kopf-nav ul {
-  display: flex; flex-wrap: wrap; gap: 0.35rem 1.35rem;
-  list-style: none; margin: 0; padding: 0;
-}
-.kopf-nav a {
-  color: var(--tinte); text-decoration: none;
-  font-size: 0.9rem; font-weight: 600;
-  padding-block: 0.25rem;
-  border-bottom: 2px solid transparent;
-}
-.kopf-nav a:hover { border-bottom-color: var(--akzent-auf-hell); }
-@media (max-width: 52rem) {
-  .kopf { position: static; }
-  .kopf-innen { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
-  .kopf-nav ul { gap: 0.3rem 1rem; }
-}
-
-/* ---------- Abschnitte ---------- */
-.abschnitt { padding-block: clamp(3rem, 8vw, 5.5rem); }
-.abschnitt + .abschnitt { border-top: 1px solid var(--linie); }
-.abschnitt-kopf { display: flex; flex-direction: column; gap: 0.9rem; margin-bottom: 2.4rem; }
-/* h1 mitgefuehrt: Auf einer eigenen Seite traegt der Abschnittskopf die
-   Dokumentueberschrift (siehe kontext.ts). Ohne diese Regel faellt die
-   Groesse auf den Browser-Standard zurueck und der Kopf springt. */
-.abschnitt-kopf h1, .abschnitt-kopf h2 { font-size: clamp(1.65rem, 4vw, 2.35rem); }
-.abschnitt-kopf p { color: var(--gedaempft); max-width: 62ch; }
-.marke {
-  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
-  text-transform: uppercase; color: var(--akzent-auf-hell);
-}
-
-/* ---------- Hero ---------- */
-.hero { position: relative; background: var(--primaer); color: var(--grund); }
-.hero-bild { position: absolute; inset: 0; }
-.hero-bild img { width: 100%; height: 100%; object-fit: cover; opacity: 0.42; }
-.hero-innen {
-  position: relative;
-  padding-block: clamp(4rem, 14vw, 8.5rem);
-  display: flex; flex-direction: column; gap: 1.4rem;
-  max-width: 46rem;
-}
-.hero h1 { color: var(--grund); font-size: clamp(2.1rem, 7vw, 3.8rem); }
-.hero-dach { color: var(--akzent-auf-dunkel); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
-.hero p { font-size: clamp(1.02rem, 2.2vw, 1.2rem); max-width: 46ch; color: color-mix(in srgb, var(--grund) 88%, transparent); }
-.hero-aktionen { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.5rem; }
-.knopf {
-  display: inline-block; padding: 0.8rem 1.5rem;
-  font-weight: 700; font-size: 0.95rem; text-decoration: none;
-  border: 2px solid var(--akzent);
-}
-.knopf-voll { background: var(--akzent); color: var(--tinte); }
-.knopf-leer { color: var(--grund); }
-.knopf:hover { background: color-mix(in srgb, var(--akzent) 82%, #fff); color: var(--tinte); }
-
-/* ---------- Hinweisband ---------- */
-.hinweisband {
-  background: var(--akzent); color: var(--tinte);
-  font-weight: 600; text-align: center;
-  padding-block: 0.85rem;
-}
-
-/* ---------- Sortiment ---------- */
-.karten { display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
-.karte { background: var(--flaeche); border: 1px solid var(--linie); display: flex; flex-direction: column; }
-.karte img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
-.karte-text { padding: 1.2rem 1.3rem 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
-.karte h3 { font-size: 1.2rem; }
-.karte p { color: var(--gedaempft); font-size: 0.95rem; }
-
-/* ---------- Tabellen ---------- */
-.tabelle-rahmen { overflow-x: auto; }
-table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
-th, td { text-align: left; padding: 0.72rem 0.9rem; border-bottom: 1px solid var(--linie); }
-th { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gedaempft); font-weight: 700; }
-td.zahl, th.zahl { text-align: right; white-space: nowrap; }
-
-/* ---------- Preisliste ---------- */
-.preisgruppen { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
-.preisgruppe { background: var(--flaeche); border: 1px solid var(--linie); padding: 1.3rem 1.4rem 0.6rem; }
-.preisgruppe h3 { font-size: 1.1rem; margin-bottom: 0.7rem; }
-.preisgruppe tr:last-child td { border-bottom: none; }
-.preisgruppe td { padding-inline: 0; }
-.einheit { color: var(--gedaempft); font-size: 0.85rem; }
-.fussnote { margin-top: 1.6rem; font-size: 0.87rem; color: var(--gedaempft); max-width: 62ch; }
-.stand { font-size: 0.8rem; color: var(--gedaempft); }
-
-/* ---------- Hofcaf\xE9 ---------- */
-.zweispalt { display: grid; gap: 2.2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); align-items: start; }
-.zweispalt img { aspect-ratio: 3 / 2; object-fit: cover; width: 100%; }
-.karte-liste { background: var(--flaeche); border: 1px solid var(--linie); padding: 1.3rem 1.4rem; }
-.karte-liste dl { display: grid; grid-template-columns: 1fr auto; gap: 0.55rem 1rem; margin: 0; }
-.karte-liste dt { color: var(--tinte); }
-.karte-liste dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
-
-/* ---------- \xD6ffnungszeiten ---------- */
-.zeit-sets { display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
-.zeit-set { background: var(--flaeche); border: 1px solid var(--linie); padding: 1.3rem 1.4rem; }
-.zeit-set h3 { font-size: 1.1rem; }
-.zeit-set .zusatz { font-size: 0.83rem; color: var(--gedaempft); margin-bottom: 0.8rem; }
-.zeit-set dl { display: grid; grid-template-columns: 1fr auto; gap: 0.45rem 1rem; margin: 0.6rem 0 0; }
-.zeit-set dd { margin: 0; font-variant-numeric: tabular-nums; }
-.zeit-set .zu { color: var(--gedaempft); }
-.ausnahmen { margin-top: 2rem; border-left: 4px solid var(--akzent); background: var(--flaeche); padding: 1.1rem 1.3rem; }
-.ausnahmen h3 { font-size: 1rem; margin-bottom: 0.7rem; }
-.ausnahmen dl { display: grid; grid-template-columns: auto 1fr; gap: 0.4rem 1.2rem; margin: 0; }
-.ausnahmen dt { font-weight: 700; white-space: nowrap; }
-.ausnahmen dd { margin: 0; color: var(--gedaempft); }
-
-/* ---------- M\xE4rkte / Veranstaltungen ---------- */
-.liste { display: flex; flex-direction: column; gap: 1rem; }
-.eintrag {
-  background: var(--flaeche); border: 1px solid var(--linie);
-  padding: 1.15rem 1.35rem;
-  display: grid; gap: 0.35rem 1.5rem;
-  grid-template-columns: minmax(9rem, 14rem) 1fr;
-}
-.eintrag h3 { font-size: 1.08rem; grid-column: 1; }
-.eintrag .wann { grid-column: 1; font-size: 0.9rem; color: var(--akzent-auf-hell); font-weight: 700; }
-.eintrag .wo, .eintrag .was { grid-column: 2; grid-row: 1 / span 2; color: var(--gedaempft); font-size: 0.95rem; }
-@media (max-width: 40rem) {
-  .eintrag { grid-template-columns: 1fr; }
-  .eintrag h3, .eintrag .wann, .eintrag .wo, .eintrag .was { grid-column: 1; grid-row: auto; }
-}
-.plakette {
-  display: inline-block; font-size: 0.7rem; font-weight: 700;
-  letter-spacing: 0.08em; text-transform: uppercase;
-  background: var(--akzent); color: var(--tinte);
-  padding: 0.2rem 0.55rem; margin-left: 0.5rem; vertical-align: 0.12em;
-}
-
-/* ---------- Kursplan ----------
-   Sieben Spalten, die bei Enge auf zwei und dann auf eine umbrechen. Die
-   kursfreien Tage bleiben dabei stehen: Aus einem Raster ohne Luecken laesst
-   sich nicht ablesen, ob ein Tag frei ist oder nur fehlt. */
-.woche {
-  display: grid; gap: 0.75rem;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
-}
-.wochentag {
-  background: var(--flaeche); border: 1px solid var(--linie);
-  padding: 0.9rem 0.85rem;
-  display: flex; flex-direction: column; gap: 0.6rem;
-}
-.wochentag h3 {
-  font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em;
-  text-transform: uppercase; color: var(--gedaempft);
-  margin: 0; padding-bottom: 0.55rem; border-bottom: 1px solid var(--linie);
-}
-/* Leere Tage treten zurueck, verschwinden aber nicht \u2014 sie sind die Auskunft
-   "an diesem Tag ist nichts". */
-.wochentag.leer { background: transparent; }
-.kurs { display: flex; flex-direction: column; gap: 0.15rem; }
-.kurs-zeit {
-  font-size: 0.95rem; font-weight: 700; color: var(--akzent-auf-hell);
-  font-variant-numeric: tabular-nums;
-}
-.kurs-titel { font-size: 0.95rem; }
-.kurs-ort, .kurs-hinweis { font-size: 0.82rem; color: var(--gedaempft); }
-.kurs-keiner { margin: 0; color: var(--gedaempft); font-size: 0.95rem; }
-
-/* ---------- Team ---------- */
-.personen { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); }
-.person img { aspect-ratio: 1; object-fit: cover; width: 100%; }
-.person h3 { font-size: 1.05rem; margin-top: 0.9rem; }
-.person .rolle { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--akzent-auf-hell); }
-.person p { font-size: 0.9rem; color: var(--gedaempft); margin-top: 0.5rem; }
-
-/* ---------- Galerie ---------- */
-.galerie { display: grid; gap: 0.9rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
-.galerie img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
-
-/* ---------- Siegel ---------- */
-.siegel { display: flex; flex-wrap: wrap; gap: 2rem 2.8rem; align-items: center; }
-.siegel-eintrag { display: flex; align-items: center; gap: 1rem; max-width: 22rem; }
-.siegel-eintrag img { width: 76px; height: auto; flex: none; }
-.siegel-eintrag .name { font-weight: 700; font-size: 0.95rem; }
-.siegel-eintrag .unter { font-size: 0.83rem; color: var(--gedaempft); }
-
-/* ---------- Stimmen ---------- */
-.stimmen { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
-.stimme { background: var(--flaeche); border: 1px solid var(--linie); padding: 1.4rem 1.5rem; margin: 0; }
-.stimme blockquote { margin: 0; font-family: var(--serif); font-size: 1.05rem; line-height: 1.55; }
-.stimme figcaption { margin-top: 0.9rem; font-size: 0.85rem; color: var(--gedaempft); }
-
-/* ---------- FAQ ---------- */
-.faq { display: flex; flex-direction: column; border-top: 1px solid var(--linie); max-width: 52rem; }
-.faq details { border-bottom: 1px solid var(--linie); }
-.faq summary {
-  cursor: pointer; padding: 1.05rem 2.5rem 1.05rem 0;
-  font-weight: 700; position: relative; list-style: none;
-}
-.faq summary::-webkit-details-marker { display: none; }
-.faq summary::after {
-  content: "+"; position: absolute; right: 0.4rem; top: 0.95rem;
-  font-size: 1.4rem; line-height: 1; color: var(--akzent-auf-hell); font-weight: 400;
-}
-.faq details[open] summary::after { content: "\\2013"; }
-.faq p { padding-bottom: 1.2rem; color: var(--gedaempft); max-width: 62ch; }
-
-/* ---------- Kontakt ---------- */
-.kontakt { display: grid; gap: 2.2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); align-items: start; }
-.kontakt address { font-style: normal; font-size: 1.05rem; line-height: 1.8; }
-.kontakt address strong { display: block; font-size: 1.15rem; }
-.kontakt-hinweise { display: flex; flex-direction: column; gap: 1.1rem; }
-.kontakt-hinweis h3 { font-size: 0.95rem; }
-.kontakt-hinweis p { color: var(--gedaempft); font-size: 0.94rem; }
-
-/* ---------- Rechtliches ---------- */
-.rechtliches { background: var(--flaeche); }
-/* Kleiner, solange der Rechtstext ein Abschnitt unten auf der Startseite
-   ist. Als eigene Seite ist seine Ueberschrift der Seitentitel und behaelt
-   die normale Groesse von oben \u2014 deshalb hier nur h2. */
-.rechtliches .abschnitt-kopf h2 { font-size: 1.35rem; }
-.rechtliches dl { display: grid; grid-template-columns: minmax(10rem, auto) 1fr; gap: 0.45rem 1.5rem; margin: 0; max-width: 58rem; }
-.rechtliches dt { font-weight: 700; font-size: 0.9rem; }
-.rechtliches dd { margin: 0; font-size: 0.94rem; color: var(--gedaempft); }
-.rechtliches .absatz { max-width: 62ch; margin-bottom: 1.2rem; }
-.rechtliches .absatz h3 { font-size: 1rem; margin-bottom: 0.35rem; }
-.rechtliches .absatz p { font-size: 0.94rem; color: var(--gedaempft); }
-@media (max-width: 34rem) {
-  .rechtliches dl { grid-template-columns: 1fr; gap: 0.15rem; }
-  .rechtliches dd { margin-bottom: 0.7rem; }
-}
-
-/* ---------- Fu\xDF ---------- */
-.fuss { background: var(--primaer); color: color-mix(in srgb, var(--grund) 82%, transparent); padding-block: 2.5rem; }
-.fuss-innen { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; align-items: center; font-size: 0.87rem; }
-.fuss a { color: var(--grund); }
-
-@media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
-  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
-}
-
-@media print {
-  .kopf, .hero-bild, .sprung { display: none; }
-  body { background: #fff; }
-}
-`.trim();
-}
-
-// src/render/rendern.tsx
-function cssPruefen(css) {
-  if (css.includes("<")) {
-    throw new Error(
-      "Stylesheet enthaelt '<'. Der style-Block koennte verlassen werden \u2014 Render abgebrochen."
-    );
-  }
-}
-function jsonLdPruefen(text2) {
-  if (/[<>]/.test(text2)) {
-    throw new Error(
-      "Strukturdaten enthalten '<' oder '>'. Der script-Block koennte verlassen werden \u2014 Render abgebrochen."
-    );
-  }
-}
-function strukturdatenText(site, route) {
-  const text2 = JSON.stringify({
-    "@context": "https://schema.org",
-    "@graph": strukturdaten(site, route)
-  }).replace(/</g, "\\u003c").replace(/>/g, "\\u003e").replace(/&/g, "\\u0026").replace(new RegExp(String.fromCharCode(8232), "g"), "\\u2028").replace(new RegExp(String.fromCharCode(8233), "g"), "\\u2029");
-  jsonLdPruefen(text2);
-  return text2;
-}
-function seiteRendern(site, route = routen(site)[0]) {
-  const css = stylesheet(site.meta.farben);
-  cssPruefen(css);
-  const kopf = K2(/* @__PURE__ */ u4(Kopfbereich, { site, route }));
-  const koerper = K2(/* @__PURE__ */ u4(Koerper, { site, route }));
-  return [
-    "<!doctype html>",
-    `<html lang="${site.meta.sprache}">`,
-    "<head>",
-    kopf,
-    `<style>${css}</style>`,
-    `<script type="application/ld+json">${strukturdatenText(site, route)}</script>`,
-    "</head>",
-    "<body>",
-    koerper,
-    "</body>",
-    "</html>",
-    ""
-  ].join("\n");
-}
-function seitenRendern(site) {
-  return routen(site).map((route) => ({ pfad: route.pfad, html: seiteRendern(site, route) }));
-}
-function fehlerseiteRendern(site) {
-  return seiteRendern(site, fehlerRoute(routen(site)[0]));
-}
-
-// src/render/crawler.ts
-var TRAININGS_CRAWLER = ["GPTBot", "ClaudeBot", "Google-Extended", "Applebot-Extended", "CCBot"];
-var ANTWORT_CRAWLER = [
-  "OAI-SearchBot",
-  "ChatGPT-User",
-  "Claude-SearchBot",
-  "Claude-User",
-  "PerplexityBot",
-  "Perplexity-User"
-];
-function robotsTxt(meta3) {
-  const gesperrt = meta3.ki === "alles" ? [] : meta3.ki === "nichts" ? [...TRAININGS_CRAWLER, ...ANTWORT_CRAWLER] : TRAININGS_CRAWLER;
-  const signal = `search=yes, ai-input=${meta3.ki === "nichts" ? "no" : "yes"}, ai-train=${meta3.ki === "alles" ? "yes" : "no"}`;
-  return [
-    `# ${meta3.name}`,
-    ...gesperrt.flatMap((bot) => [`User-agent: ${bot}`, "Disallow: /", ""]),
-    "User-agent: *",
-    `Content-Signal: ${signal}`,
-    "Allow: /",
-    "",
-    ...meta3.indexierbar ? [`Sitemap: https://${meta3.domain}/sitemap.xml`, ""] : []
-  ].join("\n");
-}
-
-// node_modules/zod/v4/classic/external.js
+// ../softflop/node_modules/zod/v4/classic/external.js
 var external_exports = {};
 __export(external_exports, {
   $brand: () => $brand,
@@ -2245,7 +1727,7 @@ __export(external_exports, {
   xor: () => xor
 });
 
-// node_modules/zod/v4/core/index.js
+// ../softflop/node_modules/zod/v4/core/index.js
 var core_exports2 = {};
 __export(core_exports2, {
   $ZodAny: () => $ZodAny,
@@ -2524,7 +2006,7 @@ __export(core_exports2, {
   version: () => version
 });
 
-// node_modules/zod/v4/core/core.js
+// ../softflop/node_modules/zod/v4/core/core.js
 var _a;
 var NEVER = /* @__PURE__ */ Object.freeze({
   status: "aborted"
@@ -2601,7 +2083,7 @@ function config(newConfig) {
   return globalConfig;
 }
 
-// node_modules/zod/v4/core/util.js
+// ../softflop/node_modules/zod/v4/core/util.js
 var util_exports = {};
 __export(util_exports, {
   BIGINT_FORMAT_RANGES: () => BIGINT_FORMAT_RANGES,
@@ -3297,7 +2779,7 @@ var Class = class {
   }
 };
 
-// node_modules/zod/v4/core/errors.js
+// ../softflop/node_modules/zod/v4/core/errors.js
 var initializer = (inst, def) => {
   inst.name = "$ZodError";
   Object.defineProperty(inst, "_zod", {
@@ -3436,7 +2918,7 @@ function prettifyError(error51) {
   return lines.join("\n");
 }
 
-// node_modules/zod/v4/core/parse.js
+// ../softflop/node_modules/zod/v4/core/parse.js
 var _parse = (_Err) => (schema, value, _ctx, _params) => {
   const ctx = _ctx ? { ..._ctx, async: false } : { async: false };
   const result = schema._zod.run({ value, issues: [] }, ctx);
@@ -3524,7 +3006,7 @@ var _safeDecodeAsync = (_Err) => async (schema, value, _ctx) => {
 };
 var safeDecodeAsync = /* @__PURE__ */ _safeDecodeAsync($ZodRealError);
 
-// node_modules/zod/v4/core/regexes.js
+// ../softflop/node_modules/zod/v4/core/regexes.js
 var regexes_exports = {};
 __export(regexes_exports, {
   base64: () => base64,
@@ -3683,7 +3165,7 @@ var sha512_hex = /^[0-9a-fA-F]{128}$/;
 var sha512_base64 = /* @__PURE__ */ fixedBase64(86, "==");
 var sha512_base64url = /* @__PURE__ */ fixedBase64url(86);
 
-// node_modules/zod/v4/core/checks.js
+// ../softflop/node_modules/zod/v4/core/checks.js
 var $ZodCheck = /* @__PURE__ */ $constructor("$ZodCheck", (inst, def) => {
   var _a3;
   inst._zod ?? (inst._zod = {});
@@ -4231,7 +3713,7 @@ var $ZodCheckOverwrite = /* @__PURE__ */ $constructor("$ZodCheckOverwrite", (ins
   };
 });
 
-// node_modules/zod/v4/core/doc.js
+// ../softflop/node_modules/zod/v4/core/doc.js
 var Doc = class {
   constructor(args = []) {
     this.content = [];
@@ -4267,14 +3749,14 @@ var Doc = class {
   }
 };
 
-// node_modules/zod/v4/core/versions.js
+// ../softflop/node_modules/zod/v4/core/versions.js
 var version = {
   major: 4,
   minor: 4,
   patch: 3
 };
 
-// node_modules/zod/v4/core/schemas.js
+// ../softflop/node_modules/zod/v4/core/schemas.js
 var $ZodType = /* @__PURE__ */ $constructor("$ZodType", (inst, def) => {
   var _a3;
   inst ?? (inst = {});
@@ -6367,7 +5849,7 @@ function handleRefineResult(result, payload, input, inst) {
   }
 }
 
-// node_modules/zod/v4/locales/index.js
+// ../softflop/node_modules/zod/v4/locales/index.js
 var locales_exports = {};
 __export(locales_exports, {
   ar: () => ar_default,
@@ -6424,7 +5906,7 @@ __export(locales_exports, {
   zhTW: () => zh_TW_default
 });
 
-// node_modules/zod/v4/locales/ar.js
+// ../softflop/node_modules/zod/v4/locales/ar.js
 var error = () => {
   const Sizable = {
     string: { unit: "\u062D\u0631\u0641", verb: "\u0623\u0646 \u064A\u062D\u0648\u064A" },
@@ -6531,7 +6013,7 @@ function ar_default() {
   };
 }
 
-// node_modules/zod/v4/locales/az.js
+// ../softflop/node_modules/zod/v4/locales/az.js
 var error2 = () => {
   const Sizable = {
     string: { unit: "simvol", verb: "olmal\u0131d\u0131r" },
@@ -6637,7 +6119,7 @@ function az_default() {
   };
 }
 
-// node_modules/zod/v4/locales/be.js
+// ../softflop/node_modules/zod/v4/locales/be.js
 function getBelarusianPlural(count, one, few, many) {
   const absCount = Math.abs(count);
   const lastDigit = absCount % 10;
@@ -6794,7 +6276,7 @@ function be_default() {
   };
 }
 
-// node_modules/zod/v4/locales/bg.js
+// ../softflop/node_modules/zod/v4/locales/bg.js
 var error4 = () => {
   const Sizable = {
     string: { unit: "\u0441\u0438\u043C\u0432\u043E\u043B\u0430", verb: "\u0434\u0430 \u0441\u044A\u0434\u044A\u0440\u0436\u0430" },
@@ -6915,7 +6397,7 @@ function bg_default() {
   };
 }
 
-// node_modules/zod/v4/locales/ca.js
+// ../softflop/node_modules/zod/v4/locales/ca.js
 var error5 = () => {
   const Sizable = {
     string: { unit: "car\xE0cters", verb: "contenir" },
@@ -7024,7 +6506,7 @@ function ca_default() {
   };
 }
 
-// node_modules/zod/v4/locales/cs.js
+// ../softflop/node_modules/zod/v4/locales/cs.js
 var error6 = () => {
   const Sizable = {
     string: { unit: "znak\u016F", verb: "m\xEDt" },
@@ -7136,7 +6618,7 @@ function cs_default() {
   };
 }
 
-// node_modules/zod/v4/locales/da.js
+// ../softflop/node_modules/zod/v4/locales/da.js
 var error7 = () => {
   const Sizable = {
     string: { unit: "tegn", verb: "havde" },
@@ -7252,7 +6734,7 @@ function da_default() {
   };
 }
 
-// node_modules/zod/v4/locales/de.js
+// ../softflop/node_modules/zod/v4/locales/de.js
 var error8 = () => {
   const Sizable = {
     string: { unit: "Zeichen", verb: "zu haben" },
@@ -7361,7 +6843,7 @@ function de_default() {
   };
 }
 
-// node_modules/zod/v4/locales/el.js
+// ../softflop/node_modules/zod/v4/locales/el.js
 var error9 = () => {
   const Sizable = {
     string: { unit: "\u03C7\u03B1\u03C1\u03B1\u03BA\u03C4\u03AE\u03C1\u03B5\u03C2", verb: "\u03BD\u03B1 \u03AD\u03C7\u03B5\u03B9" },
@@ -7471,7 +6953,7 @@ function el_default() {
   };
 }
 
-// node_modules/zod/v4/locales/en.js
+// ../softflop/node_modules/zod/v4/locales/en.js
 var error10 = () => {
   const Sizable = {
     string: { unit: "characters", verb: "to have" },
@@ -7584,7 +7066,7 @@ function en_default() {
   };
 }
 
-// node_modules/zod/v4/locales/eo.js
+// ../softflop/node_modules/zod/v4/locales/eo.js
 var error11 = () => {
   const Sizable = {
     string: { unit: "karaktrojn", verb: "havi" },
@@ -7694,7 +7176,7 @@ function eo_default() {
   };
 }
 
-// node_modules/zod/v4/locales/es.js
+// ../softflop/node_modules/zod/v4/locales/es.js
 var error12 = () => {
   const Sizable = {
     string: { unit: "caracteres", verb: "tener" },
@@ -7827,7 +7309,7 @@ function es_default() {
   };
 }
 
-// node_modules/zod/v4/locales/fa.js
+// ../softflop/node_modules/zod/v4/locales/fa.js
 var error13 = () => {
   const Sizable = {
     string: { unit: "\u06A9\u0627\u0631\u0627\u06A9\u062A\u0631", verb: "\u062F\u0627\u0634\u062A\u0647 \u0628\u0627\u0634\u062F" },
@@ -7942,7 +7424,7 @@ function fa_default() {
   };
 }
 
-// node_modules/zod/v4/locales/fi.js
+// ../softflop/node_modules/zod/v4/locales/fi.js
 var error14 = () => {
   const Sizable = {
     string: { unit: "merkki\xE4", subject: "merkkijonon" },
@@ -8055,7 +7537,7 @@ function fi_default() {
   };
 }
 
-// node_modules/zod/v4/locales/fr.js
+// ../softflop/node_modules/zod/v4/locales/fr.js
 var error15 = () => {
   const Sizable = {
     string: { unit: "caract\xE8res", verb: "avoir" },
@@ -8181,7 +7663,7 @@ function fr_default() {
   };
 }
 
-// node_modules/zod/v4/locales/fr-CA.js
+// ../softflop/node_modules/zod/v4/locales/fr-CA.js
 var error16 = () => {
   const Sizable = {
     string: { unit: "caract\xE8res", verb: "avoir" },
@@ -8289,7 +7771,7 @@ function fr_CA_default() {
   };
 }
 
-// node_modules/zod/v4/locales/he.js
+// ../softflop/node_modules/zod/v4/locales/he.js
 var error17 = () => {
   const TypeNames = {
     string: { label: "\u05DE\u05D7\u05E8\u05D5\u05D6\u05EA", gender: "f" },
@@ -8484,7 +7966,7 @@ function he_default() {
   };
 }
 
-// node_modules/zod/v4/locales/hr.js
+// ../softflop/node_modules/zod/v4/locales/hr.js
 var error18 = () => {
   const Sizable = {
     string: { unit: "znakova", verb: "imati" },
@@ -8607,7 +8089,7 @@ function hr_default() {
   };
 }
 
-// node_modules/zod/v4/locales/hu.js
+// ../softflop/node_modules/zod/v4/locales/hu.js
 var error19 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "legyen" },
@@ -8716,7 +8198,7 @@ function hu_default() {
   };
 }
 
-// node_modules/zod/v4/locales/hy.js
+// ../softflop/node_modules/zod/v4/locales/hy.js
 function getArmenianPlural(count, one, many) {
   return Math.abs(count) === 1 ? one : many;
 }
@@ -8864,7 +8346,7 @@ function hy_default() {
   };
 }
 
-// node_modules/zod/v4/locales/id.js
+// ../softflop/node_modules/zod/v4/locales/id.js
 var error21 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "memiliki" },
@@ -8971,7 +8453,7 @@ function id_default() {
   };
 }
 
-// node_modules/zod/v4/locales/is.js
+// ../softflop/node_modules/zod/v4/locales/is.js
 var error22 = () => {
   const Sizable = {
     string: { unit: "stafi", verb: "a\xF0 hafa" },
@@ -9081,7 +8563,7 @@ function is_default() {
   };
 }
 
-// node_modules/zod/v4/locales/it.js
+// ../softflop/node_modules/zod/v4/locales/it.js
 var error23 = () => {
   const Sizable = {
     string: { unit: "caratteri", verb: "avere" },
@@ -9190,7 +8672,7 @@ function it_default() {
   };
 }
 
-// node_modules/zod/v4/locales/ja.js
+// ../softflop/node_modules/zod/v4/locales/ja.js
 var error24 = () => {
   const Sizable = {
     string: { unit: "\u6587\u5B57", verb: "\u3067\u3042\u308B" },
@@ -9298,7 +8780,7 @@ function ja_default() {
   };
 }
 
-// node_modules/zod/v4/locales/ka.js
+// ../softflop/node_modules/zod/v4/locales/ka.js
 var error25 = () => {
   const Sizable = {
     string: { unit: "\u10E1\u10D8\u10DB\u10D1\u10DD\u10DA\u10DD", verb: "\u10E3\u10DC\u10D3\u10D0 \u10E8\u10D4\u10D8\u10EA\u10D0\u10D5\u10D3\u10D4\u10E1" },
@@ -9411,7 +8893,7 @@ function ka_default() {
   };
 }
 
-// node_modules/zod/v4/locales/km.js
+// ../softflop/node_modules/zod/v4/locales/km.js
 var error26 = () => {
   const Sizable = {
     string: { unit: "\u178F\u17BD\u17A2\u1780\u17D2\u179F\u179A", verb: "\u1782\u17BD\u179A\u1798\u17B6\u1793" },
@@ -9522,12 +9004,12 @@ function km_default() {
   };
 }
 
-// node_modules/zod/v4/locales/kh.js
+// ../softflop/node_modules/zod/v4/locales/kh.js
 function kh_default() {
   return km_default();
 }
 
-// node_modules/zod/v4/locales/ko.js
+// ../softflop/node_modules/zod/v4/locales/ko.js
 var error27 = () => {
   const Sizable = {
     string: { unit: "\uBB38\uC790", verb: "to have" },
@@ -9639,7 +9121,7 @@ function ko_default() {
   };
 }
 
-// node_modules/zod/v4/locales/lt.js
+// ../softflop/node_modules/zod/v4/locales/lt.js
 var capitalizeFirstCharacter = (text2) => {
   return text2.charAt(0).toUpperCase() + text2.slice(1);
 };
@@ -9843,7 +9325,7 @@ function lt_default() {
   };
 }
 
-// node_modules/zod/v4/locales/mk.js
+// ../softflop/node_modules/zod/v4/locales/mk.js
 var error29 = () => {
   const Sizable = {
     string: { unit: "\u0437\u043D\u0430\u0446\u0438", verb: "\u0434\u0430 \u0438\u043C\u0430\u0430\u0442" },
@@ -9953,7 +9435,7 @@ function mk_default() {
   };
 }
 
-// node_modules/zod/v4/locales/ms.js
+// ../softflop/node_modules/zod/v4/locales/ms.js
 var error30 = () => {
   const Sizable = {
     string: { unit: "aksara", verb: "mempunyai" },
@@ -10061,7 +9543,7 @@ function ms_default() {
   };
 }
 
-// node_modules/zod/v4/locales/nl.js
+// ../softflop/node_modules/zod/v4/locales/nl.js
 var error31 = () => {
   const Sizable = {
     string: { unit: "tekens", verb: "heeft" },
@@ -10172,7 +9654,7 @@ function nl_default() {
   };
 }
 
-// node_modules/zod/v4/locales/no.js
+// ../softflop/node_modules/zod/v4/locales/no.js
 var error32 = () => {
   const Sizable = {
     string: { unit: "tegn", verb: "\xE5 ha" },
@@ -10281,7 +9763,7 @@ function no_default() {
   };
 }
 
-// node_modules/zod/v4/locales/ota.js
+// ../softflop/node_modules/zod/v4/locales/ota.js
 var error33 = () => {
   const Sizable = {
     string: { unit: "harf", verb: "olmal\u0131d\u0131r" },
@@ -10391,7 +9873,7 @@ function ota_default() {
   };
 }
 
-// node_modules/zod/v4/locales/ps.js
+// ../softflop/node_modules/zod/v4/locales/ps.js
 var error34 = () => {
   const Sizable = {
     string: { unit: "\u062A\u0648\u06A9\u064A", verb: "\u0648\u0644\u0631\u064A" },
@@ -10506,7 +9988,7 @@ function ps_default() {
   };
 }
 
-// node_modules/zod/v4/locales/pl.js
+// ../softflop/node_modules/zod/v4/locales/pl.js
 var error35 = () => {
   const Sizable = {
     string: { unit: "znak\xF3w", verb: "mie\u0107" },
@@ -10616,7 +10098,7 @@ function pl_default() {
   };
 }
 
-// node_modules/zod/v4/locales/pt.js
+// ../softflop/node_modules/zod/v4/locales/pt.js
 var error36 = () => {
   const Sizable = {
     string: { unit: "caracteres", verb: "ter" },
@@ -10725,7 +10207,7 @@ function pt_default() {
   };
 }
 
-// node_modules/zod/v4/locales/ro.js
+// ../softflop/node_modules/zod/v4/locales/ro.js
 var error37 = () => {
   const Sizable = {
     string: { unit: "caractere", verb: "s\u0103 aib\u0103" },
@@ -10845,7 +10327,7 @@ function ro_default() {
   };
 }
 
-// node_modules/zod/v4/locales/ru.js
+// ../softflop/node_modules/zod/v4/locales/ru.js
 function getRussianPlural(count, one, few, many) {
   const absCount = Math.abs(count);
   const lastDigit = absCount % 10;
@@ -11002,7 +10484,7 @@ function ru_default() {
   };
 }
 
-// node_modules/zod/v4/locales/sl.js
+// ../softflop/node_modules/zod/v4/locales/sl.js
 var error39 = () => {
   const Sizable = {
     string: { unit: "znakov", verb: "imeti" },
@@ -11112,7 +10594,7 @@ function sl_default() {
   };
 }
 
-// node_modules/zod/v4/locales/sv.js
+// ../softflop/node_modules/zod/v4/locales/sv.js
 var error40 = () => {
   const Sizable = {
     string: { unit: "tecken", verb: "att ha" },
@@ -11223,7 +10705,7 @@ function sv_default() {
   };
 }
 
-// node_modules/zod/v4/locales/ta.js
+// ../softflop/node_modules/zod/v4/locales/ta.js
 var error41 = () => {
   const Sizable = {
     string: { unit: "\u0B8E\u0BB4\u0BC1\u0BA4\u0BCD\u0BA4\u0BC1\u0B95\u0BCD\u0B95\u0BB3\u0BCD", verb: "\u0B95\u0BCA\u0BA3\u0BCD\u0B9F\u0BBF\u0BB0\u0BC1\u0B95\u0BCD\u0B95 \u0BB5\u0BC7\u0BA3\u0BCD\u0B9F\u0BC1\u0BAE\u0BCD" },
@@ -11334,7 +10816,7 @@ function ta_default() {
   };
 }
 
-// node_modules/zod/v4/locales/th.js
+// ../softflop/node_modules/zod/v4/locales/th.js
 var error42 = () => {
   const Sizable = {
     string: { unit: "\u0E15\u0E31\u0E27\u0E2D\u0E31\u0E01\u0E29\u0E23", verb: "\u0E04\u0E27\u0E23\u0E21\u0E35" },
@@ -11445,7 +10927,7 @@ function th_default() {
   };
 }
 
-// node_modules/zod/v4/locales/tr.js
+// ../softflop/node_modules/zod/v4/locales/tr.js
 var error43 = () => {
   const Sizable = {
     string: { unit: "karakter", verb: "olmal\u0131" },
@@ -11551,7 +11033,7 @@ function tr_default() {
   };
 }
 
-// node_modules/zod/v4/locales/uk.js
+// ../softflop/node_modules/zod/v4/locales/uk.js
 var error44 = () => {
   const Sizable = {
     string: { unit: "\u0441\u0438\u043C\u0432\u043E\u043B\u0456\u0432", verb: "\u043C\u0430\u0442\u0438\u043C\u0435" },
@@ -11660,12 +11142,12 @@ function uk_default() {
   };
 }
 
-// node_modules/zod/v4/locales/ua.js
+// ../softflop/node_modules/zod/v4/locales/ua.js
 function ua_default() {
   return uk_default();
 }
 
-// node_modules/zod/v4/locales/ur.js
+// ../softflop/node_modules/zod/v4/locales/ur.js
 var error45 = () => {
   const Sizable = {
     string: { unit: "\u062D\u0631\u0648\u0641", verb: "\u06C1\u0648\u0646\u0627" },
@@ -11776,7 +11258,7 @@ function ur_default() {
   };
 }
 
-// node_modules/zod/v4/locales/uz.js
+// ../softflop/node_modules/zod/v4/locales/uz.js
 var error46 = () => {
   const Sizable = {
     string: { unit: "belgi", verb: "bo\u2018lishi kerak" },
@@ -11887,7 +11369,7 @@ function uz_default() {
   };
 }
 
-// node_modules/zod/v4/locales/vi.js
+// ../softflop/node_modules/zod/v4/locales/vi.js
 var error47 = () => {
   const Sizable = {
     string: { unit: "k\xFD t\u1EF1", verb: "c\xF3" },
@@ -11996,7 +11478,7 @@ function vi_default() {
   };
 }
 
-// node_modules/zod/v4/locales/zh-CN.js
+// ../softflop/node_modules/zod/v4/locales/zh-CN.js
 var error48 = () => {
   const Sizable = {
     string: { unit: "\u5B57\u7B26", verb: "\u5305\u542B" },
@@ -12106,7 +11588,7 @@ function zh_CN_default() {
   };
 }
 
-// node_modules/zod/v4/locales/zh-TW.js
+// ../softflop/node_modules/zod/v4/locales/zh-TW.js
 var error49 = () => {
   const Sizable = {
     string: { unit: "\u5B57\u5143", verb: "\u64C1\u6709" },
@@ -12214,7 +11696,7 @@ function zh_TW_default() {
   };
 }
 
-// node_modules/zod/v4/locales/yo.js
+// ../softflop/node_modules/zod/v4/locales/yo.js
 var error50 = () => {
   const Sizable = {
     string: { unit: "\xE0mi", verb: "n\xED" },
@@ -12322,7 +11804,7 @@ function yo_default() {
   };
 }
 
-// node_modules/zod/v4/core/registries.js
+// ../softflop/node_modules/zod/v4/core/registries.js
 var _a2;
 var $output = Symbol("ZodOutput");
 var $input = Symbol("ZodInput");
@@ -12372,7 +11854,7 @@ function registry() {
 (_a2 = globalThis).__zod_globalRegistry ?? (_a2.__zod_globalRegistry = registry());
 var globalRegistry = globalThis.__zod_globalRegistry;
 
-// node_modules/zod/v4/core/api.js
+// ../softflop/node_modules/zod/v4/core/api.js
 // @__NO_SIDE_EFFECTS__
 function _string(Class2, params) {
   return new Class2({
@@ -13411,7 +12893,7 @@ function _stringFormat(Class2, format, fnOrRegex, _params = {}) {
   return inst;
 }
 
-// node_modules/zod/v4/core/to-json-schema.js
+// ../softflop/node_modules/zod/v4/core/to-json-schema.js
 function initializeContext(params) {
   let target = params?.target ?? "draft-2020-12";
   if (target === "draft-4")
@@ -13770,7 +13252,7 @@ var createStandardJSONSchemaMethod = (schema, io, processors = {}) => (params) =
   return finalize(ctx, schema);
 };
 
-// node_modules/zod/v4/core/json-schema-processors.js
+// ../softflop/node_modules/zod/v4/core/json-schema-processors.js
 var formatMap = {
   guid: "uuid",
   url: "uri",
@@ -14314,7 +13796,7 @@ function toJSONSchema(input, params) {
   return finalize(ctx, input);
 }
 
-// node_modules/zod/v4/core/json-schema-generator.js
+// ../softflop/node_modules/zod/v4/core/json-schema-generator.js
 var JSONSchemaGenerator = class {
   /** @deprecated Access via ctx instead */
   get metadataRegistry() {
@@ -14389,10 +13871,10 @@ var JSONSchemaGenerator = class {
   }
 };
 
-// node_modules/zod/v4/core/json-schema.js
+// ../softflop/node_modules/zod/v4/core/json-schema.js
 var json_schema_exports = {};
 
-// node_modules/zod/v4/classic/schemas.js
+// ../softflop/node_modules/zod/v4/classic/schemas.js
 var schemas_exports2 = {};
 __export(schemas_exports2, {
   ZodAny: () => ZodAny,
@@ -14563,7 +14045,7 @@ __export(schemas_exports2, {
   xor: () => xor
 });
 
-// node_modules/zod/v4/classic/checks.js
+// ../softflop/node_modules/zod/v4/classic/checks.js
 var checks_exports2 = {};
 __export(checks_exports2, {
   endsWith: () => _endsWith,
@@ -14597,7 +14079,7 @@ __export(checks_exports2, {
   uppercase: () => _uppercase
 });
 
-// node_modules/zod/v4/classic/iso.js
+// ../softflop/node_modules/zod/v4/classic/iso.js
 var iso_exports = {};
 __export(iso_exports, {
   ZodISODate: () => ZodISODate,
@@ -14638,7 +14120,7 @@ function duration2(params) {
   return _isoDuration(ZodISODuration, params);
 }
 
-// node_modules/zod/v4/classic/errors.js
+// ../softflop/node_modules/zod/v4/classic/errors.js
 var initializer2 = (inst, issues) => {
   $ZodError.init(inst, issues);
   inst.name = "ZodError";
@@ -14678,7 +14160,7 @@ var ZodRealError = /* @__PURE__ */ $constructor("ZodError", initializer2, {
   Parent: Error
 });
 
-// node_modules/zod/v4/classic/parse.js
+// ../softflop/node_modules/zod/v4/classic/parse.js
 var parse2 = /* @__PURE__ */ _parse(ZodRealError);
 var parseAsync2 = /* @__PURE__ */ _parseAsync(ZodRealError);
 var safeParse2 = /* @__PURE__ */ _safeParse(ZodRealError);
@@ -14692,7 +14174,7 @@ var safeDecode2 = /* @__PURE__ */ _safeDecode(ZodRealError);
 var safeEncodeAsync2 = /* @__PURE__ */ _safeEncodeAsync(ZodRealError);
 var safeDecodeAsync2 = /* @__PURE__ */ _safeDecodeAsync(ZodRealError);
 
-// node_modules/zod/v4/classic/schemas.js
+// ../softflop/node_modules/zod/v4/classic/schemas.js
 var _installedGroups = /* @__PURE__ */ new WeakMap();
 function _installLazyMethods(inst, group, methods) {
   const proto = Object.getPrototypeOf(inst);
@@ -15982,7 +15464,7 @@ function preprocess(fn, schema) {
   });
 }
 
-// node_modules/zod/v4/classic/compat.js
+// ../softflop/node_modules/zod/v4/classic/compat.js
 var ZodIssueCode = {
   invalid_type: "invalid_type",
   too_big: "too_big",
@@ -16008,7 +15490,7 @@ var ZodFirstPartyTypeKind;
 /* @__PURE__ */ (function(ZodFirstPartyTypeKind2) {
 })(ZodFirstPartyTypeKind || (ZodFirstPartyTypeKind = {}));
 
-// node_modules/zod/v4/classic/from-json-schema.js
+// ../softflop/node_modules/zod/v4/classic/from-json-schema.js
 var z4 = {
   ...schemas_exports2,
   ...checks_exports2,
@@ -16488,7 +15970,7 @@ function fromJSONSchema(schema, params) {
   return convertSchema(normalized, ctx);
 }
 
-// node_modules/zod/v4/classic/coerce.js
+// ../softflop/node_modules/zod/v4/classic/coerce.js
 var coerce_exports = {};
 __export(coerce_exports, {
   bigint: () => bigint3,
@@ -16513,8 +15995,26 @@ function date4(params) {
   return _coercedDate(ZodDate, params);
 }
 
-// node_modules/zod/v4/classic/external.js
+// ../softflop/node_modules/zod/v4/classic/external.js
 config(en_default());
+
+// src/render/betriebsart.ts
+var BETRIEBSARTEN = [
+  { name: "Hofladen", typ: "GroceryStore", ladenartig: true },
+  { name: "Laden", typ: "Store", ladenartig: true },
+  { name: "Caf\xE9", typ: "CafeOrCoffeeShop", ladenartig: true },
+  { name: "Restaurant", typ: "Restaurant", ladenartig: true },
+  { name: "Sportkurse", typ: "SportsActivityLocation", ladenartig: false },
+  { name: "Fitnessstudio", typ: "ExerciseGym", ladenartig: true },
+  { name: "Handwerksbetrieb", typ: "HomeAndConstructionBusiness", ladenartig: false },
+  { name: "Verein", typ: "Organization", ladenartig: false },
+  { name: "Praxis", typ: "MedicalBusiness", ladenartig: true },
+  { name: "Dienstleistung", typ: "ProfessionalService", ladenartig: false }
+];
+var BETRIEBSART_NAMEN = BETRIEBSARTEN.map((a4) => a4.name);
+function betriebsartVon(name) {
+  return BETRIEBSARTEN.find((a4) => a4.name === name);
+}
 
 // src/render/schemas.ts
 var BildSchema = external_exports.object({
@@ -16588,7 +16088,23 @@ var HofcafeSchema = external_exports.object({
   karte: external_exports.array(external_exports.object({ position: kurz(90).min(1), preis: kurz(20).min(1) })).min(1),
   hinweis: text(300).optional()
 });
-var uhrzeit = () => external_exports.string().trim().regex(/^(\d|[01]\d|2[0-3]):[0-5]\d$|^24:00$/, 'Eine Uhrzeit wie "9:00" oder "18:30".');
+var uhrzeit = () => external_exports.string().trim().regex(/^(\d|[01]\d|2[0-3]):[0-5]\d$|^24:00$/, 'Eine Uhrzeit wie "9:00" oder "18:30".').meta({ format: "time" });
+var kalendertag = () => external_exports.string().trim().refine(istTag, 'Ein Datum wie "2026-12-24" (im Portal per Datumsfeld).').meta({ format: "date" });
+var webAdresse = () => external_exports.string().trim().max(500).refine((wert) => {
+  try {
+    const url2 = new URL(wert);
+    return (url2.protocol === "https:" || url2.protocol === "http:") && !url2.username && !url2.password;
+  } catch {
+    return false;
+  }
+}, "Eine Internetadresse mit https:// am Anfang.").meta({ format: "uri" });
+var reihenfolgePruefen = (e3, ctx) => {
+  if (e3.bisDatum !== void 0 && e3.vonDatum === void 0) {
+    ctx.addIssue({ code: "custom", path: ["vonDatum"], message: "Das Enddatum braucht ein Anfangsdatum." });
+  } else if (e3.bisDatum !== void 0 && e3.vonDatum !== void 0 && e3.bisDatum < e3.vonDatum) {
+    ctx.addIssue({ code: "custom", path: ["bisDatum"], message: "Das letzte Datum liegt vor dem ersten." });
+  }
+};
 var OeffnungsZeileSchema = external_exports.object({
   tag: kurz(40).optional(),
   zeit: kurz(40).optional(),
@@ -16599,12 +16115,28 @@ var OeffnungsZeileSchema = external_exports.object({
 }).superRefine((zl, ctx) => {
   const melde = (path, message) => ctx.addIssue({ code: "custom", path: [path], message });
   const strukturiert = zl.tage !== void 0 || zl.von !== void 0 || zl.bis !== void 0 || zl.geschlossen;
-  if (!zl.tag && !zl.tage) melde("tag", "Entweder ein Text (Tag) oder die Auswahl der Tage.");
-  if (!zl.zeit && !zl.geschlossen && !(zl.von && zl.bis)) melde("zeit", "Entweder ein Text (Zeit), von und bis, oder geschlossen.");
-  if (zl.von === void 0 !== (zl.bis === void 0)) melde("von", "Von und bis gehoeren zusammen.");
-  if (zl.geschlossen && (zl.von || zl.bis)) melde("geschlossen", "Geschlossen und Uhrzeiten schliessen sich aus.");
-  if (strukturiert && !zl.tage) melde("tage", "Uhrzeiten und geschlossen brauchen die Auswahl der Tage.");
-  if (zl.von === "24:00") melde("von", "24:00 gibt es nur als Ende.");
+  if (!zl.tag && !zl.tage) melde("tag", "Bitte den Wochentag eintragen oder bei \u201EAn diesen Tagen\u201C die Tage ankreuzen.");
+  if (!zl.zeit && !zl.geschlossen && !(zl.von && zl.bis)) melde("zeit", "Bitte die Uhrzeit eintragen, oder \u201EGe\xF6ffnet von\u201C und \u201Ebis\u201C ausf\xFCllen, oder \u201EAn diesen Tagen geschlossen\u201C ankreuzen.");
+  if (zl.von === void 0 !== (zl.bis === void 0)) melde("von", "\u201EGe\xF6ffnet von\u201C und \u201Ebis\u201C geh\xF6ren zusammen \u2014 bitte beides ausf\xFCllen.");
+  if (zl.geschlossen && (zl.von || zl.bis)) melde("geschlossen", "Entweder \u201EAn diesen Tagen geschlossen\u201C ankreuzen oder Uhrzeiten eintragen, nicht beides.");
+  if (strukturiert && !zl.tage) melde("tage", "Uhrzeiten und \u201Egeschlossen\u201C brauchen die Auswahl der Tage bei \u201EAn diesen Tagen\u201C.");
+  if (zl.von === "24:00") melde("von", "24:00 gibt es nur als Ende (\u201Ebis\u201C).");
+});
+var SonderzeitSchema = external_exports.object({
+  vonDatum: kalendertag(),
+  /** Fehlt es, gilt die Sonderzeit nur am Tag `vonDatum`. */
+  bisDatum: kalendertag().optional(),
+  geschlossen: external_exports.boolean().optional(),
+  von: uhrzeit().optional(),
+  bis: uhrzeit().optional(),
+  hinweis: kurz(140).optional()
+}).superRefine((e3, ctx) => {
+  const melde = (path, message) => ctx.addIssue({ code: "custom", path: [path], message });
+  reihenfolgePruefen(e3, ctx);
+  if (e3.von === void 0 !== (e3.bis === void 0)) melde("von", "\u201EGe\xF6ffnet von\u201C und \u201Ebis\u201C geh\xF6ren zusammen \u2014 bitte beides ausf\xFCllen.");
+  if (e3.geschlossen && (e3.von || e3.bis)) melde("geschlossen", "Entweder \u201EGeschlossen\u201C ankreuzen oder Uhrzeiten eintragen, nicht beides.");
+  if (!e3.geschlossen && !(e3.von && e3.bis)) melde("geschlossen", "Bitte \u201EGeschlossen\u201C ankreuzen oder die Uhrzeiten eintragen, zu denen ge\xF6ffnet ist.");
+  if (e3.von === "24:00") melde("von", "24:00 gibt es nur als Ende (\u201Ebis\u201C).");
 });
 var OeffnungszeitenSchema = external_exports.object({
   marke: marke(),
@@ -16617,7 +16149,10 @@ var OeffnungszeitenSchema = external_exports.object({
     })
   ).min(1),
   ausnahmenTitel: kurz(60).optional(),
-  ausnahmen: external_exports.array(external_exports.object({ datum: kurz(60).min(1), was: kurz(140).min(1) })).default([])
+  ausnahmen: external_exports.array(external_exports.object({ datum: kurz(60).min(1), was: kurz(140).min(1) })).default([]),
+  /** Betriebsferien und Sonderzeiten mit Ablaufdatum; abgelaufene erscheinen nicht mehr. */
+  sonderzeiten: external_exports.array(SonderzeitSchema).max(40).default([]),
+  sonderzeitenTitel: kurz(60).optional()
 });
 var MaerkteSchema = external_exports.object({
   marke: marke(),
@@ -16684,6 +16219,27 @@ var VeranstaltungenSchema = external_exports.object({
     })
   ).min(1)
 });
+var AktuellesSchema = external_exports.object({
+  marke: marke(),
+  ueberschrift: kurz(90).min(1),
+  eintraege: external_exports.array(
+    external_exports.object({
+      titel: kurz(90).min(1),
+      vonDatum: kalendertag().optional(),
+      /** Fehlt es, ist der Termin eintaegig. */
+      bisDatum: kalendertag().optional(),
+      uhrzeit: uhrzeit().optional(),
+      ort: kurz(80).optional(),
+      text: text(400).optional(),
+      link: webAdresse().optional()
+    }).superRefine((e3, ctx) => {
+      reihenfolgePruefen(e3, ctx);
+      if (e3.uhrzeit !== void 0 && e3.vonDatum === void 0) {
+        ctx.addIssue({ code: "custom", path: ["uhrzeit"], message: "Eine Uhrzeit braucht ein Datum." });
+      }
+    })
+  ).max(60).default([])
+});
 var TeamSchema = external_exports.object({
   marke: marke(),
   ueberschrift: kurz(90).min(1),
@@ -16733,7 +16289,7 @@ function istGoogleAdresse(wert) {
   if (url2.protocol !== "https:" || url2.username || url2.password) return false;
   return GOOGLE_HOSTS.some((h3) => url2.hostname === h3 || url2.hostname.endsWith(`.${h3}`));
 }
-var googleAdresse = () => external_exports.string().trim().max(500).refine(istGoogleAdresse, "Eine https-Adresse von Google (google.com, maps.app.goo.gl, g.page).");
+var googleAdresse = () => external_exports.string().trim().max(500).refine(istGoogleAdresse, "Eine https-Adresse von Google (google.com, maps.app.goo.gl, g.page).").meta({ format: "uri" });
 var KontaktSchema = external_exports.object({
   marke: marke(),
   ueberschrift: kurz(90).min(1),
@@ -16780,6 +16336,17 @@ var KontaktSchema = external_exports.object({
    * behaupten, an dem niemand hingehen kann.
    */
   gebiet: external_exports.array(kurz(80)).default([]),
+  /**
+   * Ob unter den Kontaktdaten ein Kontaktformular steht.
+   *
+   * Das Formular selbst ist Sache des Betreibers: Es braucht eine Adresse, an
+   * die es sendet (`meta.kontaktformular`), und einen Eintrag in der
+   * Kundentabelle der Pipeline, aus dem die Empfaengeradresse kommt. Der
+   * Schalter hier ist die Entscheidung des Kunden — und weil er in den
+   * Inhalten liegt, kann er ihn im Portal selbst umlegen. Ohne eingerichtete
+   * Adresse lehnt die Validierung `true` ab (siehe validieren.ts).
+   */
+  formular: external_exports.boolean().default(false),
   /**
    * Was fuer ein Betrieb das ist — ein Wort aus einer festen Liste
    * (betriebsart.ts). Daraus wird der genaue schema.org-Typ.
@@ -16828,6 +16395,7 @@ var modulSchemas = {
   maerkte: MaerkteSchema,
   kursplan: KursplanSchema,
   veranstaltungen: VeranstaltungenSchema,
+  aktuelles: AktuellesSchema,
   team: TeamSchema,
   galerie: GalerieSchema,
   siegel: SiegelSchema,
@@ -16849,7 +16417,7 @@ var NavPunktSchema = external_exports.object({
   label: kurz(30).min(1),
   ziel: external_exports.string().min(1)
 });
-var RESERVIERTE_PFADE = ["assets", "robots", "sitemap", "404", "index"];
+var RESERVIERTE_PFADE = ["assets", "robots", "sitemap", "404", "index", "danke", "nicht-gesendet", "cdn-cgi"];
 var SeiteSchema = external_exports.object({
   /**
    * Ein Segment, kleingeschrieben — aus "impressum" wird "/impressum".
@@ -16858,7 +16426,7 @@ var SeiteSchema = external_exports.object({
    */
   pfad: external_exports.string().regex(/^[a-z0-9][a-z0-9-]*$/, 'Ein Pfadsegment wie "impressum" \u2014 klein, ohne Schraegstrich.').refine(
     (wert) => !RESERVIERTE_PFADE.includes(wert),
-    "Diesen Pfad belegt der Build selbst (assets, robots, sitemap, 404, index)."
+    `Diesen Pfad belegt der Build selbst (${RESERVIERTE_PFADE.join(", ")}).`
   ),
   module: external_exports.array(external_exports.enum(MODUL_TYPEN)).min(1),
   /** Eigener Titel. Fehlt er, baut der Renderer ihn aus Ueberschrift und Name. */
@@ -16907,6 +16475,16 @@ var SiteMetaSchema = external_exports.object({
    */
   indexierbar: external_exports.boolean().default(true),
   /**
+   * Ob der Kunde den Aufbau seiner Seite selbst verwaltet (Inhalt `aufbau`).
+   *
+   * Nur der Betreiber setzt das. Der Schalter sagt zweierlei: Das Kundenrepo
+   * traegt einen Renderer, der `content/aufbau.json` versteht, und das Portal
+   * darf die Seitenverwaltung anbieten. Ohne ihn gilt `site.json` wie bisher,
+   * ein vorhandenes `aufbau` wird weder benutzt noch als Fehler gemeldet --
+   * bestehende Kunden bauen so Byte fuer Byte wie vorher. Siehe aufbau.ts.
+   */
+  seitenverwaltung: external_exports.boolean().default(false),
+  /**
    * Was KI-Anbieter mit der Seite tun duerfen (steuert nur robots.txt).
    *
    * "antworten": Such- und Antwort-Crawler ja, Trainings-Crawler nein.
@@ -16928,6 +16506,24 @@ var SiteMetaSchema = external_exports.object({
    * dieser Seite und allem, was ueber den Betrieb sonst im Netz steht.
    */
   sameAs: external_exports.array(external_exports.string().url()).default([]),
+  /**
+   * Wohin das Kontaktformular sendet — nur der Betreiber setzt das.
+   *
+   * Die Adresse ist ein Webhook der Pipeline auf n8n (unter /webhook/…). Sie
+   * steht hier und nicht in den Inhalten, weil der Kunde sie nicht aendern
+   * darf: Aus ihr entsteht die CSP-Zeile `form-action`, und was dort steht,
+   * bestimmt, wohin eine Seite Formulardaten schicken darf. Eng gefasst, damit
+   * aus dem Wert keine zweite Quelle in die Richtlinie rutschen kann.
+   *
+   * Der Empfaenger der Nachricht steht NICHT hier — der kommt in n8n aus der
+   * Kundentabelle.
+   */
+  kontaktformular: external_exports.object({
+    adresse: external_exports.string().regex(
+      /^https:\/\/[a-z0-9]([a-z0-9.-]*[a-z0-9])?(:[0-9]{2,5})?\/webhook\/[A-Za-z0-9_\/-]+$/,
+      'Eine https-Adresse des Webhooks, z. B. "https://n8n.beispiel.de/webhook/softflop/kontakt".'
+    )
+  }).optional(),
   logo: external_exports.string().min(1),
   ogBild: external_exports.string().optional(),
   farben: FarbenSchema,
@@ -16948,6 +16544,1276 @@ var SiteMetaSchema = external_exports.object({
    */
   seiten: external_exports.array(SeiteSchema).default([])
 });
+
+// src/render/aufbau.ts
+var FESTE_SEITEN = { start: "start", impressum: "impressum", datenschutz: "datenschutz" };
+var NUR_STARTSEITE = ["hero", "hinweisband"];
+var OHNE_MENUEANKER = ["hinweisband"];
+var AUFBAU_GRENZEN = {
+  seiten: 12,
+  weiterleitungen: 40,
+  abschnitte: 20,
+  menuename: 30,
+  titel: 60,
+  beschreibung: 200,
+  ueberschrift: 90,
+  abschnittText: 3e3
+};
+var PFAD_MUSTER = /^[a-z0-9](?:[a-z0-9-]{0,38}[a-z0-9])?$/;
+var KENNUNG_MUSTER = /^(?:start|impressum|datenschutz|s[a-z0-9]{7})$/;
+var BILDPFAD_MUSTER = /^assets\/(?:[A-Za-z0-9_-]+\/)*[A-Za-z0-9_-][A-Za-z0-9_.-]*\.(?:jpe?g|png|webp|avif|svg)$/;
+var INHALT_ZUSATZ = ["aufbau", "seitentexte"];
+var INHALT_TYPEN = [...MODUL_TYPEN, ...INHALT_ZUSATZ];
+var BereichSchema = external_exports.object({
+  modul: external_exports.enum(MODUL_TYPEN),
+  /** Name im Menue. Fehlt er, fuehrt kein Menuepunkt zu diesem Bereich. */
+  menue: kurz(AUFBAU_GRENZEN.menuename).min(1).optional()
+});
+var AufbauSeiteSchema = external_exports.object({
+  kennung: external_exports.string().regex(KENNUNG_MUSTER),
+  /** "" nur fuer `start`; sonst `PFAD_MUSTER` und nicht reserviert (Regel R3). */
+  pfad: external_exports.string(),
+  menuename: kurz(AUFBAU_GRENZEN.menuename).min(1),
+  /** Nicht fuer `start`: Dort gilt `meta.titel`. */
+  titel: kurz(AUFBAU_GRENZEN.titel).optional(),
+  /** Nicht fuer `start`: Dort gilt `meta.beschreibung`. */
+  beschreibung: kurz(AUFBAU_GRENZEN.beschreibung).optional(),
+  imMenue: external_exports.boolean(),
+  bereiche: external_exports.array(BereichSchema).max(MODUL_TYPEN.length)
+});
+var WeiterleitungSchema = external_exports.object({
+  /** Die alte Adresse. Nie ein heutiger Seitenpfad (Regel R7). */
+  von: external_exports.string().regex(PFAD_MUSTER),
+  /** Die Kennung der Seite, die dort heute steht -- nie ein Pfad. */
+  zu: external_exports.string().regex(KENNUNG_MUSTER)
+});
+var istReserviert = (pfad) => RESERVIERTE_PFADE.includes(pfad);
+function aufbauRegeln(aufbau, ctx) {
+  const fehler = (path, message) => ctx.addIssue({ code: "custom", path, message });
+  const { seiten, weiterleitungen } = aufbau;
+  seiten.forEach((s4, i4) => {
+    const istStart = i4 === 0;
+    if (istStart) {
+      if (s4.kennung !== FESTE_SEITEN.start || s4.pfad !== "") {
+        fehler(["seiten", i4], 'Die erste Seite muss die Startseite sein (Kennung "start", Pfad "").');
+      }
+      if (s4.titel !== void 0 || s4.beschreibung !== void 0) {
+        fehler(["seiten", i4], "Die Startseite traegt keinen eigenen Titel und keine eigene Beschreibung; dort gelten die Angaben der Seite.");
+      }
+    } else if (s4.kennung === FESTE_SEITEN.start || s4.pfad === "") {
+      fehler(["seiten", i4], "Es gibt nur eine Startseite, und sie steht vorn.");
+    }
+  });
+  const kennungen = /* @__PURE__ */ new Set();
+  seiten.forEach((s4, i4) => {
+    if (kennungen.has(s4.kennung)) fehler(["seiten", i4, "kennung"], `Die Kennung "${s4.kennung}" kommt zweimal vor.`);
+    kennungen.add(s4.kennung);
+  });
+  const pfade = /* @__PURE__ */ new Set();
+  seiten.forEach((s4, i4) => {
+    if (s4.pfad === "") return;
+    if (!PFAD_MUSTER.test(s4.pfad)) {
+      fehler(["seiten", i4, "pfad"], "Die Adresse darf nur aus kleinen Buchstaben, Ziffern und Bindestrichen bestehen, ohne Schraegstrich.");
+    } else if (istReserviert(s4.pfad)) {
+      fehler(["seiten", i4, "pfad"], `Diese Adresse belegt der Build selbst (${RESERVIERTE_PFADE.join(", ")}).`);
+    }
+    if (pfade.has(s4.pfad)) fehler(["seiten", i4, "pfad"], `Die Adresse "${s4.pfad}" hat schon eine andere Seite.`);
+    pfade.add(s4.pfad);
+  });
+  for (const recht of PFLICHTMODULE) {
+    const treffer = seiten.filter((s5) => s5.kennung === FESTE_SEITEN[recht]);
+    const i4 = seiten.findIndex((s5) => s5.kennung === FESTE_SEITEN[recht]);
+    const s4 = treffer[0];
+    if (!s4) {
+      fehler(["seiten"], `Die Seite "${recht}" fehlt. Sie ist gesetzlich vorgeschrieben und kann nicht entfernt werden.`);
+      continue;
+    }
+    const nurDasModul = s4.bereiche.length === 1 && s4.bereiche[0]?.modul === recht && s4.bereiche[0].menue === void 0;
+    if (s4.pfad !== recht || !nurDasModul) {
+      fehler(["seiten", i4], `Die Seite "${recht}" hat den festen Pfad "${recht}" und genau den Bereich "${recht}".`);
+    }
+    seiten.forEach((andere, j3) => {
+      if (andere !== s4 && andere.bereiche.some((b3) => b3.modul === recht)) {
+        fehler(["seiten", j3, "bereiche"], `Der Bereich "${recht}" gehoert auf seine eigene Seite.`);
+      }
+    });
+  }
+  const platziert = /* @__PURE__ */ new Set();
+  seiten.forEach(
+    (s4, i4) => s4.bereiche.forEach((b3, j3) => {
+      if (platziert.has(b3.modul)) fehler(["seiten", i4, "bereiche", j3], `Der Bereich "${b3.modul}" steht mehr als einmal.`);
+      platziert.add(b3.modul);
+    })
+  );
+  seiten.forEach(
+    (s4, i4) => s4.bereiche.forEach((b3, j3) => {
+      if (i4 !== 0 && NUR_STARTSEITE.includes(b3.modul)) {
+        fehler(["seiten", i4, "bereiche", j3], `Der Bereich "${b3.modul}" gehoert auf die Startseite.`);
+      }
+      if (b3.menue !== void 0 && OHNE_MENUEANKER.includes(b3.modul)) {
+        fehler(["seiten", i4, "bereiche", j3, "menue"], `Zum Bereich "${b3.modul}" kann kein Menuepunkt fuehren.`);
+      }
+    })
+  );
+  const vonSet = /* @__PURE__ */ new Set();
+  weiterleitungen.forEach((w4, i4) => {
+    if (vonSet.has(w4.von)) fehler(["weiterleitungen", i4, "von"], `Fuer "${w4.von}" gibt es zwei Weiterleitungen.`);
+    vonSet.add(w4.von);
+    if (istReserviert(w4.von)) fehler(["weiterleitungen", i4, "von"], `Diese Adresse belegt der Build selbst (${RESERVIERTE_PFADE.join(", ")}).`);
+    if (pfade.has(w4.von)) fehler(["weiterleitungen", i4, "von"], `"${w4.von}" ist die Adresse einer heutigen Seite und kann nicht weiterleiten.`);
+    if (!kennungen.has(w4.zu)) fehler(["weiterleitungen", i4, "zu"], `Die Weiterleitung zeigt auf eine Seite ("${w4.zu}"), die es nicht gibt.`);
+  });
+}
+var AufbauSchema = external_exports.object({
+  fassung: external_exports.literal(1),
+  seiten: external_exports.array(AufbauSeiteSchema).min(3).max(AUFBAU_GRENZEN.seiten),
+  weiterleitungen: external_exports.array(WeiterleitungSchema).max(AUFBAU_GRENZEN.weiterleitungen).default([])
+}).superRefine(aufbauRegeln);
+var SeitentextSchema = external_exports.object({
+  kennung: external_exports.string().regex(KENNUNG_MUSTER),
+  /** Die h1 der Seite. */
+  ueberschrift: kurz(AUFBAU_GRENZEN.ueberschrift).min(1),
+  abschnitte: external_exports.array(
+    external_exports.object({
+      titel: kurz(AUFBAU_GRENZEN.ueberschrift).optional(),
+      text: text(AUFBAU_GRENZEN.abschnittText).min(1),
+      /** Nur Bilder, die schon auf der Seite sind (`bekannteBilder`); das prueft das Portal, nicht das Schema. */
+      bild: BildSchema.extend({ pfad: external_exports.string().regex(BILDPFAD_MUSTER) }).optional()
+    })
+  ).max(AUFBAU_GRENZEN.abschnitte)
+});
+var SeitentexteSchema = external_exports.object({ seiten: external_exports.array(SeitentextSchema).max(AUFBAU_GRENZEN.seiten) }).superRefine((t3, ctx) => {
+  const gesehen = /* @__PURE__ */ new Set();
+  t3.seiten.forEach((s4, i4) => {
+    if (gesehen.has(s4.kennung)) {
+      ctx.addIssue({ code: "custom", path: ["seiten", i4, "kennung"], message: `Die Seite "${s4.kennung}" hat zwei Texte.` });
+    }
+    gesehen.add(s4.kennung);
+    if (Object.values(FESTE_SEITEN).includes(s4.kennung)) {
+      ctx.addIssue({ code: "custom", path: ["seiten", i4, "kennung"], message: "Die Startseite, das Impressum und der Datenschutz haben keinen freien Text." });
+    }
+  });
+});
+var inhaltSchemas = {
+  ...modulSchemas,
+  aufbau: AufbauSchema,
+  seitentexte: SeitentexteSchema
+};
+function gebuchteBereiche(meta3) {
+  const alle = [...meta3.module, ...meta3.seiten.flatMap((s4) => s4.module), ...PFLICHTMODULE];
+  return [...new Set(alle)];
+}
+var RECHTSMODULE = PFLICHTMODULE;
+function strukturAusMeta(meta3) {
+  const aufUnterseiten = meta3.seiten.flatMap((s4) => s4.module);
+  const startModule = [...meta3.module];
+  for (const pflicht of PFLICHTMODULE) {
+    if (!startModule.includes(pflicht) && !aufUnterseiten.includes(pflicht)) startModule.push(pflicht);
+  }
+  const menuenameVon = (modul) => {
+    const anker = ANKER[modul];
+    return anker === null ? void 0 : meta3.navigation.find((n2) => n2.ziel === `#${anker}`)?.label;
+  };
+  const bereich = (modul) => {
+    const menue = menuenameVon(modul);
+    return menue === void 0 ? { modul } : { modul, menue };
+  };
+  const start = {
+    kennung: FESTE_SEITEN.start,
+    art: "start",
+    pfad: "",
+    menuename: "Start",
+    imMenue: false,
+    bereiche: startModule.map(bereich)
+  };
+  const unterseiten = meta3.seiten.map((s4) => {
+    const recht = s4.module.find((m4) => RECHTSMODULE.includes(m4));
+    const menuePunkt = meta3.navigation.find((n2) => n2.ziel === `/${s4.pfad}` || n2.ziel === `/${s4.pfad}/`);
+    return {
+      // Die Kennung ist hier nur ein Name fuer die Seite; Weiterleitungen gibt es in dieser Quelle nicht.
+      kennung: recht ?? s4.pfad,
+      art: recht ? "recht" : "frei",
+      pfad: s4.pfad,
+      menuename: menuePunkt?.label ?? s4.pfad,
+      ...s4.titel !== void 0 ? { titel: s4.titel } : {},
+      ...s4.beschreibung !== void 0 ? { beschreibung: s4.beschreibung } : {},
+      imMenue: menuePunkt !== void 0,
+      bereiche: s4.module.map(bereich)
+    };
+  });
+  return { quelle: "site.json", seiten: [start, ...unterseiten], weiterleitungen: [] };
+}
+function seitentexteLesen(roh) {
+  const ergebnis = SeitentexteSchema.safeParse(roh);
+  return new Map(ergebnis.success ? ergebnis.data.seiten.map((t3) => [t3.kennung, t3]) : []);
+}
+function strukturAusAufbau(aufbau, texte) {
+  const pfadVonKennung = new Map(aufbau.seiten.map((s4) => [s4.kennung, s4.pfad]));
+  const seiten = aufbau.seiten.map((s4) => {
+    const art = s4.kennung === FESTE_SEITEN.start ? "start" : RECHTSMODULE.includes(s4.kennung) ? "recht" : "frei";
+    const text2 = art === "frei" ? texte.get(s4.kennung) : void 0;
+    return {
+      kennung: s4.kennung,
+      art,
+      pfad: s4.pfad,
+      menuename: s4.menuename,
+      ...s4.titel !== void 0 ? { titel: s4.titel } : {},
+      ...s4.beschreibung !== void 0 ? { beschreibung: s4.beschreibung } : {},
+      imMenue: s4.imMenue,
+      bereiche: s4.bereiche.map((b3) => b3.menue === void 0 ? { modul: b3.modul } : { modul: b3.modul, menue: b3.menue }),
+      ...text2 ? { seitentext: text2 } : {}
+    };
+  });
+  return {
+    quelle: "aufbau",
+    seiten,
+    // `zu` ist eine Kennung; der Aufbau hat R7 bestanden, die Seite gibt es also. Der Build schreibt den HEUTIGEN Pfad.
+    weiterleitungen: aufbau.weiterleitungen.map((w4) => ({ von: w4.von, nach: pfadVonKennung.get(w4.zu) ?? "" }))
+  };
+}
+function strukturVon(meta3, inhalte) {
+  if (meta3.seitenverwaltung) {
+    const aufbau = AufbauSchema.safeParse(inhalte["aufbau"]);
+    if (aufbau.success) return strukturAusAufbau(aufbau.data, seitentexteLesen(inhalte["seitentexte"]));
+  }
+  return strukturAusMeta(meta3);
+}
+var sichtbar = (name) => name.normalize("NFKC").trim().replace(/\s+/g, " ").toLocaleLowerCase("de");
+function menuepunkteVon(seiten) {
+  const rohe = seiten.flatMap((seite) => {
+    const benannt = seite.bereiche.filter((b3) => b3.menue);
+    const seiteSelbst = seite.pfad !== "" && seite.imMenue && benannt.length === 1;
+    return [
+      ...seite.imMenue ? [{ art: "seite", kennung: seite.kennung, label: seite.menuename }] : [],
+      ...seiteSelbst ? [] : benannt.map((b3) => ({ art: "bereich", kennung: seite.kennung, modul: b3.modul, label: b3.menue }))
+    ];
+  });
+  const seitenNamen = new Set(rohe.filter((p4) => p4.art === "seite").map((p4) => sichtbar(p4.label)));
+  const gesehen = /* @__PURE__ */ new Set();
+  return rohe.filter((p4) => {
+    const name = sichtbar(p4.label);
+    if (p4.art === "bereich" && seitenNamen.has(name)) return false;
+    if (gesehen.has(name)) return false;
+    gesehen.add(name);
+    return true;
+  });
+}
+function seitentextePruefen(aufbau, texte) {
+  const feste = Object.values(FESTE_SEITEN);
+  const frei = new Set(aufbau.seiten.filter((s4) => !feste.includes(s4.kennung)).map((s4) => s4.kennung));
+  const fehler = [];
+  texte.seiten.forEach((t3, i4) => {
+    if (!frei.has(t3.kennung)) {
+      fehler.push({ feld: `seiten.${i4}.kennung`, meldung: `Der Text gehoert zu einer Seite ("${t3.kennung}"), die es nicht gibt.` });
+    }
+  });
+  return fehler;
+}
+function aufbauPruefen(aufbau, gebucht) {
+  const fehler = [];
+  const platziert = /* @__PURE__ */ new Set();
+  for (const seite of aufbau.seiten) {
+    for (const b3 of seite.bereiche) {
+      platziert.add(b3.modul);
+      if (!gebucht.includes(b3.modul)) {
+        fehler.push(`Der Bereich "${b3.modul}" auf der Seite "${seite.menuename}" ist nicht mehr gebucht. Nehmen Sie ihn von der Seite, oder melden Sie sich bei uns.`);
+      }
+    }
+  }
+  if (fehler.length > 0) return { aufbau, fehler, ergaenzt: [] };
+  const ergaenzt = [...new Set(gebucht)].filter((m4) => !platziert.has(m4));
+  if (ergaenzt.length === 0) return { aufbau, fehler, ergaenzt };
+  const neu = structuredClone(aufbau);
+  neu.seiten[0]?.bereiche.push(...ergaenzt.map((modul) => ({ modul })));
+  return { aufbau: neu, fehler, ergaenzt };
+}
+
+// src/render/umleitungen.ts
+var pfadVon = (pfad) => pfad === "" ? "/" : `/${pfad}/`;
+function pfadDerQuelle(quelle) {
+  const treffer = /^\/([^/*:?#\s]*)\/?$/.exec(quelle);
+  return treffer ? treffer[1] : void 0;
+}
+function umleitungenZusammensetzen(betreiber, struktur) {
+  if (struktur.quelle !== "aufbau") return { inhalt: betreiber, entfallen: [] };
+  const seitenpfade = new Set(struktur.seiten.map((s4) => s4.pfad));
+  const behalten = [];
+  const entfallen = [];
+  const belegt = /* @__PURE__ */ new Set();
+  for (const zeile of (betreiber ?? "").split(/\r?\n/)) {
+    const quelle = zeile.trim().startsWith("#") ? void 0 : zeile.trim().split(/\s+/)[0];
+    const pfad = quelle ? pfadDerQuelle(quelle) : void 0;
+    if (pfad !== void 0 && seitenpfade.has(pfad)) {
+      entfallen.push(zeile.trim());
+      continue;
+    }
+    if (pfad !== void 0) belegt.add(pfad);
+    behalten.push(zeile);
+  }
+  const erzeugt = struktur.weiterleitungen.filter((w4) => !belegt.has(w4.von)).flatMap((w4) => [`/${w4.von} ${pfadVon(w4.nach)} 301`, `/${w4.von}/ ${pfadVon(w4.nach)} 301`]);
+  if (erzeugt.length === 0 && entfallen.length === 0) return { inhalt: betreiber, entfallen };
+  const vorn = behalten.join("\n").replace(/\s+$/, "");
+  const block = erzeugt.length > 0 ? ["# Erzeugt aus der Seitenverwaltung -- nicht von Hand aendern.", ...erzeugt].join("\n") : "";
+  const inhalt = [vorn, block].filter((t3) => t3 !== "").join("\n\n");
+  return { inhalt: inhalt === "" ? void 0 : `${inhalt}
+`, entfallen };
+}
+
+// src/render/kontaktformular.ts
+var ANTWORTSEITEN = { danke: "danke", fehler: "nicht-gesendet" };
+function formularVon(site) {
+  const adresse = site.meta.kontaktformular?.adresse;
+  if (!adresse || !site.inhalte.kontakt?.formular) return void 0;
+  return { adresse, kunde: site.meta.id };
+}
+function formActionZusatz(site) {
+  const lage = formularVon(site);
+  return lage ? [new URL(lage.adresse).origin] : [];
+}
+
+// src/render/seiten.ts
+var strukturVonSite = (site) => site.struktur ?? strukturVon(site.meta, {});
+var unterAufbau = (site) => strukturVonSite(site).quelle === "aufbau";
+function titelBauen(site, module, seitentext) {
+  const erstes = module[0];
+  const daten = erstes ? site.inhalte[erstes] : void 0;
+  const ueberschrift = (seitentext?.ueberschrift ?? daten?.ueberschrift)?.trim();
+  if (!ueberschrift) return site.meta.name;
+  const mitMarke = `${ueberschrift} \u2013 ${site.meta.name}`;
+  return mitMarke.length <= 60 ? mitMarke : ueberschrift;
+}
+function routen(site) {
+  const { meta: meta3 } = site;
+  if (unterAufbau(site)) {
+    return strukturVonSite(site).seiten.map((seite) => {
+      const modulListe = seite.bereiche.map((b3) => b3.modul);
+      const start2 = seite.art === "start";
+      return {
+        pfad: seite.pfad,
+        module: modulListe,
+        titel: start2 ? meta3.titel ?? meta3.name : seite.titel ?? titelBauen(site, modulListe, seite.seitentext),
+        beschreibung: start2 ? meta3.beschreibung : seite.beschreibung ?? meta3.beschreibung,
+        istStart: start2,
+        wurzelbezogen: !start2,
+        fehlerseite: false,
+        ...seite.seitentext ? { seitentext: seite.seitentext } : {}
+      };
+    });
+  }
+  const start = {
+    pfad: "",
+    module: meta3.module,
+    titel: meta3.titel ?? meta3.name,
+    beschreibung: meta3.beschreibung,
+    istStart: true,
+    wurzelbezogen: false,
+    fehlerseite: false
+  };
+  const unterseiten = meta3.seiten.map((s4) => ({
+    pfad: s4.pfad,
+    module: s4.module,
+    titel: s4.titel ?? titelBauen(site, s4.module),
+    beschreibung: s4.beschreibung ?? meta3.beschreibung,
+    istStart: false,
+    wurzelbezogen: true,
+    fehlerseite: false
+  }));
+  return [start, ...unterseiten];
+}
+var fehlerRoute = (start) => ({ ...start, wurzelbezogen: true, fehlerseite: true });
+var adresseVon = (domain2, pfad) => `https://${domain2}/${pfad === "" ? "" : `${pfad}/`}`;
+var basisVon = (route) => route.wurzelbezogen ? "/" : "";
+function verweis(site, von, typ) {
+  if (unterAufbau(site)) {
+    const seite = seiteMitModul(site, typ);
+    if (seite && seite.pfad !== "") {
+      const anker2 = seite.bereiche[0]?.modul === typ ? "" : `#${ANKER[typ] ?? ""}`;
+      return `${pfadVon(seite.pfad)}${anker2}`;
+    }
+  } else {
+    const eigene = site.meta.seiten.find((s4) => s4.module.includes(typ));
+    if (eigene) {
+      const anker2 = eigene.module[0] === typ ? "" : `#${ANKER[typ] ?? ""}`;
+      return `${pfadVon(eigene.pfad)}${anker2}`;
+    }
+  }
+  const anker = ANKER[typ];
+  if (!anker) return von.wurzelbezogen ? "/" : "#";
+  return von.wurzelbezogen ? `/#${anker}` : `#${anker}`;
+}
+var seiteMitModul = (site, typ) => strukturVonSite(site).seiten.find((s4) => s4.bereiche.some((b3) => b3.modul === typ));
+var modulVonAnker = (anker) => Object.keys(ANKER).find((m4) => ANKER[m4] === anker);
+function zielFuerSeite(site, ziel, von) {
+  if (!unterAufbau(site)) {
+    if (ziel.startsWith("#")) return von.wurzelbezogen ? `/${ziel}` : ziel;
+    const pfad2 = /^\/([^/#?]+)(#.*)?$/.exec(ziel);
+    if (pfad2 && site.meta.seiten.some((s4) => s4.pfad === pfad2[1])) {
+      return `${pfadVon(pfad2[1])}${pfad2[2] ?? ""}`;
+    }
+    return ziel;
+  }
+  const struktur = strukturVonSite(site);
+  if (ziel.startsWith("#")) {
+    const modul = modulVonAnker(ziel.slice(1));
+    if (modul && seiteMitModul(site, modul)) return verweis(site, von, modul);
+    return von.wurzelbezogen ? `/${ziel}` : ziel;
+  }
+  const pfad = /^\/([^/#?]+)(#.*)?$/.exec(ziel);
+  if (pfad) {
+    const heute = struktur.seiten.some((s4) => s4.pfad === pfad[1]) ? pfad[1] : struktur.weiterleitungen.find((w4) => w4.von === pfad[1])?.nach;
+    if (heute !== void 0) return `${pfadVon(heute)}${pfad[2] ?? ""}`;
+  }
+  return ziel;
+}
+function menueVon(site, von) {
+  if (!unterAufbau(site)) {
+    return site.meta.navigation.map((n2) => ({ label: n2.label, href: zielFuerSeite(site, n2.ziel, von) }));
+  }
+  const struktur = strukturVonSite(site);
+  return menuepunkteVon(struktur.seiten).map(
+    (p4) => p4.art === "seite" ? { label: p4.label, href: pfadVon(struktur.seiten.find((s4) => s4.kennung === p4.kennung)?.pfad ?? "") } : { label: p4.label, href: verweis(site, von, p4.modul) }
+  );
+}
+function antwortRouten(site) {
+  if (!formularVon(site)) return [];
+  const { meta: meta3 } = site;
+  const bauen2 = (art, titel) => ({
+    pfad: ANTWORTSEITEN[art],
+    module: [],
+    titel: `${titel} \u2013 ${meta3.name}`,
+    beschreibung: meta3.beschreibung,
+    istStart: false,
+    wurzelbezogen: true,
+    fehlerseite: false,
+    antwort: art
+  });
+  return [bauen2("danke", FORMULAR.dankeTitel), bauen2("fehler", FORMULAR.fehlerTitel)];
+}
+
+// src/render/seite.tsx
+var absolut = (site, pfad) => `https://${site.meta.domain}/${pfad.replace(/^\/+/, "")}`;
+function Kopfbereich({ site, route }) {
+  const { meta: meta3 } = site;
+  const basis = basisVon(route);
+  const hier = adresseVon(meta3.domain, route.pfad);
+  const heroBild = route.module.includes("hero") ? site.inhalte.hero?.bild : void 0;
+  return /* @__PURE__ */ u4(S, { children: [
+    /* @__PURE__ */ u4("meta", { charSet: "utf-8" }),
+    /* @__PURE__ */ u4("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }),
+    route.fehlerseite || route.antwort || !meta3.indexierbar ? /* @__PURE__ */ u4("meta", { name: "robots", content: meta3.indexierbar ? "noindex" : "noindex, nofollow" }) : null,
+    /* @__PURE__ */ u4("title", { children: route.titel }),
+    /* @__PURE__ */ u4("meta", { name: "description", content: route.beschreibung }),
+    route.fehlerseite || route.antwort ? null : /* @__PURE__ */ u4("link", { rel: "canonical", href: hier }),
+    /* @__PURE__ */ u4("link", { rel: "icon", href: basis + meta3.logo }),
+    heroBild ? /* @__PURE__ */ u4("link", { rel: "preload", as: "image", href: basis + heroBild.pfad, fetchpriority: "high" }) : null,
+    /* @__PURE__ */ u4("meta", { property: "og:type", content: "website" }),
+    /* @__PURE__ */ u4("meta", { property: "og:title", content: route.titel }),
+    /* @__PURE__ */ u4("meta", { property: "og:description", content: route.beschreibung }),
+    /* @__PURE__ */ u4("meta", { property: "og:url", content: hier }),
+    /* @__PURE__ */ u4("meta", { property: "og:site_name", content: meta3.name }),
+    /* @__PURE__ */ u4("meta", { property: "og:locale", content: meta3.sprache === "de" ? "de_DE" : meta3.sprache }),
+    meta3.ogBild ? /* @__PURE__ */ u4("meta", { property: "og:image", content: absolut(site, meta3.ogBild) }) : null,
+    meta3.ogBild && heroBild ? /* @__PURE__ */ u4(S, { children: [
+      /* @__PURE__ */ u4("meta", { property: "og:image:alt", content: heroBild.alt }),
+      heroBild.breite ? /* @__PURE__ */ u4("meta", { property: "og:image:width", content: String(heroBild.breite) }) : null,
+      heroBild.hoehe ? /* @__PURE__ */ u4("meta", { property: "og:image:height", content: String(heroBild.hoehe) }) : null
+    ] }) : null,
+    /* @__PURE__ */ u4("meta", { name: "twitter:card", content: "summary_large_image" })
+  ] });
+}
+function Kopf({ site, route }) {
+  const { meta: meta3 } = site;
+  const basis = basisVon(route);
+  const menue = menueVon(site, route);
+  return /* @__PURE__ */ u4("header", { class: "kopf", children: /* @__PURE__ */ u4("div", { class: "huelle kopf-innen", children: [
+    /* @__PURE__ */ u4(
+      "a",
+      {
+        class: "kopf-logo",
+        href: route.wurzelbezogen ? "/" : "#start",
+        "aria-label": meta3.name,
+        children: /* @__PURE__ */ u4("img", { src: basis + meta3.logo, alt: meta3.name, width: 44, height: 44 })
+      }
+    ),
+    menue.length > 0 ? /* @__PURE__ */ u4("nav", { class: "kopf-nav", "aria-label": "Hauptnavigation", children: /* @__PURE__ */ u4("ul", { children: menue.map((n2) => /* @__PURE__ */ u4("li", { children: /* @__PURE__ */ u4("a", { href: n2.href, children: n2.label }) }, `${n2.href}|${n2.label}`)) }) }) : null
+  ] }) });
+}
+function Fuss({ site, route }) {
+  const { meta: meta3 } = site;
+  return /* @__PURE__ */ u4("footer", { class: "fuss", children: /* @__PURE__ */ u4("div", { class: "huelle fuss-innen", children: [
+    /* @__PURE__ */ u4("span", { children: meta3.name }),
+    /* @__PURE__ */ u4("span", { children: [
+      /* @__PURE__ */ u4("a", { href: verweis(site, route, "impressum"), children: "Impressum" }),
+      " \xB7",
+      " ",
+      /* @__PURE__ */ u4("a", { href: verweis(site, route, "datenschutz"), children: "Datenschutz" })
+    ] })
+  ] }) });
+}
+function Antwort({ site, route }) {
+  const kontakt = site.inhalte.kontakt;
+  const gelungen = route.antwort === "danke";
+  return /* @__PURE__ */ u4("section", { class: "abschnitt antwort", children: /* @__PURE__ */ u4("div", { class: "huelle", children: [
+    /* @__PURE__ */ u4("h1", { children: gelungen ? FORMULAR.dankeTitel : FORMULAR.fehlerTitel }),
+    /* @__PURE__ */ u4("p", { children: gelungen ? FORMULAR.dankeText : FORMULAR.fehlerText }),
+    !gelungen && kontakt && (kontakt.email || kontakt.telefon) ? /* @__PURE__ */ u4("p", { children: [
+      kontakt.email ? /* @__PURE__ */ u4("a", { href: `mailto:${kontakt.email}`, children: kontakt.email }) : null,
+      kontakt.email && kontakt.telefon ? " \xB7 " : null,
+      kontakt.telefon ? /* @__PURE__ */ u4("a", { href: `tel:${kontakt.telefon.replace(/[^+0-9]/g, "")}`, children: kontakt.telefon }) : null
+    ] }) : null,
+    /* @__PURE__ */ u4("p", { children: /* @__PURE__ */ u4("a", { href: "/", children: FORMULAR.zurueck }) })
+  ] }) });
+}
+function Koerper({ site, route, stichtag }) {
+  const { inhalte } = site;
+  const basis = basisVon(route);
+  const ziel = (z5) => zielFuerSeite(site, z5, route);
+  const kurzfassung = route.istStart ? site.meta.kurzfassung : void 0;
+  const lage = formularVon(site);
+  const formular = lage ? { ...lage, datenschutz: verweis(site, route, "datenschutz") } : void 0;
+  const kurzfassungEigen = kurzfassung !== void 0 && !route.module.includes("ueberUns");
+  const kurzfassungBlock = kurzfassungEigen ? /* @__PURE__ */ u4(
+    Abschnitt,
+    {
+      id: "kurzfassung",
+      kinder: /* @__PURE__ */ u4("div", { class: "abschnitt-kopf", children: /* @__PURE__ */ u4("p", { children: kurzfassung }) })
+    }
+  ) : null;
+  const zeigtHinweisband = route.module.includes("hinweisband");
+  const imMain = route.module.filter((t3) => t3 !== "hinweisband");
+  const h1Traeger = route.istStart || route.module.includes("hero") || route.seitentext ? null : imMain[0];
+  return /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: false, ziel, kurzfassung, stichtag, formular }, children: [
+    /* @__PURE__ */ u4("a", { class: "sprung", href: "#inhalt", children: "Zum Inhalt springen" }),
+    /* @__PURE__ */ u4(Kopf, { site, route }),
+    zeigtHinweisband ? /* @__PURE__ */ u4(Modul, { typ: "hinweisband", daten: inhalte.hinweisband }) : null,
+    /* @__PURE__ */ u4("main", { id: "inhalt", children: [
+      route.antwort ? /* @__PURE__ */ u4(Antwort, { site, route }) : null,
+      route.seitentext ? /* @__PURE__ */ u4(SeitentextAbschnitt, { text: route.seitentext }) : null,
+      imMain.includes("hero") ? null : kurzfassungBlock,
+      imMain.map((typ) => /* @__PURE__ */ u4(LageKontext.Provider, { value: { basis, h1: typ === h1Traeger, ziel, kurzfassung, stichtag, formular }, children: [
+        /* @__PURE__ */ u4(Modul, { typ, daten: inhalte[typ] }),
+        typ === "hero" ? kurzfassungBlock : null
+      ] }, typ))
+    ] }),
+    /* @__PURE__ */ u4(Fuss, { site, route })
+  ] });
+}
+
+// src/render/strukturdaten.ts
+function sauber(knoten) {
+  const raus = {};
+  for (const [schluessel, wert] of Object.entries(knoten)) {
+    if (wert === void 0 || wert === null) continue;
+    if (Array.isArray(wert) && wert.length === 0) continue;
+    raus[schluessel] = wert;
+  }
+  return raus;
+}
+var WOCHENTAG_URL = {
+  Montag: "https://schema.org/Monday",
+  Dienstag: "https://schema.org/Tuesday",
+  Mittwoch: "https://schema.org/Wednesday",
+  Donnerstag: "https://schema.org/Thursday",
+  Freitag: "https://schema.org/Friday",
+  Samstag: "https://schema.org/Saturday",
+  Sonntag: "https://schema.org/Sunday"
+};
+function telefonKompakt(telefon) {
+  const kompakt = telefon.replace(/\s+/g, "");
+  return kompakt === "" ? void 0 : kompakt;
+}
+function endzeit(zeit, minuten) {
+  const treffer = /^(\d{1,2}):(\d{2})$/.exec(zeit);
+  if (!treffer || !Number.isFinite(minuten)) return void 0;
+  const gesamt = Number(treffer[1]) * 60 + Number(treffer[2]) + minuten;
+  const stunde = String(Math.floor(gesamt / 60) % 24).padStart(2, "0");
+  return `${stunde}:${String(gesamt % 60).padStart(2, "0")}`;
+}
+function terminZeit(tag, uhrzeit2) {
+  if (!uhrzeit2) return tag;
+  const zeit = uhrzeitNormal(uhrzeit2);
+  return `${tag}T${zeit}${versatzBerlin(tag, zeit) ?? ""}`;
+}
+function strukturdaten(site, route, stichtag = heuteBerlin()) {
+  const { meta: meta3, inhalte } = site;
+  const url2 = (pfad = "") => `https://${meta3.domain}/${pfad.replace(/^\/+/, "")}`;
+  const hier = adresseVon(meta3.domain, route.pfad);
+  const id = (teil) => `${hier}#${teil}`;
+  const WEBSITE = url2("#website");
+  const BETRIEB = url2("#betrieb");
+  const PERSON = url2("#person");
+  const knoten = [];
+  const kontakt = inhalte.kontakt;
+  knoten.push(
+    sauber({
+      "@type": "WebSite",
+      "@id": WEBSITE,
+      url: url2(),
+      name: meta3.name,
+      inLanguage: meta3.sprache,
+      publisher: { "@id": BETRIEB }
+    })
+  );
+  if (kontakt?.person) {
+    knoten.push(
+      sauber({
+        "@type": "Person",
+        "@id": PERSON,
+        name: kontakt.person.name,
+        alternateName: kontakt.person.alternativName,
+        jobTitle: kontakt.person.rolle,
+        worksFor: { "@id": BETRIEB },
+        sameAs: meta3.sameAs
+      })
+    );
+  }
+  if (kontakt) {
+    const plzUndOrt = /^(\S+)\s+(.*)$/.exec(kontakt.ort);
+    knoten.push(
+      sauber({
+        "@type": betriebsartVon(kontakt.art)?.typ ?? "LocalBusiness",
+        "@id": BETRIEB,
+        name: kontakt.betrieb,
+        description: meta3.kurzfassung ?? meta3.beschreibung,
+        url: url2(),
+        logo: url2(meta3.logo),
+        image: meta3.ogBild ? url2(meta3.ogBild) : void 0,
+        telephone: telefonKompakt(kontakt.telefon),
+        email: kontakt.email || void 0,
+        sameAs: [.../* @__PURE__ */ new Set([...meta3.sameAs, ...kontakt.profile?.googleMaps ? [kontakt.profile.googleMaps] : []])],
+        hasMap: kontakt.profile?.googleMaps,
+        openingHoursSpecification: oeffnungsSpezifikation(inhalte.oeffnungszeiten?.sets[0]?.zeilen ?? []),
+        /* Nur, was zum Stichtag noch gilt: eine abgelaufene Sonderzeit auszuzeichnen
+           waere eine falsche Auskunft, die die sichtbare Seite gar nicht mehr gibt. */
+        specialOpeningHoursSpecification: sonderzeitSpezifikation(
+          geltende(inhalte.oeffnungszeiten?.sonderzeiten ?? [], stichtag)
+        ),
+        /* Koordinaten sind eine Anschrift auf zehn Meter: nur wo die Anschrift
+           ohnehin oeffentlich ist. */
+        geo: kontakt.lage && kontakt.anschriftOeffentlich ? { "@type": "GeoCoordinates", latitude: kontakt.lage.breite, longitude: kontakt.lage.laenge } : void 0,
+        founder: kontakt.person ? { "@id": PERSON } : void 0,
+        address: kontakt.anschriftOeffentlich && plzUndOrt ? {
+          "@type": "PostalAddress",
+          streetAddress: kontakt.strasse,
+          postalCode: plzUndOrt[1],
+          addressLocality: plzUndOrt[2],
+          addressRegion: kontakt.region,
+          addressCountry: "DE"
+        } : void 0,
+        areaServed: kontakt.gebiet.map((name) => ({ "@type": "Place", name }))
+      })
+    );
+  }
+  const kursplan = route.module.includes("kursplan") ? inhalte.kursplan : void 0;
+  if (kursplan) {
+    const ortId = /* @__PURE__ */ new Map();
+    for (const ort of kursplan.orte) {
+      const kennung = id(`ort-${ort.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`);
+      ortId.set(ort.name, kennung);
+      knoten.push(
+        sauber({
+          "@type": "SportsActivityLocation",
+          "@id": kennung,
+          name: ort.name,
+          url: ort.url,
+          address: {
+            "@type": "PostalAddress",
+            streetAddress: ort.strasse,
+            postalCode: ort.plz,
+            addressLocality: ort.ort,
+            addressRegion: ort.region,
+            addressCountry: "DE"
+          }
+        })
+      );
+    }
+    const nachTitel = /* @__PURE__ */ new Map();
+    for (const kurs of kursplan.kurse) {
+      const liste = nachTitel.get(kurs.titel) ?? [];
+      liste.push(kurs);
+      nachTitel.set(kurs.titel, liste);
+    }
+    for (const [titel, kurse] of nachTitel) {
+      knoten.push(
+        sauber({
+          "@type": "Course",
+          "@id": id(`kurs-${titel.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`),
+          name: titel,
+          description: kursplan.einleitung ?? meta3.beschreibung,
+          inLanguage: meta3.sprache,
+          provider: { "@id": BETRIEB },
+          hasCourseInstance: kurse.map((kurs) => {
+            const minuten = Number.parseInt(kurs.dauer ?? "", 10);
+            const bis = endzeit(kurs.zeit, minuten);
+            const ort = kurs.ort ? ortId.get(kurs.ort) : void 0;
+            return sauber({
+              "@type": "CourseInstance",
+              name: `${titel} \xB7 ${kurs.tag} ${kurs.zeit}`,
+              courseMode: "onsite",
+              instructor: kontakt?.person ? { "@id": PERSON } : void 0,
+              location: ort ? { "@id": ort } : void 0,
+              courseSchedule: sauber({
+                "@type": "Schedule",
+                byDay: WOCHENTAG_URL[kurs.tag],
+                startTime: kurs.zeit,
+                endTime: bis,
+                duration: Number.isFinite(minuten) ? `PT${minuten}M` : void 0,
+                repeatFrequency: "P1W",
+                scheduleTimezone: "Europe/Berlin"
+              })
+            });
+          })
+        })
+      );
+    }
+  }
+  const faq = route.module.includes("faq") ? inhalte.faq : void 0;
+  if (faq) {
+    knoten.push({
+      "@type": "FAQPage",
+      "@id": id("faq"),
+      mainEntity: faq.fragen.map((frage) => ({
+        "@type": "Question",
+        name: frage.frage,
+        acceptedAnswer: { "@type": "Answer", text: frage.antwort }
+      }))
+    });
+  }
+  const aktuelles = route.module.includes("aktuelles") ? inhalte.aktuelles : void 0;
+  if (aktuelles) {
+    nachBeginn(geltende(aktuelles.eintraege, stichtag)).forEach((e3, i4) => {
+      if (!e3.vonDatum) return;
+      knoten.push(
+        sauber({
+          "@type": "Event",
+          "@id": id(`termin-${i4 + 1}`),
+          name: e3.titel,
+          startDate: terminZeit(e3.vonDatum, e3.uhrzeit),
+          endDate: e3.bisDatum && e3.bisDatum !== e3.vonDatum ? e3.bisDatum : void 0,
+          description: e3.text,
+          url: e3.link,
+          location: e3.ort ? { "@type": "Place", name: e3.ort } : void 0,
+          eventAttendanceMode: e3.ort ? "https://schema.org/OfflineEventAttendanceMode" : void 0,
+          eventStatus: "https://schema.org/EventScheduled"
+        })
+      );
+    });
+  }
+  const team = route.module.includes("team") ? inhalte.team : void 0;
+  if (team) {
+    for (const person of team.personen) {
+      knoten.push(
+        sauber({
+          "@type": "Person",
+          name: person.name,
+          jobTitle: person.rolle || void 0,
+          description: person.satz || void 0,
+          image: url2(person.bild.pfad),
+          worksFor: { "@id": BETRIEB }
+        })
+      );
+    }
+  }
+  const hero = route.module.includes("hero") ? inhalte.hero : void 0;
+  knoten.push(
+    sauber({
+      "@type": "WebPage",
+      "@id": id("seite"),
+      url: hier,
+      name: route.titel,
+      description: route.beschreibung,
+      isPartOf: { "@id": WEBSITE },
+      about: kontakt ? { "@id": BETRIEB } : void 0,
+      inLanguage: meta3.sprache,
+      primaryImageOfPage: hero ? url2(hero.bild.pfad) : void 0
+    })
+  );
+  if (!route.istStart) {
+    knoten.push({
+      "@type": "BreadcrumbList",
+      "@id": id("pfad"),
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: meta3.name, item: url2() },
+        { "@type": "ListItem", position: 2, name: route.titel, item: hier }
+      ]
+    });
+  }
+  return knoten;
+}
+
+// src/render/styles.ts
+var MISCHUNG = {
+  /** Text-Akzent: zur Tinte auf hellem Grund, zum Grund auf dunklem. */
+  akzentText: 0.45,
+  /** Deckung des gedaempften Tons. */
+  gedaempft: 0.7,
+  /** Deckung der Trennlinien. Rein dekorativ, traegt keinen Text. */
+  linie: 0.14
+};
+var prozent = (anteil) => `${Math.round(anteil * 100)}%`;
+var SEITENTEXT = `
+/* ---------- Seitentext ---------- */
+.seitentext .abschnitt-kopf { margin-bottom: 2rem; }
+.seitentext-block + .seitentext-block { margin-top: 3.2rem; }
+.seitentext-titel { font-size: clamp(1.25rem, 3vw, 1.6rem); margin-bottom: 0.8rem; }
+.seitentext .fliess p { white-space: pre-line; }
+.seitentext .fliess p + p { margin-top: 1.1rem; }
+.abschnitt-kopf + .seitentext-block > .fliess > p:first-child { font-size: 1.1rem; }
+`;
+function stylesheet(f5, mitSeitentext = false) {
+  return `
+:root {
+  --primaer: ${f5.primaer};
+  --akzent: ${f5.akzent};
+  --grund: ${f5.grund};
+  --tinte: ${f5.tinte};
+  --flaeche: #ffffff;
+  --linie: color-mix(in srgb, var(--tinte) ${prozent(MISCHUNG.linie)}, transparent);
+  /* 70 %, nicht weniger: Darunter faellt der gedaempfte Ton unter 4,5:1 \u2014
+     beim Pilotkunden lag er mit 62 % bei 4,37:1. Er traegt keine Beiwerke,
+     sondern Abschnittseinleitungen, FAQ-Antworten und Kartentexte, also
+     echten Lesetext. 70 % laesst ihn sichtbar zuruecktreten und bleibt bei
+     beiden Kunden ueber der Schwelle. */
+  --gedaempft: color-mix(in srgb, var(--tinte) ${prozent(MISCHUNG.gedaempft)}, transparent);
+  /* Der Akzent traegt zweierlei: Flaechen (Knopf, Hinweisband, Plakette), auf
+     denen Tinte steht, und kleinen Text, der SELBST der Akzent ist. Fuer
+     Flaechen muss er hell sein, fuer Text auf hellem Grund dunkel \u2014 das
+     schliesst einander aus. Rechnerisch: kein Farbwert im gesamten Farbraum
+     schafft beides ueber 2,9:1, WCAG AA verlangt 4,5:1 fuer Kleintext.
+     Deshalb wird der Text-Akzent dorthin gemischt, wo er steht: zur Tinte auf
+     hellem Grund, zum Grund auf dunklem. Die 45 % sind das Verhaeltnis, bei
+     dem beide Richtungen ueber 4,5:1 liegen \u2014 geprueft in tests/
+     kontrast.test.ts, das jede Kundenseite durchrechnet. */
+  --akzent-auf-hell: color-mix(in srgb, var(--akzent) ${prozent(MISCHUNG.akzentText)}, var(--tinte));
+  --akzent-auf-dunkel: color-mix(in srgb, var(--akzent) ${prozent(MISCHUNG.akzentText)}, var(--grund));
+  --serif: "Iowan Old Style", Constantia, Cambria, "Palatino Linotype", Palatino, Georgia, ui-serif, serif;
+  --sans: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --rand: clamp(1rem, 5vw, 3rem);
+  --spalte: 74rem;
+  /* Hoehe des klebenden Kopfes: Logo 44px plus 2 x 0.85rem Innenabstand plus
+     die Trennlinie. Steht hier, weil zwei Stellen sie brauchen \u2014 der Kopf
+     selbst und der Abzug beim Ankersprung darunter. */
+  --kopf-hoehe: calc(44px + 1.7rem + 1px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+/* scroll-padding-top statt scroll-margin an jedem Abschnitt: Der Kopf klebt
+   oben, und ohne diesen Abzug landet jeder Ankersprung UNTER ihm \u2014 die
+   Ueberschrift des angesprungenen Abschnitts verschwindet hinter der Leiste.
+   Am Rollbereich gesetzt gilt es fuer alles: die Navigation der Kundenseite,
+   die Sprungmarken im Text und den Sprung, mit dem das Portal die Vorschau
+   beim geoeffneten Modul aufmacht. */
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+  scroll-padding-top: var(--kopf-hoehe);
+}
+body {
+  margin: 0;
+  background: var(--grund);
+  color: var(--tinte);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.65;
+  overflow-x: hidden;
+}
+img { max-width: 100%; height: auto; display: block; }
+a { color: var(--primaer); }
+a:focus-visible, button:focus-visible, summary:focus-visible {
+  outline: 3px solid var(--akzent-auf-hell);
+  outline-offset: 3px;
+}
+/* Hero und Fusszeile stehen auf --primaer; dort traegt die helle Mischung. */
+.hero :focus-visible, .fuss :focus-visible { outline-color: var(--akzent-auf-dunkel); }
+
+h1, h2, h3 {
+  font-family: var(--serif);
+  font-weight: 700;
+  line-height: 1.18;
+  text-wrap: balance;
+  margin: 0;
+  color: var(--primaer);
+}
+p { margin: 0; }
+
+.huelle { max-width: var(--spalte); margin-inline: auto; padding-inline: var(--rand); }
+.fliess { max-width: 62ch; }
+
+/* ---------- Sprungmarke ---------- */
+.sprung {
+  position: absolute; left: -9999px;
+  background: var(--primaer); color: var(--grund);
+  padding: 0.7rem 1.1rem; z-index: 100;
+}
+.sprung:focus { left: 1rem; top: 1rem; }
+
+/* ---------- Kopf ---------- */
+.kopf {
+  position: sticky; top: 0; z-index: 50;
+  background: color-mix(in srgb, var(--grund) 92%, transparent);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--linie);
+}
+.kopf-innen {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1.5rem; padding-block: 0.85rem;
+}
+.kopf-logo img { height: 44px; width: auto; }
+.kopf-nav ul {
+  display: flex; flex-wrap: wrap; gap: 0.35rem 1.35rem;
+  list-style: none; margin: 0; padding: 0;
+}
+.kopf-nav a {
+  color: var(--tinte); text-decoration: none;
+  font-size: 0.9rem; font-weight: 600;
+  padding-block: 0.25rem;
+  border-bottom: 2px solid transparent;
+}
+.kopf-nav a:hover { border-bottom-color: var(--akzent-auf-hell); }
+@media (max-width: 52rem) {
+  .kopf { position: static; }
+  .kopf-innen { flex-direction: column; align-items: flex-start; gap: 0.9rem; }
+  .kopf-nav ul { gap: 0.3rem 1rem; }
+}
+
+/* ---------- Abschnitte ---------- */
+.abschnitt { padding-block: clamp(3rem, 8vw, 5.5rem); }
+.abschnitt + .abschnitt { border-top: 1px solid var(--linie); }
+.abschnitt-kopf { display: flex; flex-direction: column; gap: 0.9rem; margin-bottom: 2.4rem; }
+/* h1 mitgefuehrt: Auf einer eigenen Seite traegt der Abschnittskopf die
+   Dokumentueberschrift (siehe kontext.ts). Ohne diese Regel faellt die
+   Groesse auf den Browser-Standard zurueck und der Kopf springt. */
+.abschnitt-kopf h1, .abschnitt-kopf h2 { font-size: clamp(1.65rem, 4vw, 2.35rem); }
+.abschnitt-kopf p { color: var(--gedaempft); max-width: 62ch; }
+.marke {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--akzent-auf-hell);
+}
+
+/* ---------- Hero ---------- */
+.hero { position: relative; background: var(--primaer); color: var(--grund); }
+.hero-bild { position: absolute; inset: 0; }
+.hero-bild img { width: 100%; height: 100%; object-fit: cover; opacity: 0.42; }
+.hero-innen {
+  position: relative;
+  padding-block: clamp(4rem, 14vw, 8.5rem);
+  display: flex; flex-direction: column; gap: 1.4rem;
+  max-width: 46rem;
+}
+.hero h1 { color: var(--grund); font-size: clamp(2.1rem, 7vw, 3.8rem); }
+.hero-dach { color: var(--akzent-auf-dunkel); font-size: 0.78rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; }
+.hero p { font-size: clamp(1.02rem, 2.2vw, 1.2rem); max-width: 46ch; color: color-mix(in srgb, var(--grund) 88%, transparent); }
+.hero-aktionen { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 0.5rem; }
+.knopf {
+  display: inline-block; padding: 0.8rem 1.5rem;
+  font-weight: 700; font-size: 0.95rem; text-decoration: none;
+  border: 2px solid var(--akzent);
+}
+.knopf-voll { background: var(--akzent); color: var(--tinte); }
+.knopf-leer { color: var(--grund); }
+.knopf:hover { background: color-mix(in srgb, var(--akzent) 82%, #fff); color: var(--tinte); }
+
+/* ---------- Hinweisband ---------- */
+.hinweisband {
+  background: var(--akzent); color: var(--tinte);
+  font-weight: 600; text-align: center;
+  padding-block: 0.85rem;
+}
+
+/* ---------- Sortiment ---------- */
+.karten { display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr)); }
+.karte { background: var(--flaeche); border: 1px solid var(--linie); display: flex; flex-direction: column; }
+.karte img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+.karte-text { padding: 1.2rem 1.3rem 1.5rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.karte h3 { font-size: 1.2rem; }
+.karte p { color: var(--gedaempft); font-size: 0.95rem; }
+
+/* ---------- Tabellen ---------- */
+.tabelle-rahmen { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 0.72rem 0.9rem; border-bottom: 1px solid var(--linie); }
+th { font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gedaempft); font-weight: 700; }
+td.zahl, th.zahl { text-align: right; white-space: nowrap; }
+
+/* ---------- Preisliste ---------- */
+.preisgruppen { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr)); }
+.preisgruppe { background: var(--flaeche); border: 1px solid var(--linie); padding: 1.3rem 1.4rem 0.6rem; }
+.preisgruppe h3 { font-size: 1.1rem; margin-bottom: 0.7rem; }
+.preisgruppe tr:last-child td { border-bottom: none; }
+.preisgruppe td { padding-inline: 0; }
+.einheit { color: var(--gedaempft); font-size: 0.85rem; }
+.fussnote { margin-top: 1.6rem; font-size: 0.87rem; color: var(--gedaempft); max-width: 62ch; }
+.stand { font-size: 0.8rem; color: var(--gedaempft); }
+
+/* ---------- Hofcaf\xE9 ---------- */
+.zweispalt { display: grid; gap: 2.2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); align-items: start; }
+.zweispalt img { aspect-ratio: 3 / 2; object-fit: cover; width: 100%; }
+.karte-liste { background: var(--flaeche); border: 1px solid var(--linie); padding: 1.3rem 1.4rem; }
+.karte-liste dl { display: grid; grid-template-columns: 1fr auto; gap: 0.55rem 1rem; margin: 0; }
+.karte-liste dt { color: var(--tinte); }
+.karte-liste dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+/* ---------- \xD6ffnungszeiten ---------- */
+.zeit-sets { display: grid; gap: 1.6rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+.zeit-set { background: var(--flaeche); border: 1px solid var(--linie); padding: 1.3rem 1.4rem; }
+.zeit-set h3 { font-size: 1.1rem; }
+.zeit-set .zusatz { font-size: 0.83rem; color: var(--gedaempft); margin-bottom: 0.8rem; }
+.zeit-set dl { display: grid; grid-template-columns: 1fr auto; gap: 0.45rem 1rem; margin: 0.6rem 0 0; }
+.zeit-set dd { margin: 0; font-variant-numeric: tabular-nums; }
+.zeit-set .zu { color: var(--gedaempft); }
+.ausnahmen { margin-top: 2rem; border-left: 4px solid var(--akzent); background: var(--flaeche); padding: 1.1rem 1.3rem; }
+.ausnahmen h3 { font-size: 1rem; margin-bottom: 0.7rem; }
+.ausnahmen dl { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.4rem 1.2rem; margin: 0; }
+.ausnahmen dt { font-weight: 700; white-space: nowrap; }
+.ausnahmen dd { margin: 0; color: var(--gedaempft); overflow-wrap: anywhere; }
+.ausnahmen dl > div { display: contents; }
+.ausnahmen .laufend dt, .ausnahmen .laufend dd { color: var(--tinte); }
+.ausnahmen .laufend dd { font-weight: 700; }
+/* Ein Zeitraum wie "24. Dezember 2026 \u2013 6. Januar 2027" bleibt in einer Zeile (nowrap) und ist breiter als
+   ein Handy. Dort steht er ueber seinem Text statt daneben, und darf notfalls umbrechen -- sonst ragt der
+   Kasten aus dem Bild und die ganze Seite scrollt quer. */
+@media (max-width: 40rem) {
+  .ausnahmen dl { grid-template-columns: minmax(0, 1fr); gap: 0.1rem 0; }
+  .ausnahmen dt { white-space: normal; }
+  .ausnahmen dd { margin-bottom: 0.7rem; }
+  .ausnahmen dl > div:last-child dd { margin-bottom: 0; }
+}
+
+/* ---------- M\xE4rkte / Veranstaltungen ---------- */
+.liste { display: flex; flex-direction: column; gap: 1rem; }
+.eintrag {
+  background: var(--flaeche); border: 1px solid var(--linie);
+  padding: 1.15rem 1.35rem;
+  display: grid; gap: 0.35rem 1.5rem;
+  grid-template-columns: minmax(9rem, 14rem) 1fr;
+}
+.eintrag h3 { font-size: 1.08rem; grid-column: 1; }
+.eintrag .wann { grid-column: 1; font-size: 0.9rem; color: var(--akzent-auf-hell); font-weight: 700; }
+.eintrag .wo, .eintrag .was { grid-column: 2; grid-row: 1 / span 2; color: var(--gedaempft); font-size: 0.95rem; }
+@media (max-width: 40rem) {
+  .eintrag { grid-template-columns: 1fr; }
+  .eintrag h3, .eintrag .wann, .eintrag .wo, .eintrag .was { grid-column: 1; grid-row: auto; }
+}
+.eintrag.laufend, .eintrag.bald { border-left: 4px solid var(--akzent); }
+.eintrag .was p + p { margin-top: 0.4rem; }
+.eintrag .was a { color: var(--akzent-auf-hell); text-decoration: underline; }
+.plakette {
+  display: inline-block; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 0.08em; text-transform: uppercase;
+  background: var(--akzent); color: var(--tinte);
+  padding: 0.2rem 0.55rem; margin-left: 0.5rem; vertical-align: 0.12em;
+}
+
+/* ---------- Kursplan ----------
+   Sieben Spalten, die bei Enge auf zwei und dann auf eine umbrechen. Die
+   kursfreien Tage bleiben dabei stehen: Aus einem Raster ohne Luecken laesst
+   sich nicht ablesen, ob ein Tag frei ist oder nur fehlt. */
+.woche {
+  display: grid; gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr));
+}
+.wochentag {
+  background: var(--flaeche); border: 1px solid var(--linie);
+  padding: 0.9rem 0.85rem;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.wochentag h3 {
+  font-size: 0.74rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--gedaempft);
+  margin: 0; padding-bottom: 0.55rem; border-bottom: 1px solid var(--linie);
+}
+/* Leere Tage treten zurueck, verschwinden aber nicht \u2014 sie sind die Auskunft
+   "an diesem Tag ist nichts". */
+.wochentag.leer { background: transparent; }
+.kurs { display: flex; flex-direction: column; gap: 0.15rem; }
+.kurs-zeit {
+  font-size: 0.95rem; font-weight: 700; color: var(--akzent-auf-hell);
+  font-variant-numeric: tabular-nums;
+}
+.kurs-titel { font-size: 0.95rem; }
+.kurs-ort, .kurs-hinweis { font-size: 0.82rem; color: var(--gedaempft); }
+.kurs-keiner { margin: 0; color: var(--gedaempft); font-size: 0.95rem; }
+
+/* ---------- Team ---------- */
+.personen { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 13rem), 1fr)); }
+.person img { aspect-ratio: 1; object-fit: cover; width: 100%; }
+.person h3 { font-size: 1.05rem; margin-top: 0.9rem; }
+.person .rolle { font-size: 0.78rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--akzent-auf-hell); }
+.person p { font-size: 0.9rem; color: var(--gedaempft); margin-top: 0.5rem; }
+
+/* ---------- Galerie ---------- */
+.galerie { display: grid; gap: 0.9rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr)); }
+.galerie img { aspect-ratio: 4 / 3; object-fit: cover; width: 100%; }
+
+/* ---------- Siegel ---------- */
+.siegel { display: flex; flex-wrap: wrap; gap: 2rem 2.8rem; align-items: center; }
+.siegel-eintrag { display: flex; align-items: center; gap: 1rem; max-width: 22rem; }
+.siegel-eintrag img { width: 76px; height: auto; flex: none; }
+.siegel-eintrag .name { font-weight: 700; font-size: 0.95rem; }
+.siegel-eintrag .unter { font-size: 0.83rem; color: var(--gedaempft); }
+
+/* ---------- Stimmen ---------- */
+.stimmen { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr)); }
+.stimme { background: var(--flaeche); border: 1px solid var(--linie); padding: 1.4rem 1.5rem; margin: 0; }
+.stimme blockquote { margin: 0; font-family: var(--serif); font-size: 1.05rem; line-height: 1.55; }
+.stimme figcaption { margin-top: 0.9rem; font-size: 0.85rem; color: var(--gedaempft); }
+
+/* ---------- FAQ ---------- */
+.faq { display: flex; flex-direction: column; border-top: 1px solid var(--linie); max-width: 52rem; }
+.faq details { border-bottom: 1px solid var(--linie); }
+.faq summary {
+  cursor: pointer; padding: 1.05rem 2.5rem 1.05rem 0;
+  font-weight: 700; position: relative; list-style: none;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "+"; position: absolute; right: 0.4rem; top: 0.95rem;
+  font-size: 1.4rem; line-height: 1; color: var(--akzent-auf-hell); font-weight: 400;
+}
+.faq details[open] summary::after { content: "\\2013"; }
+.faq p { padding-bottom: 1.2rem; color: var(--gedaempft); max-width: 62ch; }
+
+/* ---------- Kontakt ---------- */
+.kontakt { display: grid; gap: 2.2rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 19rem), 1fr)); align-items: start; }
+.kontakt address { font-style: normal; font-size: 1.05rem; line-height: 1.8; }
+.kontakt address strong { display: block; font-size: 1.15rem; }
+.kontakt-hinweise { display: flex; flex-direction: column; gap: 1.1rem; }
+.kontakt-hinweis h3 { font-size: 0.95rem; }
+.kontakt-hinweis p { color: var(--gedaempft); font-size: 0.94rem; }
+
+/* ---------- Kontaktformular ---------- */
+.formular { margin-top: 2.6rem; max-width: 40rem; display: grid; gap: 1.1rem; }
+.formular h3 { font-size: 1.15rem; }
+.formular p { margin: 0; display: grid; gap: 0.35rem; }
+.formular label { font-weight: 600; font-size: 0.95rem; }
+.formular input[type="text"], .formular textarea {
+  font: inherit; color: var(--tinte); background: var(--flaeche);
+  border: 1px solid var(--tinte); border-radius: 0; padding: 0.7rem 0.8rem; width: 100%;
+}
+.formular textarea { resize: vertical; min-height: 9rem; }
+.formular input:focus-visible, .formular textarea:focus-visible { outline: 3px solid var(--akzent); outline-offset: 2px; }
+.formular-hilfe { font-size: 0.85rem; color: var(--gedaempft); }
+.formular-haken { grid-template-columns: auto 1fr; align-items: start; column-gap: 0.7rem; }
+.formular-haken label { font-weight: 400; font-size: 0.9rem; }
+.formular-haken input { margin-top: 0.3rem; width: 1.1rem; height: 1.1rem; }
+.formular button { justify-self: start; cursor: pointer; border: 0; font: inherit; }
+/* Der Honigtopf: aus dem Blick, nicht mit display:none \u2014 das umgehen manche Programme. */
+.formular-falle { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.antwort { min-height: 40vh; }
+.antwort h1 { margin-bottom: 0.8rem; }
+.antwort p { max-width: 62ch; margin-bottom: 1rem; }
+
+/* ---------- Rechtliches ---------- */
+.rechtliches { background: var(--flaeche); }
+/* Kleiner, solange der Rechtstext ein Abschnitt unten auf der Startseite
+   ist. Als eigene Seite ist seine Ueberschrift der Seitentitel und behaelt
+   die normale Groesse von oben \u2014 deshalb hier nur h2. */
+.rechtliches .abschnitt-kopf h2 { font-size: 1.35rem; }
+.rechtliches dl { display: grid; grid-template-columns: minmax(10rem, auto) 1fr; gap: 0.45rem 1.5rem; margin: 0; max-width: 58rem; }
+.rechtliches dt { font-weight: 700; font-size: 0.9rem; }
+.rechtliches dd { margin: 0; font-size: 0.94rem; color: var(--gedaempft); }
+.rechtliches .absatz { max-width: 62ch; margin-bottom: 1.2rem; }
+.rechtliches .absatz h3 { font-size: 1rem; margin-bottom: 0.35rem; }
+.rechtliches .absatz p { font-size: 0.94rem; color: var(--gedaempft); }
+@media (max-width: 34rem) {
+  .rechtliches dl { grid-template-columns: 1fr; gap: 0.15rem; }
+  .rechtliches dd { margin-bottom: 0.7rem; }
+}
+
+/* ---------- Fu\xDF ---------- */
+.fuss { background: var(--primaer); color: color-mix(in srgb, var(--grund) 82%, transparent); padding-block: 2.5rem; }
+.fuss-innen { display: flex; flex-wrap: wrap; gap: 1rem 2rem; justify-content: space-between; align-items: center; font-size: 0.87rem; }
+.fuss a { color: var(--grund); }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+@media print {
+  .kopf, .hero-bild, .sprung { display: none; }
+  body { background: #fff; }
+}
+`.trim() + (mitSeitentext ? `
+${SEITENTEXT.trim()}` : "");
+}
+
+// src/render/rendern.tsx
+function cssPruefen(css) {
+  if (css.includes("<")) {
+    throw new Error(
+      "Stylesheet enthaelt '<'. Der style-Block koennte verlassen werden \u2014 Render abgebrochen."
+    );
+  }
+}
+function jsonLdPruefen(text2) {
+  if (/[<>]/.test(text2)) {
+    throw new Error(
+      "Strukturdaten enthalten '<' oder '>'. Der script-Block koennte verlassen werden \u2014 Render abgebrochen."
+    );
+  }
+}
+function strukturdatenText(site, route, stichtag) {
+  const text2 = JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": strukturdaten(site, route, stichtag)
+  }).replace(/</g, "\\u003c").replace(/>/g, "\\u003e").replace(/&/g, "\\u0026").replace(new RegExp(String.fromCharCode(8232), "g"), "\\u2028").replace(new RegExp(String.fromCharCode(8233), "g"), "\\u2029");
+  jsonLdPruefen(text2);
+  return text2;
+}
+function seiteRendern(site, route = routen(site)[0], stichtag = heuteBerlin()) {
+  const css = stylesheet(site.meta.farben, site.struktur?.seiten.some((seite) => seite.seitentext !== void 0) ?? false);
+  cssPruefen(css);
+  const kopf = K2(/* @__PURE__ */ u4(Kopfbereich, { site, route }));
+  const koerper = K2(/* @__PURE__ */ u4(Koerper, { site, route, stichtag }));
+  return [
+    "<!doctype html>",
+    `<html lang="${site.meta.sprache}">`,
+    "<head>",
+    kopf,
+    `<style>${css}</style>`,
+    `<script type="application/ld+json">${strukturdatenText(site, route, stichtag)}</script>`,
+    "</head>",
+    "<body>",
+    koerper,
+    "</body>",
+    "</html>",
+    ""
+  ].join("\n");
+}
+function seitenRendern(site, stichtag = heuteBerlin()) {
+  return [
+    ...routen(site).map((route) => ({ pfad: route.pfad, html: seiteRendern(site, route, stichtag) })),
+    ...antwortRouten(site).map((route) => ({ pfad: route.pfad, html: seiteRendern(site, route, stichtag), antwort: true }))
+  ];
+}
+function fehlerseiteRendern(site, stichtag = heuteBerlin()) {
+  return seiteRendern(site, fehlerRoute(routen(site)[0]), stichtag);
+}
+
+// src/render/crawler.ts
+var TRAININGS_CRAWLER = ["GPTBot", "ClaudeBot", "Google-Extended", "Applebot-Extended", "CCBot"];
+var ANTWORT_CRAWLER = [
+  "OAI-SearchBot",
+  "ChatGPT-User",
+  "Claude-SearchBot",
+  "Claude-User",
+  "PerplexityBot",
+  "Perplexity-User"
+];
+function robotsTxt(meta3) {
+  const gesperrt = meta3.ki === "alles" ? [] : meta3.ki === "nichts" ? [...TRAININGS_CRAWLER, ...ANTWORT_CRAWLER] : TRAININGS_CRAWLER;
+  const signal = `search=yes, ai-input=${meta3.ki === "nichts" ? "no" : "yes"}, ai-train=${meta3.ki === "alles" ? "yes" : "no"}`;
+  return [
+    `# ${meta3.name}`,
+    ...gesperrt.flatMap((bot) => [`User-agent: ${bot}`, "Disallow: /", ""]),
+    "User-agent: *",
+    `Content-Signal: ${signal}`,
+    "Allow: /",
+    "",
+    ...meta3.indexierbar ? [`Sitemap: https://${meta3.domain}/sitemap.xml`, ""] : []
+  ].join("\n");
+}
 
 // src/render/validieren.ts
 function istModulTyp(wert) {
@@ -17008,8 +17874,16 @@ function siteValidieren(rohMeta, rohInhalte) {
     }
     inhalte[typ] = ergebnis.data;
   }
+  const kontaktInhalt = inhalte["kontakt"];
+  if (kontaktInhalt?.formular && !meta3.data.kontaktformular) {
+    fehler.push({
+      wo: "kontakt",
+      feld: "formular",
+      meldung: "Das Kontaktformular ist eingeschaltet, aber noch nicht eingerichtet. Bitte schalten Sie es aus oder melden Sie sich bei uns \u2014 wir richten es ein."
+    });
+  }
   for (const schluessel of Object.keys(rohInhalte)) {
-    if (!istModulTyp(schluessel)) {
+    if (!istModulTyp(schluessel) && !INHALT_ZUSATZ.includes(schluessel)) {
       fehler.push({
         wo: schluessel,
         feld: "",
@@ -17017,10 +17891,36 @@ function siteValidieren(rohMeta, rohInhalte) {
       });
     }
   }
+  const gueltigeMeta = { ...meta3.data, module: modulListe, seiten };
+  let roheMitAufbau = rohInhalte;
+  let ergaenzt = [];
+  if (gueltigeMeta.seitenverwaltung && rohInhalte["aufbau"] !== void 0) {
+    const aufbau = AufbauSchema.safeParse(rohInhalte["aufbau"]);
+    if (!aufbau.success) {
+      for (const problem of aufbau.error.issues) {
+        fehler.push({ wo: "aufbau", feld: problem.path.join("."), meldung: problem.message });
+      }
+    } else {
+      const geprueft = aufbauPruefen(aufbau.data, gebuchteBereiche(gueltigeMeta));
+      for (const meldung2 of geprueft.fehler) fehler.push({ wo: "aufbau", feld: "seiten", meldung: meldung2 });
+      ergaenzt = geprueft.ergaenzt;
+      roheMitAufbau = { ...rohInhalte, aufbau: geprueft.aufbau };
+      if (rohInhalte["seitentexte"] !== void 0) {
+        const texte = SeitentexteSchema.safeParse(rohInhalte["seitentexte"]);
+        if (!texte.success) {
+          for (const problem of texte.error.issues) {
+            fehler.push({ wo: "seitentexte", feld: problem.path.join("."), meldung: problem.message });
+          }
+        } else {
+          for (const f5 of seitentextePruefen(aufbau.data, texte.data)) fehler.push({ wo: "seitentexte", ...f5 });
+        }
+      }
+    }
+  }
   if (fehler.length > 0) return { ok: false, fehler };
   return {
     ok: true,
-    site: { meta: { ...meta3.data, module: modulListe, seiten }, inhalte }
+    site: { meta: gueltigeMeta, inhalte, struktur: strukturVon(gueltigeMeta, roheMitAufbau), ergaenzt }
   };
 }
 function fehlerFormatieren(fehler) {
@@ -17029,7 +17929,7 @@ function fehlerFormatieren(fehler) {
 
 // src/render/warnungen.ts
 var ortAusAnschrift = (ort) => /^\S+\s+(.*)$/.exec(ort)?.[1]?.trim() || void 0;
-function warnungen(site) {
+function warnungen(site, stichtag = heuteBerlin()) {
   const { meta: meta3, inhalte } = site;
   const kontakt = inhalte.kontakt;
   const raus = [];
@@ -17072,8 +17972,106 @@ function warnungen(site) {
       });
     }
   }
+  const alteSonderzeiten = inhalte.oeffnungszeiten?.sonderzeiten.filter((z5) => abgelaufen(z5, stichtag)).length ?? 0;
+  if (alteSonderzeiten > 0) {
+    raus.push({
+      code: "sonderzeiten-abgelaufen",
+      text: `${alteSonderzeiten} Sonderzeit(en) bei den Oeffnungszeiten sind abgelaufen. Sie stehen nicht mehr auf der Seite und koennen geloescht werden.`
+    });
+  }
+  const alteTermine = inhalte.aktuelles?.eintraege.filter((e3) => abgelaufen(e3, stichtag)).length ?? 0;
+  if (alteTermine > 0) {
+    raus.push({
+      code: "termine-abgelaufen",
+      text: `${alteTermine} Termin(e) bei Aktuelles sind abgelaufen. Sie stehen nicht mehr auf der Seite und koennen geloescht werden.`
+    });
+  }
+  for (const modul of site.ergaenzt ?? []) {
+    raus.push({
+      code: "bereich-ergaenzt",
+      text: `Der Bereich "${modul}" war noch keiner Seite zugeordnet und steht jetzt am Ende der Startseite.`,
+      bezug: modul
+    });
+  }
+  if (site.struktur?.quelle === "aufbau") {
+    for (const seite of site.struktur.seiten) {
+      if (seite.art !== "frei") continue;
+      if (!seite.imMenue) {
+        raus.push({
+          code: "seite-nicht-im-menue",
+          text: `Die Seite "${seite.menuename}" steht in keinem Menue. Besucher finden sie nur ueber ihre Adresse.`,
+          bezug: seite.menuename
+        });
+      }
+      if (seite.bereiche.length === 0 && (seite.seitentext?.abschnitte.length ?? 0) === 0) {
+        raus.push({
+          code: "seite-ohne-inhalt",
+          text: `Auf der Seite "${seite.menuename}" steht bisher nur eine Ueberschrift.`,
+          bezug: seite.menuename
+        });
+      }
+    }
+  }
   return raus;
 }
+
+// src/entries/stand.ts
+function standKennung(umgebung = process.env) {
+  const roh = umgebung.WORKERS_CI_COMMIT_SHA ?? umgebung.CF_PAGES_COMMIT_SHA;
+  return roh && /^[0-9a-f]{40}$/i.test(roh) ? roh.toLowerCase() : void 0;
+}
+function mitStandKennung(html, kennung) {
+  if (!kennung) return html;
+  return html.replace("<head>", `<head>
+<meta name="softflop-stand" content="${kennung}">`);
+}
+
+// portal/app/src/zod-deutsch.ts
+var zodDe = external_exports.locales.de();
+function zahl(wert) {
+  return String(wert);
+}
+function meldung(issue2) {
+  switch (issue2.code) {
+    case "invalid_type":
+      if (issue2.input === void 0 || issue2.input === null) return "Bitte ausf\xFCllen";
+      if (issue2.expected === "number" || issue2.expected === "int") return "Bitte eine Zahl angeben.";
+      if (issue2.expected === "boolean") return "Bitte Ja oder Nein w\xE4hlen.";
+      return "Diese Angabe passt nicht.";
+    case "too_small":
+      if (issue2.origin === "string") {
+        return Number(issue2.minimum) <= 1 ? "Bitte ausf\xFCllen" : `Bitte mindestens ${zahl(issue2.minimum)} Zeichen eingeben.`;
+      }
+      if (issue2.origin === "array" || issue2.origin === "set") {
+        return Number(issue2.minimum) <= 1 ? "Bitte mindestens einen Eintrag angeben." : `Bitte mindestens ${zahl(issue2.minimum)} Eintr\xE4ge angeben.`;
+      }
+      if (issue2.origin === "number" || issue2.origin === "int") {
+        return `Bitte eine Zahl ${issue2.inclusive ? "ab" : "\xFCber"} ${zahl(issue2.minimum)} angeben.`;
+      }
+      return void 0;
+    case "too_big":
+      if (issue2.origin === "string") return `Bitte h\xF6chstens ${zahl(issue2.maximum)} Zeichen eingeben.`;
+      if (issue2.origin === "array" || issue2.origin === "set") {
+        return `Bitte h\xF6chstens ${zahl(issue2.maximum)} Eintr\xE4ge angeben.`;
+      }
+      if (issue2.origin === "number" || issue2.origin === "int") {
+        return `Bitte eine Zahl ${issue2.inclusive ? "bis" : "unter"} ${zahl(issue2.maximum)} angeben.`;
+      }
+      return void 0;
+    case "invalid_format":
+      if (issue2.format === "email") return "Bitte eine g\xFCltige E-Mail-Adresse angeben.";
+      if (issue2.format === "url") return "Bitte eine g\xFCltige Internetadresse angeben, mit https:// am Anfang.";
+      if (issue2.format === "regex") return "Das Format stimmt nicht.";
+      return "Die Eingabe hat ein ung\xFCltiges Format.";
+    case "invalid_value":
+      return "Bitte einen der angebotenen Werte w\xE4hlen.";
+    default:
+      return void 0;
+  }
+}
+external_exports.config({
+  localeError: (issue2) => meldung(issue2) ?? zodDe.localeError(issue2)
+});
 
 // src/entries/build.ts
 function jsonLesen(pfad) {
@@ -17092,7 +18090,8 @@ function inhalteLesen(verzeichnis) {
   }
   return inhalte;
 }
-function bauen(siteVerzeichnis2, zielVerzeichnis2) {
+function bauen(siteVerzeichnis2, zielVerzeichnis2, stichtag = heuteBerlin()) {
+  if (!istTag(stichtag)) throw new Error(`Der Stichtag "${stichtag}" ist kein Datum der Form JJJJ-MM-TT.`);
   const metaPfad = join(siteVerzeichnis2, "site.json");
   if (!existsSync(metaPfad)) {
     throw new Error(`site.json fehlt in ${siteVerzeichnis2}`);
@@ -17105,27 +18104,41 @@ ${fehlerFormatieren(ergebnis.fehler)}`
     );
   }
   const { meta: meta3 } = ergebnis.site;
-  const seiten = seitenRendern(ergebnis.site);
+  for (const seite of ergebnis.site.struktur?.seiten ?? []) {
+    for (const abschnitt of seite.seitentext?.abschnitte ?? []) {
+      if (abschnitt.bild && !existsSync(join(siteVerzeichnis2, abschnitt.bild.pfad))) {
+        throw new Error(`Das Bild "${abschnitt.bild.pfad}" auf der Seite "${seite.menuename}" gibt es nicht \u2014 es wurde nichts gebaut.`);
+      }
+    }
+  }
+  const seiten = seitenRendern(ergebnis.site, stichtag);
   const start = seiten[0];
+  const kennung = standKennung();
   rmSync(zielVerzeichnis2, { recursive: true, force: true });
   mkdirSync(zielVerzeichnis2, { recursive: true });
   for (const seite of seiten) {
     if (seite.pfad === "") {
-      writeFileSync(join(zielVerzeichnis2, "index.html"), seite.html, "utf8");
+      writeFileSync(join(zielVerzeichnis2, "index.html"), mitStandKennung(seite.html, kennung), "utf8");
       continue;
     }
     mkdirSync(join(zielVerzeichnis2, seite.pfad), { recursive: true });
-    writeFileSync(join(zielVerzeichnis2, seite.pfad, "index.html"), seite.html, "utf8");
+    writeFileSync(join(zielVerzeichnis2, seite.pfad, "index.html"), mitStandKennung(seite.html, kennung), "utf8");
   }
-  writeFileSync(join(zielVerzeichnis2, "404.html"), fehlerseiteRendern(ergebnis.site), "utf8");
+  writeFileSync(join(zielVerzeichnis2, "404.html"), fehlerseiteRendern(ergebnis.site, stichtag), "utf8");
   const assets = join(siteVerzeichnis2, "assets");
   if (existsSync(assets)) {
     cpSync(assets, join(zielVerzeichnis2, "assets"), { recursive: true });
   }
   const umleitungen = join(siteVerzeichnis2, "_redirects");
-  if (existsSync(umleitungen)) {
-    cpSync(umleitungen, join(zielVerzeichnis2, "_redirects"));
+  const betreiberZeilen = existsSync(umleitungen) ? readFileSync(umleitungen, "utf8") : void 0;
+  const weiterleitungen = umleitungenZusammensetzen(betreiberZeilen, ergebnis.site.struktur);
+  if (weiterleitungen.inhalt !== void 0) {
+    if (weiterleitungen.inhalt === betreiberZeilen) cpSync(umleitungen, join(zielVerzeichnis2, "_redirects"));
+    else writeFileSync(join(zielVerzeichnis2, "_redirects"), weiterleitungen.inhalt, "utf8");
   }
+  const umleitungsHinweise = weiterleitungen.entfallen.map(
+    (zeile) => `Die Zeile "${zeile}" in _redirects entfaellt: Sie wuerde eine Seite der Seitenverwaltung verdecken.`
+  );
   const header = [
     "default-src 'self'",
     "script-src 'none'",
@@ -17133,7 +18146,8 @@ ${fehlerFormatieren(ergebnis.fehler)}`
     "img-src 'self'",
     "font-src 'self'",
     "connect-src 'self'",
-    "form-action 'self'",
+    /* Nur mit eingeschaltetem Kontaktformular kommt der Ursprung seines Webhooks hinzu. */
+    ["form-action 'self'", ...formActionZusatz(ergebnis.site)].join(" "),
     "frame-ancestors 'none'",
     "base-uri 'none'",
     "object-src 'none'",
@@ -17165,7 +18179,7 @@ ${fehlerFormatieren(ergebnis.fehler)}`
       if (iso) stand = iso.slice(0, 10);
     } catch {
     }
-    const eintraege = seiten.map((s4) => `  <url>
+    const eintraege = seiten.filter((s4) => !s4.antwort).map((s4) => `  <url>
     <loc>${adresseVon(meta3.domain, s4.pfad)}</loc>
     <lastmod>${stand}</lastmod>
   </url>`).join("\n");
@@ -17180,18 +18194,30 @@ ${eintraege}
     );
   }
   writeFileSync(join(zielVerzeichnis2, "robots.txt"), robotsTxt(meta3), "utf8");
-  return { html: start.html, hinweise: warnungen(ergebnis.site).map((w4) => w4.text) };
+  const ablauf = naechsterAblauf(ergebnis.site, stichtag);
+  writeFileSync(
+    join(zielVerzeichnis2, "ablauf.json"),
+    `${JSON.stringify({ stichtag, naechsterAblauf: ablauf, zeitzone: "Europe/Berlin" }, null, 2)}
+`,
+    "utf8"
+  );
+  return { html: start.html, hinweise: [...umleitungsHinweise, ...warnungen(ergebnis.site, stichtag).map((w4) => w4.text)], naechsterAblauf: ablauf };
 }
 var siteVerzeichnis = resolve(process.argv[2] ?? "sites/hofladen-sonnleiten");
 var zielVerzeichnis = resolve(process.argv[3] ?? "dist");
 try {
-  const { html, hinweise } = bauen(siteVerzeichnis, zielVerzeichnis);
+  const { html, hinweise, naechsterAblauf: naechsterAblauf2 } = bauen(
+    siteVerzeichnis,
+    zielVerzeichnis,
+    process.env["SOFTFLOP_STICHTAG"] || void 0
+  );
   const kb = (Buffer.byteLength(html, "utf8") / 1024).toFixed(1);
   console.log(`Gebaut: ${join(zielVerzeichnis, "index.html")}  (${kb} KB)`);
   for (const datei of readdirSync(zielVerzeichnis, { withFileTypes: true })) {
     if (!datei.isDirectory() || datei.name === "assets") continue;
     console.log(`        /${datei.name}`);
   }
+  console.log(`Naechster Ablauf: ${naechsterAblauf2 ?? "keiner"}`);
   for (const h3 of hinweise) console.log(`Hinweis: ${h3}`);
 } catch (fehler) {
   console.error(`
